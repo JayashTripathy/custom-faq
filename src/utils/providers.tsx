@@ -16,7 +16,7 @@ function AppProviders({ children }: React.PropsWithChildren) {
   };
 
   useEffect(() => {
-    if(storage === null ) return;
+    if (storage === null) return;
     localStorage.setItem("storage", JSON.stringify(storage));
   }, [storage]);
 
