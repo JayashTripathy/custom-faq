@@ -1,10 +1,13 @@
 import { z } from "zod";
+import { PrismaClient } from '@prisma/client'
 
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc"; 
+
+
 
 export const exampleRouter = createTRPCRouter({
   hello: publicProcedure
@@ -23,3 +26,5 @@ export const exampleRouter = createTRPCRouter({
     return "you can now see this secret message!";
   }),
 });
+
+

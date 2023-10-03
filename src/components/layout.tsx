@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 
 function Layout({ children }: React.PropsWithChildren) {
-  const hideNavbarPaths = ["/auth/signin"];
+  const hideNavbarPaths = [""];
 
   const router = useRouter();
   const hideNavbar = hideNavbarPaths.includes(router.pathname);
