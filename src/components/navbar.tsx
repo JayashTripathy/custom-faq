@@ -19,7 +19,7 @@ function Navbar() {
   }, [theme, systemTheme]);
 
   return (
-    <div className="p-4">
+    <div className="p-4  z-10 relative">
       <MainHeader
         heading={
           <Link href="/">
