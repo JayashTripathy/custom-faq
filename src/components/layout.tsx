@@ -10,7 +10,7 @@ function Layout({ children }: React.PropsWithChildren) {
   const hideNavbar = hideNavbarPaths.includes(router.pathname);
 
   return (
-    <div className=" ">
+    <div className="">
       {!hideNavbar && <Navbar />}
       {children}
     </div>

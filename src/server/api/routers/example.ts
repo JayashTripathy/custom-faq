@@ -7,6 +7,8 @@ import {
   publicProcedure,
 } from "@/server/api/trpc"; 
 
+import { db } from "@/server/db";
+
 
 
 export const exampleRouter = createTRPCRouter({
@@ -25,6 +27,15 @@ export const exampleRouter = createTRPCRouter({
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
+
+  getAllUsers: protectedProcedure.query(() => {
+    const users = db.user.findMany();
+
+    return users;
+  })
 });
+
+
+
 
 
