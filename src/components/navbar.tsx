@@ -19,7 +19,7 @@ function Navbar() {
   }, [theme, systemTheme]);
 
   return (
-    <div className="p-4  z-10 relative">
+    <div className="relative  z-10 p-4">
       <MainHeader
         heading={
           <Link href="/">
@@ -27,6 +27,13 @@ function Navbar() {
           </Link>
         }
       >
+        <div className="ml-10 flex  w-full">
+          <ul>
+            <li>
+              <Link href={"/dashboard"} className="hover:text-foreground/75 transition-all duration-100 ease-in-out">Dashboard</Link>
+            </li>
+          </ul>
+        </div>
         <div className="flex items-center justify-center gap-3">
           <ModeToggle />
           {!data ? (
