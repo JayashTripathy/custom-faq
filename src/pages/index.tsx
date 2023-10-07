@@ -15,7 +15,7 @@ function index() {
        
       </div>
       <div>
-        <div className="text-center text-5xl py-10">
+        <div className="text-center text-2xl md:text-5xl py-10">
           
           Create Stunning
           <br/>

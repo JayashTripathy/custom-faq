@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./navbar";
 import { useRouter } from "next/router";
-
+import { useSession } from "next-auth/react";
 
 function Layout({ children }: React.PropsWithChildren) {
-  const hideNavbarPaths = [""];
-
+  const { data } = useSession();
   const router = useRouter();
+  const user = data?.user;
+
+  const hideNavbarPaths = [""];
+  const protectedRoutes = ["/dashboard"];
+
+  useEffect(() => {
+    if (!user && protectedRoutes.includes(router.pathname)) {
+      router.push("/auth/signin")
+    }
+  }, [router.pathname]);
+
   const hideNavbar = hideNavbarPaths.includes(router.pathname);
 
   return (
