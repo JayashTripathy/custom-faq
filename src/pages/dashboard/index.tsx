@@ -13,7 +13,8 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/utils/api";
 
 import { Edit2, Plus, Snail, Trash } from "lucide-react";
-import React from "react";
+import Link from "next/link";
+import React, { ReactNode } from "react";
 
 function Dashboard() {
   const faqQuery = api.faq.getAll.useQuery();
@@ -24,18 +25,25 @@ function Dashboard() {
     api.faq.delete.useMutation({
       onSuccess: () => {
         faqQuery.refetch();
-      }
+      },
     });
 
+  const CreateBtn = (): ReactNode => {
+    return (
+      <Link href="/dashboard/editfaq">
+        <Button className="flex gap-1  p-3 text-xl" variant={"secondary"}>
+          Create <Plus size={23} className="text-primary" />{" "}
+        </Button>
+      </Link>
+    );
+  };
 
   return (
     <AlertDialog>
       <div className=" absolute top-0 z-0 flex h-screen w-full flex-col p-4  px-10 pt-32  ">
         <div className="mb-4 flex justify-between text-4xl font-bold">
           <div>Library</div>
-          <Button className="flex gap-1  p-3 text-xl" variant={"secondary"}>
-            Create <Plus size={23} className="text-primary" />{" "}
-          </Button>
+          <CreateBtn />
         </div>
 
         <div className="h-full   overflow-auto  rounded-3xl border bg-muted/10 p-4 ">
@@ -43,9 +51,7 @@ function Dashboard() {
             <div className=" flex h-full w-full flex-col items-center justify-center gap-3">
               <Snail size={30} />
               <div>seems this place is a quiet library</div>
-              <Button className="flex gap-1  p-3 text-xl" variant={"secondary"}>
-                Create <Plus size={23} className="text-primary" />{" "}
-              </Button>
+              <CreateBtn />
             </div>
           ) : faqQuery.isLoading ? (
             <div className="flex flex-col gap-4">
