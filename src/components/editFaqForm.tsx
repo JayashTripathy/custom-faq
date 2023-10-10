@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "./ui/button";
 import {
@@ -15,18 +15,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
 import { PlusCircle } from "lucide-react";
-import { CSSProperties } from "react";
+import { CSSProperties, useRef, useState } from "react";
+import { Textarea } from "./ui/textarea";
 
 const formSchema = z.object({
-  username: z.string().min(2).max(50),
+  title: z.string().min(2).max(50),
+  organization: z.string().min(2).max(50),
+  description: z.string().min(2).max(150),
 });
 
 export function EditFaqForm() {
+  const [pageLogo, setPageLogo] = useState<string | null>(null);
+  const [backdrop, setBackdrop] = useState<string | null>(null);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "test",
+      title: "WiseFAQ",
+      organization: "wise.pvt.ltd",
+      description: "Write something that tells about your page.",
     },
   });
 
@@ -39,24 +47,112 @@ export function EditFaqForm() {
 
   return (
     <Form {...form}>
-      <div className="relative my-3 grid w-full items-center gap-1.5 rounded-3xl bg-card py-6 mb-20">
+      <div className="relative my-3 mb-20 grid w-full items-center gap-1.5 rounded-3xl bg-card py-6">
         <Label
           htmlFor="backdrop"
-          className="grid  aspect-[5/1] items-center justify-center rounded-3xl  border-2 bg-muted p-3 "
-          style={{
-            "--main-logo-p": 0.5,
-          } as CSSProperties}
+          className="grid  aspect-[5/1] w-full items-center justify-center overflow-hidden   rounded-3xl bg-muted  "
+          style={
+            {
+              "--main-logo-p": 0.5,
+            } as CSSProperties
+          }
         >
-          <PlusCircle size={44} />
+          {backdrop ? (
+            <img src={backdrop} className="h-full w-full " />
+          ) : (
+            <PlusCircle size={44} />
+          )}
         </Label>
-        <Input id="backdrop" type="file" className=" hidden" placeholder=" " />
+        <Input
+          id="backdrop"
+          type="file"
+          className=" hidden"
+          placeholder=" "
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            const img = file && URL.createObjectURL(file);
+            img && setBackdrop(img);
+          }}
+          disabled={!!backdrop}
+        />
         <Label
           htmlFor="pageLogo"
-          className="grid aspect-square w-40 items-center justify-center rounded-3xl border-[5px]  bg-muted p-3  absolute border-background left-1/2 -bottom-14 -translate-x-1/2   "
+          className={`absolute -bottom-16 left-1/2 grid aspect-square max-w-[120px] ${
+            !pageLogo && "w-[120px]"
+          } -translate-x-1/2  items-center justify-center  rounded-3xl border-[5px] border-background bg-muted p-3   `}
         >
-          <PlusCircle size={44} />
+          {pageLogo ? (
+            <img src={pageLogo} className="h-full w-full object-contain" />
+          ) : (
+            <PlusCircle size={44} />
+          )}
         </Label>
-        <Input id="pageLogo" type="file" className=" hidden" placeholder=" " />
+        <Input
+          id="pageLogo"
+          type="file"
+          className=" hidden"
+          placeholder=" "
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            const img = file && URL.createObjectURL(file);
+            img && setPageLogo(img);
+          }}
+          disabled={!!pageLogo}
+        />
+      </div>
+
+      <div className="my-4 flex flex-col gap-8 rounded-xl bg-muted p-4">
+        <div className="flex w-full gap-8">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input placeholder="WiseFAQ" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is main title of your page.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="organization"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Organization</FormLabel>
+                <FormControl>
+                  <Input placeholder="wise.pvt.ltd" {...field} />
+                </FormControl>
+                <FormDescription>
+                  organization / product / company name.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Type your description here."
+                  id="message"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

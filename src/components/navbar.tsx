@@ -12,6 +12,7 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -38,7 +39,7 @@ function Navbar() {
   }, [theme, systemTheme]);
 
   return (
-    <div className="relative  z-10 p-4">
+    <div className="sticky top-0 z-10 bg-background p-4">
       <MainHeader
         heading={
           <Link href="/">
@@ -76,7 +77,7 @@ function Navbar() {
                 alt=""
               />
               <div className=" flex items-center justify-center gap-2 ">
-                <div className=" font-bold">logout </div>
+                <div className=" font-bold">Logout </div>
                 <LogOut size={15} className=" text-muted-foreground " />
               </div>
             </Button>
@@ -88,8 +89,39 @@ function Navbar() {
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
-             <h1 className="text-xl font-bold text-left"> Options </h1>
+              <h1 className="text-left text-xl font-bold"> Options </h1>
             </SheetHeader>
+            <div className="py-8">
+              <Link
+                href={"/dashboard"}
+                className="transition-all duration-100 ease-in-out hover:text-foreground/75"
+              >
+                Dashboard
+              </Link>
+            </div>
+            <SheetFooter>
+              {!data ? (
+                <Link href="/auth/signin">
+                  <Button className="text-lg font-semibold">SignIn</Button>
+                </Link>
+              ) : (
+                <Button
+                  variant={"ghost"}
+                  className="flex  justify-center gap-2 rounded-xl   border-2  "
+                  onClick={() => signOut()}
+                >
+                  <img
+                    src={data.user.image || ""}
+                    className=" h-6 w-6 rounded-xl "
+                    alt=""
+                  />
+                  <div className=" flex items-center justify-center gap-2 ">
+                    <div className=" font-bold">Logout </div>
+                    <LogOut size={15} className=" text-muted-foreground " />
+                  </div>
+                </Button>
+              )}
+            </SheetFooter>
           </SheetContent>
         </Sheet>
       </MainHeader>

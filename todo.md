@@ -1,0 +1,4 @@
+ - f̶i̶x̶ r̶e̶s̶p̶o̶n̶s̶i̶v̶e̶n̶e̶s̶s̶ `̶e̶d̶i̶F̶a̶q̶F̶o̶r̶m̶.̶t̶s̶x̶`̶  
+ - create organization detail section in `ediFaqForm.tsx`
+ - complete moble navigation bar contents
+ - Add an catchy phrase on homepage
