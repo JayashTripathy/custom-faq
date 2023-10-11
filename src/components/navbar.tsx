@@ -39,7 +39,7 @@ function Navbar() {
   }, [theme, systemTheme]);
 
   return (
-    <div className="sticky top-0 z-10 bg-background p-4">
+    <div className="sticky top-0 z-10 backdrop-blur-3xl p-4 w-screen ">
       <MainHeader
         heading={
           <Link href="/">

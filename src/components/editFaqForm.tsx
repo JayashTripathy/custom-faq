@@ -20,8 +20,9 @@ import { Textarea } from "./ui/textarea";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
-  organization: z.string().min(2).max(50),
-  description: z.string().min(2).max(150),
+  organization: z.string().min(2).max(50).optional().or(z.literal("")),
+  description: z.string().min(2).max(150).optional().or(z.literal("")),
+  address: z.string().min(2).max(100).optional().or(z.literal("")),
 });
 
 export function EditFaqForm() {
@@ -31,11 +32,11 @@ export function EditFaqForm() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "WiseFAQ",
-      organization: "wise.pvt.ltd",
-      description: "Write something that tells about your page.",
-    },
+    // defaultValues: {
+    //   title: "WiseFAQ",
+    //   organization: "wise.pvt.ltd",
+    //   description: "Write something that tells about your page.",
+    // },
   });
 
   // 2. Define a submit handler.
@@ -145,6 +146,23 @@ export function EditFaqForm() {
               <FormControl>
                 <Textarea
                   placeholder="Type your description here."
+                  id="message"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Address</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Type your address here."
                   id="message"
                   {...field}
                 />
