@@ -59,7 +59,7 @@ export default function AuthForm() {
             </div>
           </div>
           <div className="flex gap-6 m-2">
-            <Button variant="outline" onClick={() => signIn("google")} className="w-full">
+            <Button variant="outline" onClick={() => void signIn("google")} className="w-full">
               <Icons.google className="mr-2 h-4 w-4" />
               Google
             </Button>

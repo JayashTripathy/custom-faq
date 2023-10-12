@@ -1,5 +1,5 @@
-import { storageAtom } from "@/storage";
-import { useAtom } from "jotai";
+import { Storage, storageAtom } from "@/storage";
+import { SetStateAction, useAtom } from "jotai";
 import React, { useEffect } from "react";
 
 function AppProviders({ children }: React.PropsWithChildren) {
@@ -9,7 +9,7 @@ function AppProviders({ children }: React.PropsWithChildren) {
     const storage = localStorage.getItem("storage");
 
     if (storage) {
-      setStorage(JSON.parse(storage));
+      setStorage(JSON.parse(storage) as SetStateAction<Storage | null>);
     } else {
       setStorage({});
     }

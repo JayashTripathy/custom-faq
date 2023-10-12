@@ -69,10 +69,10 @@ function Navbar() {
             <Button
               variant={"ghost"}
               className="flex  justify-center gap-2 rounded-xl   border-2  "
-              onClick={() => signOut()}
+              onClick={() => void signOut()}
             >
               <img
-                src={data.user.image || ""}
+                src={data.user.image ?? ""}
                 className=" h-6 w-6 rounded-xl "
                 alt=""
               />
@@ -108,10 +108,10 @@ function Navbar() {
                 <Button
                   variant={"ghost"}
                   className="flex  justify-center gap-2 rounded-xl   border-2  "
-                  onClick={() => signOut()}
+                  onClick={() => void signOut()}
                 >
                   <img
-                    src={data.user.image || ""}
+                    src={data.user.image ?? ""}
                     className=" h-6 w-6 rounded-xl "
                     alt=""
                   />

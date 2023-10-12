@@ -24,7 +24,7 @@ function Dashboard() {
   const { mutate: deleteFaq, isLoading: deleteFaqLoading } =
     api.faq.delete.useMutation({
       onSuccess: () => {
-        faqQuery.refetch();
+        void faqQuery.refetch();
       },
     });
 

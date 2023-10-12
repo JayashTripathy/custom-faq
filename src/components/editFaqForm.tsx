@@ -173,7 +173,7 @@ export function EditFaqForm() {
         />
       </div>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={ void form.handleSubmit(onSubmit)} className="space-y-8">
         <Button type="submit" className="w-full py-6 text-2xl font-bold">
           Submit
         </Button>

@@ -13,7 +13,7 @@ function Layout({ children }: React.PropsWithChildren) {
 
   useEffect(() => {
     if (!user && protectedRoutes.includes(router.pathname)) {
-      router.push("/auth/signin")
+      void router.push("/auth/signin")
     }
   }, [router.pathname]);
 
