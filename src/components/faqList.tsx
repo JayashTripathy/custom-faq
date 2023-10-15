@@ -1,6 +1,6 @@
 import { Faq } from "@/types/faq";
 import { StrictModeDroppable } from "@/utils/StrictModeDroppable";
-import { GripVertical } from "lucide-react";
+import { GripVertical, Plus } from "lucide-react";
 import React, { useState } from "react";
 import {
   DragDropContext,
@@ -8,6 +8,21 @@ import {
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
+import { Button } from "./ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Input } from "./ui/input";
+import { Label } from "@radix-ui/react-label";
+import { Textarea } from "./ui/textarea";
 const faqData: Faq[] = [
   {
     id: 1,
@@ -53,61 +68,135 @@ const faqData: Faq[] = [
   },
 ];
 
-function faqList() {
+function FaqList() {
   const [faqs, setFaqs] = useState(faqData);
+  const [formData, setFormData] = useState({
+    question: "",
+    answer: "",
+  });
 
   function handleOnDragEnd(result: DropResult) {
     if (!result.destination) return;
 
-    const items = Array.from(faqs);
-    const [reorderedItem] = items.splice(result.source.index, 1);
+    const { source, destination } = result;
+    const items = [...faqs];
 
-    items.splice(result.destination.index, 0, reorderedItem as Faq);
+    const [reorderedItem] = items.splice(source.index, 1);
+
+    if (!reorderedItem) return; 
+    items.splice(destination.index, 0, reorderedItem);
+
     setFaqs(items);
   }
 
-  return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
-      <StrictModeDroppable droppableId="faqs">
-        {(provided) => (
-          <ul
-            className="flex flex-col gap-3 rounded-2xl border p-4"
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {faqs.map((faq, index) => {
-              return (
-                <Draggable
-                  key={faq.id}
-                  draggableId={faq.id.toString()}
-                  index={index}
-                >
-                  {(provided) => (
-                    <li
-                      className="relative flex items-center gap-2 rounded-xl bg-secondary"
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      ref={provided.innerRef}
-                    >
-                      <div className=" h-full  p-4">
-                        <GripVertical size={25} className="text-gray-400/70" />
-                      </div>
+  const addFaq = () => {
+    const index = faqs.length + 1;
 
-                      <div className="border-l-2 border-background/30 p-4 ">
-                        <div className="text-lg ">{faq.question}</div>
-                        <div className="">{faq.answer}</div>
-                      </div>
-                    </li>
-                  )}
-                </Draggable>
-              );
-            })}
-            {provided.placeholder}
-          </ul>
-        )}
-      </StrictModeDroppable>
-    </DragDropContext>
+    setFaqs([
+      ...faqs,
+      {
+        ...formData,
+        id: index,
+      },
+    ]);
+
+    setFormData({
+      question: "",
+      answer: "",
+    });
+  };
+
+  return (
+    <AlertDialog>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <StrictModeDroppable droppableId="faqs">
+          {(provided) => (
+            <ul
+              className="flex flex-col gap-3 rounded-2xl border p-4"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              <div className="flex items-center justify-between ">
+                ALL FAQ&apos;s
+                <AlertDialogTrigger asChild>
+                  <Button className="" variant={"outline"}>
+                    Add more <Plus size={20} className="ml-2 text-primary" />
+                  </Button>
+                </AlertDialogTrigger>
+              </div>
+              <AlertDialogContent>
+                <AlertDialogHeader className=" mb-6  flex items-start">
+                  <AlertDialogTitle>Add a new faq</AlertDialogTitle>
+                  <Label htmlFor="question">Question</Label>
+                  <Input
+                    name="question"
+                    value={formData.question}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                  />
+                  <Label htmlFor="answer">Answer</Label>
+                  <Textarea
+                    name="answer"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        [e.target.name]: e.target.value,
+                      })
+                    }
+                  />
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    className="bg-primary hover:bg-primary/90"
+                    onClick={addFaq}
+                  >
+                    {" "}
+                    Add
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+              {faqs.map((faq, index) => {
+                return (
+                  <Draggable
+                    key={faq.id}
+                    draggableId={faq.id.toString()}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <li
+                        className="relative flex items-center gap-2 rounded-xl bg-secondary"
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <div className=" h-full  p-4">
+                          <GripVertical
+                            size={25}
+                            className="text-gray-400/70"
+                          />
+                        </div>
+
+                        <div className="border-l-2 border-background/30 p-4 ">
+                          <div className="text-lg ">{faq.question}</div>
+                          <div className="">{faq.answer}</div>
+                        </div>
+                      </li>
+                    )}
+                  </Draggable>
+                );
+              })}
+              {provided.placeholder}
+            </ul>
+          )}
+        </StrictModeDroppable>
+      </DragDropContext>
+    </AlertDialog>
   );
 }
 
-export default faqList;
+export default FaqList;
