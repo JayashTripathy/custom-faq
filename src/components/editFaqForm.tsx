@@ -155,7 +155,7 @@ export function EditFaqForm() {
             </FormItem>
           )}
         />
-         <FormField
+        <FormField
           control={form.control}
           name="address"
           render={({ field }) => (
@@ -172,13 +172,12 @@ export function EditFaqForm() {
             </FormItem>
           )}
         />
-
       </div>
-      
+      <div className="my-5">
+        <FaqList />
+      </div>
 
-      <FaqList/>
-
-      <form onSubmit={ void form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={void form.handleSubmit(onSubmit)} className="space-y-8">
         <Button type="submit" className="w-full py-6 text-2xl font-bold">
           Submit
         </Button>

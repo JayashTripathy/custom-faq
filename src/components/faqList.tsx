@@ -1,7 +1,13 @@
 import { Faq } from "@/types/faq";
 import { StrictModeDroppable } from "@/utils/StrictModeDroppable";
+import { GripVertical } from "lucide-react";
 import React, { useState } from "react";
-import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
 const faqData: Faq[] = [
   {
     id: 1,
@@ -48,8 +54,6 @@ const faqData: Faq[] = [
 ];
 
 function faqList() {
-  
-
   const [faqs, setFaqs] = useState(faqData);
 
   function handleOnDragEnd(result: DropResult) {
@@ -62,35 +66,48 @@ function faqList() {
     setFaqs(items);
   }
 
-  return( <DragDropContext onDragEnd={handleOnDragEnd}>
-    <StrictModeDroppable droppableId="faqs">
-      {(provided) => (
-        <ul className="p-4 border flex gap-3 flex-col rounded-2xl" {...provided.droppableProps} ref={provided.innerRef}>
-          {faqs.map((faq, index) => {
-            return (
-              <Draggable key={faq.id} draggableId={faq.id.toString()} index={index}>
-                {(provided) => (
-                  <li
-                    className="character"
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    ref={provided.innerRef}
-                  >
-                    
-                    <div className="character-details">
-                      <div className="character-name">{faq.question}</div>
-                      <div className="character-status">{faq.answer}</div>
-                    </div>
-                  </li>
-                )}
-              </Draggable>
-            );
-          })}
-          {provided.placeholder}
-        </ul>
-      )}
-    </StrictModeDroppable>
-  </DragDropContext>)
+  return (
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+      <StrictModeDroppable droppableId="faqs">
+        {(provided) => (
+          <ul
+            className="flex flex-col gap-3 rounded-2xl border p-4"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {faqs.map((faq, index) => {
+              return (
+                <Draggable
+                  key={faq.id}
+                  draggableId={faq.id.toString()}
+                  index={index}
+                >
+                  {(provided) => (
+                    <li
+                      className="relative flex items-center gap-2 rounded-xl bg-secondary"
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      ref={provided.innerRef}
+                    >
+                      <div className=" h-full  p-4">
+                        <GripVertical size={25} className="text-gray-400/70" />
+                      </div>
+
+                      <div className="border-l-2 border-background/30 p-4 ">
+                        <div className="text-lg ">{faq.question}</div>
+                        <div className="">{faq.answer}</div>
+                      </div>
+                    </li>
+                  )}
+                </Draggable>
+              );
+            })}
+            {provided.placeholder}
+          </ul>
+        )}
+      </StrictModeDroppable>
+    </DragDropContext>
+  );
 }
 
 export default faqList;
