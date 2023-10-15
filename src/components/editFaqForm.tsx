@@ -17,6 +17,7 @@ import { Label } from "./ui/label";
 import { PlusCircle } from "lucide-react";
 import { CSSProperties, useRef, useState } from "react";
 import { Textarea } from "./ui/textarea";
+import FaqList from "./faqList";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -171,7 +172,11 @@ export function EditFaqForm() {
             </FormItem>
           )}
         />
+
       </div>
+      
+
+      <FaqList/>
 
       <form onSubmit={ void form.handleSubmit(onSubmit)} className="space-y-8">
         <Button type="submit" className="w-full py-6 text-2xl font-bold">
