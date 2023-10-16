@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import Navbar from "./navbar";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { Toaster } from "@/components/ui/toaster"
+
 
 function Layout({ children }: React.PropsWithChildren) {
   const { data } = useSession();
@@ -23,6 +25,7 @@ function Layout({ children }: React.PropsWithChildren) {
     <div className="">
       {!hideNavbar && <Navbar />}
       {children}
+      <Toaster/>
     </div>
   );
 }
