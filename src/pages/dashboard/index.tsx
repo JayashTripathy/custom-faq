@@ -21,7 +21,7 @@ function Dashboard() {
 
   const faqData = faqQuery?.data;
 
-  const { mutate: deleteFaq, isLoading: deleteFaqLoading } =
+  const { mutate: deleteFaqPage, isLoading: deleteFaqPageLoading } =
     api.faq.delete.useMutation({
       onSuccess: () => {
         void faqQuery.refetch();
@@ -90,7 +90,7 @@ function Dashboard() {
                         <Button variant={"outline"} className="h-12 w-12">
                           <Edit2 />
                         </Button>
-                        {deleteFaqLoading ? (
+                        {deleteFaqPageLoading ? (
                           <div className="h-12 w-12 p-3">
                             <div className="h-full w-full animate-spin rounded-md border-2 border-t-4 border-primary "></div>
                           </div>
@@ -124,7 +124,7 @@ function Dashboard() {
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() => deleteFaq({ faqId: faq.id })}
+                          onClick={() => deleteFaqPage({ faqId: faq.id })}
                           className="bg-red-500 hover:bg-red-600"
                         >
                           Delete

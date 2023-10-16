@@ -1,6 +1,6 @@
 import { Faq } from "@/types/faq";
 import { StrictModeDroppable } from "@/utils/StrictModeDroppable";
-import { GripVertical, Plus } from "lucide-react";
+import { GripVertical, Plus, Trash, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import {
   DragDropContext,
@@ -24,7 +24,6 @@ import { Input } from "./ui/input";
 import { Label } from "@radix-ui/react-label";
 import { Textarea } from "./ui/textarea";
 import { UseFieldArrayReplace } from "react-hook-form";
-
 
 function FaqList(props: {
   updateFaq: UseFieldArrayReplace<
@@ -80,20 +79,25 @@ function FaqList(props: {
     });
   };
 
+  const deleteFaq = (id: number) => {
+    const newfaq = faqs.filter((faq) => faq.id !== id);
+    setFaqs(newfaq);
+  };
+
   useEffect(() => {
     updateFaq(faqs);
   }, [faqs]);
 
   return (
-    <AlertDialog>
-      <DragDropContext onDragEnd={handleOnDragEnd}>
-        <StrictModeDroppable droppableId="faqs">
-          {(provided) => (
-            <ul
-              className="flex flex-col gap-3 rounded-2xl border p-4"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+      <StrictModeDroppable droppableId="faqs">
+        {(provided) => (
+          <ul
+            className="flex flex-col gap-3 rounded-2xl border p-4"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            <AlertDialog>
               <div className="flex items-center justify-between ">
                 ALL FAQ&apos;s
                 <AlertDialogTrigger asChild>
@@ -138,42 +142,75 @@ function FaqList(props: {
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
-              {faqs.map((faq, index) => {
-                return (
-                  <Draggable
-                    key={faq.id}
-                    draggableId={faq.id.toString()}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <li
-                        className="relative flex items-center gap-2 rounded-xl bg-secondary"
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                      >
-                        <div className=" h-full  p-4">
-                          <GripVertical
-                            size={25}
-                            className="text-gray-400/70"
-                          />
-                        </div>
+            </AlertDialog>
+            {faqs.map((faq, index) => {
+              return (
+                <Draggable
+                  key={faq.id}
+                  draggableId={faq.id.toString()}
+                  index={index}
+                >
+                  {(provided) => (
+                    <li
+                      className="relative flex items-center gap-2 rounded-xl bg-secondary"
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      ref={provided.innerRef}
+                    >
+                      <div className=" flex  h-full items-center justify-center p-4">
+                        <GripVertical size={25} className="text-gray-400/70" />
+                      </div>
 
-                        <div className="border-l-2 border-background/30 p-4 ">
-                          <div className="text-lg ">{faq.question}</div>
-                          <div className="">{faq.answer}</div>
-                        </div>
-                      </li>
-                    )}
-                  </Draggable>
-                );
-              })}
-              {provided.placeholder}
-            </ul>
-          )}
-        </StrictModeDroppable>
-      </DragDropContext>
-    </AlertDialog>
+                      <div className="flex-1 border-l-2 border-background/30 p-4 ">
+                        <div className="text-lg ">{faq.question}</div>
+                        <div className="">{faq.answer}</div>
+                      </div>
+
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            className=" bg-transparent text-destructive/80 transition-all duration-100 ease-in-out hover:text-destructive  "
+                            variant={"outline"}
+                          >
+                            <Trash size={25} className=" " />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your
+                              <span className="font-bold text-primary">
+                                {" "}
+                                FAQ page{" "}
+                              </span>{" "}
+                              and remove your data from our servers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => deleteFaq(faq.id)}
+                              className="bg-red-500 hover:bg-red-600"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </li>
+                  )}
+                </Draggable>
+              );
+            })}
+            {provided.placeholder}
+          </ul>
+        )}
+      </StrictModeDroppable>
+    </DragDropContext>
   );
 }
 

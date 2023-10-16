@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
 import { PlusCircle } from "lucide-react";
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Textarea } from "./ui/textarea";
 import FaqList from "./faqList";
 import { useToast } from "@/components/ui/use-toast";
@@ -52,12 +52,11 @@ export function EditFaqForm() {
   const { replace } = useFieldArray({ name: "faqs", control: form.control });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    console.log("values final", values);
   }
 
   useEffect(() => {
     if (form.formState.errors.faqs) {
-      console.log(form.formState.errors);
 
       toast({
         variant: "default",
@@ -69,7 +68,9 @@ export function EditFaqForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={ void form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={(e) => {
+        e.preventDefault()
+        form.handleSubmit(onSubmit)().catch((err => console.log("Unexpected error", err)))} } className="space-y-8">
         <div className="relative my-3 mb-20 grid w-full items-center gap-1.5 rounded-3xl bg-card py-6">
           <Label
             htmlFor="backdrop"
