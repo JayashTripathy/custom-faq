@@ -69,7 +69,7 @@ export function EditFaqForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={ void form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="relative my-3 mb-20 grid w-full items-center gap-1.5 rounded-3xl bg-card py-6">
           <Label
             htmlFor="backdrop"
