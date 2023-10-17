@@ -105,6 +105,7 @@ export function EditFaqForm() {
           setPageLogo(img);
           closeCropper();
         }}
+        aspect={1}
       />
       <form
         onSubmit={(e) => {
@@ -145,15 +146,15 @@ export function EditFaqForm() {
           />
           <Label
             htmlFor="pageLogo"
-            className={`absolute -bottom-16 left-1/2 grid aspect-square max-w-[120px] ${
-              !pageLogo && "w-[120px]"
+            className={`absolute -bottom-16 left-1/2 grid aspect-square  w-[120px]
             } -translate-x-1/2  items-center justify-center  rounded-3xl border-[5px] border-background bg-muted p-3   `}
+            style={{
+              backgroundImage: `url(${pageLogo})`,
+              backgroundSize: "cover",
+              
+            }}
           >
-            {pageLogo ? (
-              <img src={pageLogo} className="h-full w-full object-contain" />
-            ) : (
-              <PlusCircle size={44} />
-            )}
+            {!pageLogo && <PlusCircle size={44} />}
           </Label>
           <Input
             id="pageLogo"
