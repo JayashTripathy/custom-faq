@@ -1,6 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useController, useFieldArray, useForm } from "react-hook-form";
+import { set, useFieldArray, useForm } from "react-hook-form";
+
 import * as z from "zod";
 import { Button } from "./ui/button";
 import {
@@ -15,10 +16,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
 import { PlusCircle } from "lucide-react";
-import { CSSProperties, SyntheticEvent, useEffect, useRef, useState } from "react";
+import {
+  CSSProperties,
+  SyntheticEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Textarea } from "./ui/textarea";
 import FaqList from "./faqList";
 import { useToast } from "@/components/ui/use-toast";
+import CropperModal from "./modals/cropperModal";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -34,8 +42,14 @@ const formSchema = z.object({
 
 export function EditFaqForm() {
   const { toast } = useToast();
+
+  const logoInputRef = useRef<HTMLInputElement>(null);
+
   const [pageLogo, setPageLogo] = useState<string | null>(null);
   const [backdrop, setBackdrop] = useState<string | null>(null);
+
+  const [cropperOpen, setCropperOpen] = useState(false);
+  const [cropperImage, setCropperImage] = useState<string | null>(null);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,7 +71,6 @@ export function EditFaqForm() {
 
   useEffect(() => {
     if (form.formState.errors.faqs) {
-
       toast({
         variant: "default",
         title: "Error!",
@@ -66,15 +79,46 @@ export function EditFaqForm() {
     }
   }, [form.formState.errors]);
 
+  const closeCropper = () => {
+    setCropperOpen(false);
+    setCropperImage(null);
+  };
+
+  const handleLogoChange = (e: SyntheticEvent<HTMLInputElement>) => {
+    if (logoInputRef.current?.files) {
+      const file = logoInputRef.current?.files?.[0];
+      const img = file && URL.createObjectURL(file);
+      if (img) {
+        setCropperImage(img);
+        setCropperOpen(true);
+      }
+    }
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit(onSubmit)().catch((err => console.log("Unexpected error", err)))} } className="space-y-8">
+      <CropperModal
+        open={cropperOpen}
+        onClose={closeCropper}
+        image={cropperImage}
+        onConfirm={(img) => {
+          setPageLogo(img);
+          closeCropper();
+        }}
+      />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          form
+            .handleSubmit(onSubmit)()
+            .catch((err) => console.log("Unexpected error", err));
+        }}
+        className="space-y-8"
+      >
         <div className="relative my-3 mb-20 grid w-full items-center gap-1.5 rounded-3xl bg-card py-6">
           <Label
             htmlFor="backdrop"
-            className="grid  aspect-[5/1] w-full items-center justify-center overflow-hidden   rounded-3xl bg-muted  "
+            className="grid  aspect-[5/1] w-full items-center justify-center overflow-hidden   rounded-3xl bg-muted   "
             style={
               {
                 "--main-logo-p": 0.5,
@@ -113,14 +157,11 @@ export function EditFaqForm() {
           </Label>
           <Input
             id="pageLogo"
+            ref={logoInputRef}
             type="file"
             className=" hidden"
             placeholder=" "
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              const img = file && URL.createObjectURL(file);
-              img && setPageLogo(img);
-            }}
+            onChange={handleLogoChange}
             disabled={!!pageLogo}
           />
         </div>

@@ -50,6 +50,7 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-day-picker": "^8.8.2",
     "react-dom": "18.2.0",
+    "react-easy-crop": "^5.0.2",
     "react-hook-form": "^7.47.0",
     "superjson": "^1.13.1",
     "tailwind-merge": "^1.14.0",
