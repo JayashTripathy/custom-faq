@@ -40,16 +40,18 @@ const formSchema = z.object({
     .min(1),
 });
 
+type cropperType = "logo" | "backdrop";
+
 export function EditFaqForm() {
   const { toast } = useToast();
-
-  const logoInputRef = useRef<HTMLInputElement>(null);
 
   const [pageLogo, setPageLogo] = useState<string | null>(null);
   const [backdrop, setBackdrop] = useState<string | null>(null);
 
   const [cropperOpen, setCropperOpen] = useState(false);
   const [cropperImage, setCropperImage] = useState<string | null>(null);
+
+  const [cropperType, setCropperType] = useState<cropperType | null>(null);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -82,31 +84,68 @@ export function EditFaqForm() {
   const closeCropper = () => {
     setCropperOpen(false);
     setCropperImage(null);
+    setCropperType(null);
   };
 
   const handleLogoChange = (e: SyntheticEvent<HTMLInputElement>) => {
-    if (logoInputRef.current?.files) {
-      const file = logoInputRef.current?.files?.[0];
+    if (e.currentTarget.files) {
+      const file = e.currentTarget.files?.[0];
       const img = file && URL.createObjectURL(file);
       if (img) {
+        setCropperType("logo");
         setCropperImage(img);
         setCropperOpen(true);
       }
+      e.currentTarget.value = '';
+    }
+  };
+  const backdropChange = (e: SyntheticEvent<HTMLInputElement>) => {
+    if (e.currentTarget.files) {
+      const file = e.currentTarget.files?.[0];
+      const img = file && URL.createObjectURL(file);
+      if (img) {
+        setCropperType("backdrop");
+        setCropperImage(img);
+        setCropperOpen(true);
+      }
+      e.currentTarget.value = '';
     }
   };
 
+  const cropperConfig = [
+    {
+      type: "logo",
+      onclose: closeCropper,
+      onconfirm: (img: string) => {
+        setPageLogo(img);
+        closeCropper();
+      },
+      aspect: 1,
+    },
+    {
+      type: "backdrop",
+      onclose: closeCropper,
+      onconfirm: (img: string) => {
+        setBackdrop(img);
+        closeCropper();
+      },
+      aspect: 5 / 1,
+    },
+  ];
+
+  const selectedCropper = cropperConfig.find((c) => c.type === cropperType);
+
   return (
     <Form {...form}>
-      <CropperModal
-        open={cropperOpen}
-        onClose={closeCropper}
-        image={cropperImage}
-        onConfirm={(img) => {
-          setPageLogo(img);
-          closeCropper();
-        }}
-        aspect={1}
-      />
+      {selectedCropper && (
+        <CropperModal
+          open={cropperOpen}
+          onClose={selectedCropper.onclose}
+          image={cropperImage}
+          onConfirm={selectedCropper.onconfirm}
+          aspect={selectedCropper.aspect}
+        />
+      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -123,42 +162,34 @@ export function EditFaqForm() {
             style={
               {
                 "--main-logo-p": 0.5,
+                backgroundImage: `url(${backdrop})`,
+                backgroundSize: "cover",
               } as CSSProperties
             }
           >
-            {backdrop ? (
-              <img src={backdrop} className="h-full w-full " />
-            ) : (
-              <PlusCircle size={44} />
-            )}
+            {!backdrop && <PlusCircle size={44} />}
           </Label>
           <Input
             id="backdrop"
             type="file"
             className=" hidden"
             placeholder=" "
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              const img = file && URL.createObjectURL(file);
-              img && setBackdrop(img);
-            }}
+            onChange={backdropChange}
             disabled={!!backdrop}
           />
           <Label
             htmlFor="pageLogo"
-            className={`absolute -bottom-16 left-1/2 grid aspect-square  w-[120px]
-            } -translate-x-1/2  items-center justify-center  rounded-3xl border-[5px] border-background bg-muted p-3   `}
+            className={`} absolute -bottom-16 left-1/2 grid  aspect-square
+            w-[120px] -translate-x-1/2  items-center justify-center  rounded-3xl border-[5px] border-background bg-muted p-3   `}
             style={{
               backgroundImage: `url(${pageLogo})`,
               backgroundSize: "cover",
-              
             }}
           >
             {!pageLogo && <PlusCircle size={44} />}
           </Label>
           <Input
             id="pageLogo"
-            ref={logoInputRef}
             type="file"
             className=" hidden"
             placeholder=" "
