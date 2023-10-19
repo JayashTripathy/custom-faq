@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
-import { PlusCircle } from "lucide-react";
+import { Pencil, PlusCircle, Trash } from "lucide-react";
 import {
   CSSProperties,
   SyntheticEvent,
@@ -27,6 +27,7 @@ import { Textarea } from "./ui/textarea";
 import FaqList from "./faqList";
 import { useToast } from "@/components/ui/use-toast";
 import CropperModal from "./modals/cropperModal";
+import BottomDrawer from "./drawer/bottomDrawer";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -71,16 +72,6 @@ export function EditFaqForm() {
     console.log("values final", values);
   }
 
-  useEffect(() => {
-    if (form.formState.errors.faqs) {
-      toast({
-        variant: "default",
-        title: "Error!",
-        description: `Please add atleast 1 FAQ`,
-      });
-    }
-  }, [form.formState.errors]);
-
   const closeCropper = () => {
     setCropperOpen(false);
     setCropperImage(null);
@@ -96,7 +87,7 @@ export function EditFaqForm() {
         setCropperImage(img);
         setCropperOpen(true);
       }
-      e.currentTarget.value = '';
+      e.currentTarget.value = "";
     }
   };
   const backdropChange = (e: SyntheticEvent<HTMLInputElement>) => {
@@ -108,7 +99,7 @@ export function EditFaqForm() {
         setCropperImage(img);
         setCropperOpen(true);
       }
-      e.currentTarget.value = '';
+      e.currentTarget.value = "";
     }
   };
 
@@ -119,6 +110,11 @@ export function EditFaqForm() {
       onconfirm: (img: string) => {
         setPageLogo(img);
         closeCropper();
+        toast({
+          title: "Success!",
+          description: "Backdrop image updated.",
+          type: "background",
+        });
       },
       aspect: 1,
     },
@@ -128,12 +124,25 @@ export function EditFaqForm() {
       onconfirm: (img: string) => {
         setBackdrop(img);
         closeCropper();
+        toast({
+          title: "Success!",
+          description: "Backdrop image updated.",
+        });
       },
       aspect: 5 / 1,
     },
   ];
 
   const selectedCropper = cropperConfig.find((c) => c.type === cropperType);
+  useEffect(() => {
+    if (form.formState.errors.faqs) {
+      toast({
+        variant: "default",
+        title: "Error!",
+        description: `Please add atleast 1 FAQ`,
+      });
+    }
+  }, [form.formState.errors]);
 
   return (
     <Form {...form}>
@@ -167,7 +176,33 @@ export function EditFaqForm() {
               } as CSSProperties
             }
           >
-            {!backdrop && <PlusCircle size={44} />}
+            {!backdrop ? (
+              <PlusCircle size={44} />
+            ) : (
+              <BottomDrawer
+                title="Options"
+                trigger={
+                  <Button
+                    type="button"
+                    variant={"outline"}
+                    className="absolute bottom-1 right-10 flex  h-12 w-12 items-center  justify-center rounded-full  border-2 p-3   "
+                  >
+                    <Pencil />
+                  </Button>
+                }
+                content={
+                  <div className="py-10">
+                    <button
+                      className=" flex items-center gap-4 text-xl"
+                      onClick={() => setBackdrop(null)}
+                    >
+                      <Trash className=" text-destructive " /> Remove backdrop
+                      image
+                    </button>
+                  </div>
+                }
+              />
+            )}
           </Label>
           <Input
             id="backdrop"
@@ -186,7 +221,30 @@ export function EditFaqForm() {
               backgroundSize: "cover",
             }}
           >
-            {!pageLogo && <PlusCircle size={44} />}
+            {!pageLogo ? <PlusCircle size={44} /> : (
+               <BottomDrawer
+               title="Options"
+               trigger={
+                 <Button
+                   type="button"
+                   variant={"outline"}
+                   className="absolute -bottom-4 -right-4 flex  h-8 w-8 items-center  justify-center rounded-full  border-2 p-2   "
+                 >
+                   <Pencil />
+                 </Button>
+               }
+               content={
+                 <div className="py-10">
+                   <button
+                     className=" flex items-center gap-4 text-xl"
+                     onClick={() => setPageLogo(null)}
+                   >
+                     <Trash className=" text-destructive " /> Remove logo
+                   </button>
+                 </div>
+               }
+             />
+            )}
           </Label>
           <Input
             id="pageLogo"
