@@ -114,6 +114,7 @@ export function EditFaqForm() {
           title: "Success!",
           description: "Backdrop image updated.",
           type: "background",
+          duration: 2000,
         });
       },
       aspect: 1,
@@ -127,6 +128,7 @@ export function EditFaqForm() {
         toast({
           title: "Success!",
           description: "Backdrop image updated.",
+          duration: 2000,
         });
       },
       aspect: 5 / 1,

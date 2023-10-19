@@ -25,7 +25,7 @@ function Layout({ children }: React.PropsWithChildren) {
     <div className="">
       {!hideNavbar && <Navbar />}
       {children}
-      <Toaster/>
+      <Toaster />
     </div>
   );
 }

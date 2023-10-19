@@ -10,6 +10,7 @@ import { GripVertical, LogOut, MoreHorizontal } from "lucide-react";
 
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -91,19 +92,25 @@ function Navbar() {
             <SheetHeader>
               <h1 className="text-left text-xl font-bold"> Options </h1>
             </SheetHeader>
-            <div className="py-8">
-              <Link
-                href={"/dashboard"}
+            <SheetClose className="py-8" asChild>
+              <button
+                type="submit"
+                onClick={() => router.push("/dashboard")}
                 className="transition-all duration-100 ease-in-out hover:text-foreground/75"
               >
                 Dashboard
-              </Link>
-            </div>
+              </button>
+            </SheetClose>
             <SheetFooter>
               {!data ? (
-                <Link href="/auth/signin">
-                  <Button className="text-lg font-semibold">SignIn</Button>
-                </Link>
+                <SheetClose asChild>
+             
+                    <Button type="submit" onClick={() => router.push("/auth/signin")} className="text-lg font-semibold">
+                      SignIn
+                    </Button>
+             
+
+                </SheetClose>
               ) : (
                 <Button
                   variant={"ghost"}
