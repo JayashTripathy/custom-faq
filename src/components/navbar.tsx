@@ -6,7 +6,7 @@ import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { GripVertical, LogOut } from "lucide-react";
+import { GripVertical, LogOut, MoreHorizontal } from "lucide-react";
 
 import {
   Sheet,
@@ -39,7 +39,7 @@ function Navbar() {
   }, [theme, systemTheme]);
 
   return (
-    <div className="sticky top-0 z-10 backdrop-blur-3xl p-4 w-screen ">
+    <div className="sticky top-0 z-10 w-screen p-4 backdrop-blur-3xl ">
       <MainHeader
         heading={
           <Link href="/">
@@ -85,7 +85,7 @@ function Navbar() {
         </div>
         <Sheet>
           <SheetTrigger className="md:hidden">
-            <GripVertical />
+            <MoreHorizontal />
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
