@@ -10,7 +10,8 @@ import { faqRouter } from "./routers/faq";
  */
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
-  faq: faqRouter
+  faq: faqRouter,
+
 });
 
 

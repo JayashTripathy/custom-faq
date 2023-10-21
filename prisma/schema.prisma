@@ -70,14 +70,29 @@ model VerificationToken {
 }
 
 model Faq {
-    id          String   @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
-    title       String
-    description String
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    User        User?    @relation(fields: [userId], references: [id])
-    userId      String?
-    backdrop    String?
-    image       String?
-    socials   String[]
+    id           String  @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+    title        String
+    description  String?
+    logo         String?
+    backdrop     String?
+    organization String?
+    address      String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    User      User?    @relation(fields: [userId], references: [id])
+    userId    String?
+
+    faqs FaqItem[]
+}
+
+model FaqItem {
+    id       Int    @id @default(autoincrement())
+    question String
+    answer   String
+
+    faqId String? @db.Uuid
+    faq   Faq?   @relation(fields: [faqId], references: [id])
+
+    @@unique([question, answer])
 }

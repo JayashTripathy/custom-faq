@@ -28,18 +28,8 @@ import FaqList from "./faqList";
 import { useToast } from "@/components/ui/use-toast";
 import CropperModal from "./modals/cropperModal";
 import BottomDrawer from "./drawer/bottomDrawer";
-
-const formSchema = z.object({
-  title: z.string().min(2).max(50),
-  organization: z.string().min(2).max(50).optional().or(z.literal("")),
-  description: z.string().min(2).max(150).optional().or(z.literal("")),
-  address: z.string().min(2).max(100).optional().or(z.literal("")),
-  faqs: z
-    .array(
-      z.object({ id: z.number(), question: z.string(), answer: z.string() }),
-    )
-    .min(1),
-});
+import { formSchema } from "@/lib/validators/editFaqForm";
+import { api } from "@/utils/api";
 
 type cropperType = "logo" | "backdrop";
 
@@ -54,11 +44,15 @@ export function EditFaqForm() {
 
   const [cropperType, setCropperType] = useState<cropperType | null>(null);
 
+  const createFaqMutation = api.faq.create.useMutation();
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
+      logo: "",
+      backdrop: "",
       organization: "",
       description: "",
       address: "",
@@ -68,8 +62,57 @@ export function EditFaqForm() {
 
   const { replace } = useFieldArray({ name: "faqs", control: form.control });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const uploadToCdn = async (blogUrl: string) => {
+    const logoImg = await fetch(blogUrl as any);
+    if (!logoImg.ok) {
+      throw new Error("Invalid logo image");
+    }
+
+    const blob = await logoImg.blob();
+    const file = new File([blob], "new-file", { type: "image/png" });
+    console.log("file", file);
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "vklcxsfy");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/jayash/image/upload",
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+
+    const data = await res.json();
+    return data.secure_url;
+  };
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("values final", values);
+    try {
+      const logo = await uploadToCdn(values.logo as string);
+      const backdrop = await uploadToCdn(values.backdrop as string);
+
+      logo && setPageLogo(logo);
+      backdrop && setBackdrop(backdrop);
+
+      createFaqMutation.mutate(values, {
+        onSuccess: (data) => {
+          console.log("data", data);
+        },
+        onError: (err) => {
+          toast({
+            title: "Error!",
+            description: err.message,
+          });
+        },
+      });
+    } catch (error) {
+      console.error("Error converting Blob URL to File:", error);
+      return null;
+    }
+    
   }
 
   const closeCropper = () => {
@@ -145,6 +188,16 @@ export function EditFaqForm() {
       });
     }
   }, [form.formState.errors]);
+
+  useEffect(() => {
+    if (pageLogo) {
+      form.setValue("logo", pageLogo);
+    }
+
+    if (backdrop) {
+      form.setValue("backdrop", backdrop);
+    }
+  }, [pageLogo, backdrop]);
 
   return (
     <Form {...form}>
@@ -223,29 +276,31 @@ export function EditFaqForm() {
               backgroundSize: "cover",
             }}
           >
-            {!pageLogo ? <PlusCircle size={44} /> : (
-               <BottomDrawer
-               title="Options"
-               trigger={
-                 <Button
-                   type="button"
-                   variant={"outline"}
-                   className="absolute -bottom-4 -right-4 flex  h-8 w-8 items-center  justify-center rounded-full  border-2 p-2   "
-                 >
-                   <Pencil />
-                 </Button>
-               }
-               content={
-                 <div className="py-10">
-                   <button
-                     className=" flex items-center gap-4 text-xl"
-                     onClick={() => setPageLogo(null)}
-                   >
-                     <Trash className=" text-destructive " /> Remove logo
-                   </button>
-                 </div>
-               }
-             />
+            {!pageLogo ? (
+              <PlusCircle size={44} />
+            ) : (
+              <BottomDrawer
+                title="Options"
+                trigger={
+                  <Button
+                    type="button"
+                    variant={"outline"}
+                    className="absolute -bottom-4 -right-4 flex  h-8 w-8 items-center  justify-center rounded-full  border-2 p-2   "
+                  >
+                    <Pencil />
+                  </Button>
+                }
+                content={
+                  <div className="py-10">
+                    <button
+                      className=" flex items-center gap-4 text-xl"
+                      onClick={() => setPageLogo(null)}
+                    >
+                      <Trash className=" text-destructive " /> Remove logo
+                    </button>
+                  </div>
+                }
+              />
             )}
           </Label>
           <Input

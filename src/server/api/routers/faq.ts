@@ -2,6 +2,7 @@ import { db } from "@/server/db";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { formSchema } from "@/lib/validators/editFaqForm";
 
 export const faqRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
@@ -18,21 +19,56 @@ export const faqRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-        const {id} = ctx.session.user
+      const { id } = ctx.session.user;
 
-        const faq = await db.faq.findFirst({
-            where:{
-                id: input.faqId,
-                userId: id
-            }
+      const faq = await db.faq.findFirst({
+        where: {
+          id: input.faqId,
+          userId: id,
+        },
+      });
+
+      if (!faq) throw new TRPCError({ code: "NOT_FOUND" });
+
+      return db.faq.delete({
+        where: {
+          id: faq?.id,
+        },
+      });
+    }),
+  create: protectedProcedure
+    .input(formSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { id } = ctx.session.user;
+      try {
+        const faq = await db.faq.create({
+          data: {
+            title: input.title,
+            logo: input.logo,
+            backdrop: input.backdrop,
+            organization: input.organization,
+            description: input.description,
+            address: input.address,
+            faqs: {
+              createMany: {
+              
+                data: input.faqs.map((faq) => ({  
+                  question: faq.question,
+                  answer: faq.answer,
+                })),
+              },
+            },
+            userId: id,
+          },
+          include: {
+            faqs: true,
+          },
         });
 
-        if (!faq) throw new TRPCError({code: "NOT_FOUND"});
+        return faq;
+      } catch (err: any) {
 
-        return db.faq.delete({
-            where: {
-                id: faq?.id
-            }
-        });
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" , message: "An error occurred while submitting the form" });
+      }
     }),
 });
