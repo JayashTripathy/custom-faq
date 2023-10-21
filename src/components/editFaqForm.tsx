@@ -63,7 +63,7 @@ export function EditFaqForm() {
   const { replace } = useFieldArray({ name: "faqs", control: form.control });
 
   const uploadToCdn = async (blogUrl: string) => {
-    const logoImg = await fetch(blogUrl as any);
+    const logoImg = await fetch(blogUrl as RequestInfo | URL);
     if (!logoImg.ok) {
       throw new Error("Invalid logo image");
     }
@@ -84,18 +84,23 @@ export function EditFaqForm() {
       },
     );
 
-    const data = await res.json();
+    const data: { secure_url: string } = await res.json();
     return data.secure_url;
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("values final", values);
     try {
-      const logo = await uploadToCdn(values.logo as string);
-      const backdrop = await uploadToCdn(values.backdrop as string);
+      if (values.logo) {
+        const logo = await uploadToCdn(values.logo);
 
-      logo && setPageLogo(logo);
-      backdrop && setBackdrop(backdrop);
+        logo && setPageLogo(logo);
+      }
+
+      if (values.backdrop) {
+        const backdrop = await uploadToCdn(values.backdrop);
+        backdrop && setBackdrop(backdrop);
+      }
 
       createFaqMutation.mutate(values, {
         onSuccess: (data) => {
@@ -112,7 +117,6 @@ export function EditFaqForm() {
       console.error("Error converting Blob URL to File:", error);
       return null;
     }
-    
   }
 
   const closeCropper = () => {
