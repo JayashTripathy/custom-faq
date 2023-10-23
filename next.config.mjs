@@ -7,10 +7,6 @@ await import("./src/env.mjs");
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-
-  env:{
-    BASE_URL: process.env.BASE_URL,
-  },
   /**
    * If you are using `appDir` then you must comment the below `i18n` config out.
    *

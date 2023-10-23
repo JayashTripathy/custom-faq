@@ -115,13 +115,13 @@ export function EditFaqForm() {
 
       createFaqMutation.mutate(finalValues, {
         onSuccess: (data) => {
-          router.push("/");
           console.log("submitted data", data);
           toast({
             title: "Success!",
             description: "Your FAQ page has been created successfully.",
             duration: 3000,
           });
+          void router.push("/");
         },
         onError: (err) => {
           toast({
