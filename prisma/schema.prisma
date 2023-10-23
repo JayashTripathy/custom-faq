@@ -94,5 +94,5 @@ model FaqItem {
     faqId String? @db.Uuid
     faq   Faq?   @relation(fields: [faqId], references: [id])
 
-    @@unique([question, answer])
+    @@unique([question, answer, faqId])
 }

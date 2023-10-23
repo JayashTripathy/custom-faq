@@ -30,10 +30,12 @@ import CropperModal from "./modals/cropperModal";
 import BottomDrawer from "./drawer/bottomDrawer";
 import { formSchema } from "@/lib/validators/editFaqForm";
 import { api } from "@/utils/api";
+import { useRouter } from "next/router";
 
 type cropperType = "logo" | "backdrop";
 
 export function EditFaqForm() {
+  const router = useRouter();
   const { toast } = useToast();
 
   const [pageLogo, setPageLogo] = useState<string | null>(null);
@@ -74,37 +76,52 @@ export function EditFaqForm() {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "vklcxsfy");
+    formData.append("upload_preset", "k56zjvbu");
 
     const res = await fetch(
-      "https://api.cloudinary.com/v1_1/jayash/image/upload",
+      `https://api.cloudinary.com/v1_1/dqibqcwdv/image/upload`,
       {
         method: "POST",
         body: formData,
       },
     );
-
+    if (!res.ok) {
+      throw new Error("Failed to upload to CDN");
+    }
     const data: { secure_url: string } = await res.json();
     return data.secure_url;
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("values final", values);
+    
     try {
+      let logo = values.logo;
+      let backdrop = values.backdrop;
+  
       if (values.logo) {
-        const logo = await uploadToCdn(values.logo);
-
-        logo && setPageLogo(logo);
+        logo = await uploadToCdn(values.logo);
       }
-
+  
       if (values.backdrop) {
-        const backdrop = await uploadToCdn(values.backdrop);
-        backdrop && setBackdrop(backdrop);
+        backdrop = await uploadToCdn(values.backdrop);
       }
 
-      createFaqMutation.mutate(values, {
+      const finalValues = {
+        ...values,
+        logo, 
+        backdrop
+      }
+
+
+      createFaqMutation.mutate(finalValues, {
         onSuccess: (data) => {
-          console.log("data", data);
+          router.push("/");
+          console.log("submitted data", data);
+          toast({
+            title: "Success!",
+            description: "Your FAQ page has been created successfully.",
+            duration: 3000,
+          });
         },
         onError: (err) => {
           toast({
@@ -391,7 +408,11 @@ export function EditFaqForm() {
           <FaqList updateFaq={replace} />
         </div>
 
-        <Button type="submit" className="w-full py-6 text-2xl font-bold">
+        <Button
+          type="submit"
+          disabled={createFaqMutation.isLoading}
+          className="w-full py-6 text-2xl font-bold"
+        >
           Submit
         </Button>
       </form>
