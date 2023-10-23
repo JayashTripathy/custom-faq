@@ -76,10 +76,10 @@ export function EditFaqForm() {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "k56zjvbu");
+    formData.append("upload_preset", `${process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}`);
 
     const res = await fetch(
-      `https://api.cloudinary.com/v1_1/dqibqcwdv/image/upload`,
+      `${process.env.NEXT_PUBLIC_CLOUDINARY_URL}/image/upload`,
       {
         method: "POST",
         body: formData,
