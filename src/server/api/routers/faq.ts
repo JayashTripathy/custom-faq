@@ -10,6 +10,10 @@ export const faqRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id,
       },
+
+      include:{
+        faqs: true,
+      }
     });
   }),
   delete: protectedProcedure
@@ -51,8 +55,7 @@ export const faqRouter = createTRPCRouter({
             address: input.address,
             faqs: {
               createMany: {
-              
-                data: input.faqs.map((faq) => ({  
+                data: input.faqs.map((faq) => ({
                   question: faq.question,
                   answer: faq.answer,
                 })),
@@ -67,8 +70,25 @@ export const faqRouter = createTRPCRouter({
 
         return faq;
       } catch (err: any) {
-
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" , message: "An error occurred while submitting the form" });
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An error occurred while submitting the form",
+        });
       }
     }),
+
+  // getFaq: protectedProcedure
+  //   .input(
+  //     z.object({
+  //       faqId: z.string(),
+  //     }),
+  //   )
+  //   .query(({ ctx, input }) => {
+  //     return db.faq.findFirst({
+  //       where: {
+  //         id: input.faqId,
+  //         userId: ctx.session.user.id,
+  //       },
+  //     });
+  //   }),
 });

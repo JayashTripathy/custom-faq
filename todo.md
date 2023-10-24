@@ -6,6 +6,7 @@
  - A̶d̶d̶ a̶n̶ c̶a̶t̶c̶h̶y̶ p̶h̶r̶a̶s̶e̶ o̶n̶ h̶o̶m̶e̶p̶a̶g̶e̶
  - c̶r̶e̶a̶t̶e̶ o̶r̶g̶a̶n̶i̶z̶a̶t̶i̶o̶n̶ d̶e̶t̶a̶i̶l̶ s̶e̶c̶t̶i̶o̶n̶ i̶n̶ `̶e̶d̶i̶F̶a̶q̶F̶o̶r̶m̶.̶t̶s̶x̶`̶
  - A̶d̶d̶e̶d̶ D̶e̶l̶e̶t̶e̶ F̶A̶Q̶ f̶u̶n̶c̶t̶i̶o̶n̶a̶l̶i̶t̶y̶
- - Store the edit faq form to the database 
+ - S̶t̶o̶r̶e̶ t̶h̶e̶ e̶d̶i̶t̶ f̶a̶q̶ f̶o̶r̶m̶ t̶o̶ t̶h̶e̶ d̶a̶t̶a̶b̶a̶s̶e̶ 
  - Add edit functionality to FAQs
  - Setup a preview of FAQ page while creating FAQ page
+ - Setup CDN when user removes the img

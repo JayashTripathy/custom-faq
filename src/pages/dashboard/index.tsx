@@ -13,20 +13,29 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/utils/api";
 
 import { Edit2, Plus, Snail, Trash } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
 
 function Dashboard() {
+  const router = useRouter();
   const faqQuery = api.faq.getAll.useQuery();
+  const session = useSession();
 
   const faqData = faqQuery?.data;
-
+  console.log(faqData, session?.data?.user);
   const { mutate: deleteFaqPage, isLoading: deleteFaqPageLoading } =
     api.faq.delete.useMutation({
       onSuccess: () => {
         void faqQuery.refetch();
       },
     });
+
+  const usernameParam = `${session.data?.user?.name
+    ?.split(" ")
+    .join("-")
+    .toLowerCase()}`;
 
   const CreateBtn = (): ReactNode => {
     return (
@@ -77,15 +86,20 @@ function Dashboard() {
                 .map((faq) => (
                   <>
                     <li
-                      className="flex max-h-[80px] cursor-pointer justify-between  overflow-hidden rounded-lg border bg-accent/70 p-2 shadow-md transition-all duration-75 ease-in-out hover:bg-accent/50 md:p-4 "
+                      className="flex  max-h-[80px] cursor-pointer justify-between  overflow-hidden rounded-lg border bg-accent/70 p-2 shadow-md transition-all duration-75 ease-in-out hover:bg-accent/50 md:p-4 "
                       key={faq.id}
                     >
-                      <div className="h-(calc(100%-30px)) overflow-hidden">
+                      <button
+                        onClick={() =>
+                          void router.push(`/faq/${usernameParam}/${faq.title}`)
+                        }
+                        className="h-(calc(100%-30px)) w-full overflow-hidden text-left"
+                      >
                         <div>{faq.title}</div>
                         <div className=" inline-block  w-[calc(80%)] text-ellipsis  text-sm ">
                           {faq.description}
                         </div>
-                      </div>
+                      </button>
                       <div className="flex items-center justify-center gap-1">
                         <Button variant={"outline"} className="h-12 w-12">
                           <Edit2 />
@@ -106,6 +120,7 @@ function Dashboard() {
                         )}
                       </div>
                     </li>
+
                     <AlertDialogContent>
                       <AlertDialogHeader>
                         <AlertDialogTitle>

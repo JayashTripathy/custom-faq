@@ -84,6 +84,8 @@ model Faq {
     userId    String?
 
     faqs FaqItem[]
+
+    @@unique([title, userId])
 }
 
 model FaqItem {
