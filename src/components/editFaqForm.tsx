@@ -32,12 +32,14 @@ import { formSchema } from "@/lib/validators/editFaqForm";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import { pagethemes } from "@/utils/faqThemes";
+import { useTheme } from "next-themes";
 
 type cropperType = "logo" | "backdrop";
 
 export function EditFaqForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const {theme, systemTheme} = useTheme();
 
   const [pageLogo, setPageLogo] = useState<string | null>(null);
   const [backdrop, setBackdrop] = useState<string | null>(null);
@@ -408,7 +410,7 @@ export function EditFaqForm() {
           />
         </div>
         <div>
-          <h1 className="text-xl font-bold ">Add FAQ's</h1>
+          <h1 className="text-xl font-bold ">Add FAQ&apos;s</h1>
           <div className="my-3">
             <FaqList updateFaq={replace} />
           </div>
@@ -419,14 +421,19 @@ export function EditFaqForm() {
           <h1 className="text-2xl">Choose theme</h1>
           
           <div className="grid grid-cols-5 px-2">
-            {pagethemes.map((theme, index) => {
+            {pagethemes.map((els, index) => {
               return (
                 <button
                   type="button"
                   key={index}
-                  onClick={() => form.setValue("theme", theme.styles)}
+                  onClick={() => form.setValue("theme", els.styles)}
+                  style={
+                    {
+                      color : theme === "system" ? (systemTheme == "dark" ? els.darkColor : els.color) : (theme == "dark" ? els.darkColor : els.color),
+                    }as CSSProperties
+                  }
                 >
-                  {theme.name}
+                  {els.name}
                 </button>
               );
             })}
