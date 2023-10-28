@@ -82,7 +82,7 @@ model Faq {
     updatedAt DateTime @updatedAt
     User      User?    @relation(fields: [userId], references: [id])
     userId    String?
-
+    theme     String?
     faqs FaqItem[]
 
     @@unique([title, userId])

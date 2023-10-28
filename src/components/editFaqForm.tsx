@@ -31,6 +31,7 @@ import BottomDrawer from "./drawer/bottomDrawer";
 import { formSchema } from "@/lib/validators/editFaqForm";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
+import { pagethemes } from "@/utils/faqThemes";
 
 type cropperType = "logo" | "backdrop";
 
@@ -59,6 +60,7 @@ export function EditFaqForm() {
       description: "",
       address: "",
       faqs: [],
+      theme: "",
     },
   });
 
@@ -76,7 +78,10 @@ export function EditFaqForm() {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", `${process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}`);
+    formData.append(
+      "upload_preset",
+      `${process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}`,
+    );
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_CLOUDINARY_URL}/image/upload`,
@@ -91,27 +96,25 @@ export function EditFaqForm() {
     const data: { secure_url: string } = await res.json();
     return data.secure_url;
   };
-
+  console.log(form.getValues());
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    
     try {
       let logo = values.logo;
       let backdrop = values.backdrop;
-  
+
       if (values.logo) {
         logo = await uploadToCdn(values.logo);
       }
-  
+
       if (values.backdrop) {
         backdrop = await uploadToCdn(values.backdrop);
       }
 
       const finalValues = {
         ...values,
-        logo, 
-        backdrop
-      }
-
+        logo,
+        backdrop,
+      };
 
       createFaqMutation.mutate(finalValues, {
         onSuccess: (data) => {
@@ -177,7 +180,7 @@ export function EditFaqForm() {
         toast({
           title: "Success!",
           description: "Backdrop image updated.",
-          type: "background",
+          type: "background", 
           duration: 2000,
         });
       },
@@ -404,10 +407,31 @@ export function EditFaqForm() {
             )}
           />
         </div>
-        <div className="my-5">
-          <FaqList updateFaq={replace} />
+        <div>
+          <h1 className="text-xl font-bold ">Add FAQ's</h1>
+          <div className="my-3">
+            <FaqList updateFaq={replace} />
+          </div>
         </div>
+        <div>
+       
 
+          <h1 className="text-2xl">Choose theme</h1>
+          
+          <div className="grid grid-cols-5 px-2">
+            {pagethemes.map((theme, index) => {
+              return (
+                <button
+                  type="button"
+                  key={index}
+                  onClick={() => form.setValue("theme", theme.styles)}
+                >
+                  {theme.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
         <Button
           type="submit"
           disabled={createFaqMutation.isLoading}

@@ -12,5 +12,6 @@ export const formSchema = z.object({
         z.object({ id: z.number(), question: z.string(), answer: z.string() }),
       )
       .min(1),
+    theme: z.string().optional().or(z.literal("")),  
   });
   

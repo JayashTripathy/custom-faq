@@ -47,12 +47,7 @@ export const faqRouter = createTRPCRouter({
       try {
         const faq = await db.faq.create({
           data: {
-            title: input.title,
-            logo: input.logo,
-            backdrop: input.backdrop,
-            organization: input.organization,
-            description: input.description,
-            address: input.address,
+            ...input, 
             faqs: {
               createMany: {
                 data: input.faqs.map((faq) => ({
