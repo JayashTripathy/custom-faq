@@ -71,7 +71,7 @@ model VerificationToken {
 
 model Faq {
     id           String  @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
-    title        String
+    title        String  @unique
     description  String?
     logo         String?
     backdrop     String?

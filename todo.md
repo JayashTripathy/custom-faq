@@ -10,3 +10,5 @@
  - Add edit functionality to FAQs
  - Setup a preview of FAQ page while creating FAQ page
  - Setup CDN when user removes the img
+ - Fix url path ("/username/title") will not work
+ - delete image if submission failed

@@ -76,7 +76,7 @@ function Dashboard() {
                 ))}
             </div>
           ) : (
-            <ul className="flex flex-col">
+            <ul className="flex flex-col gap-4">
               {faqData
                 ?.sort(
                   (a, b) =>
@@ -86,12 +86,12 @@ function Dashboard() {
                 .map((faq) => (
                   <>
                     <li
-                      className="flex  max-h-[80px] cursor-pointer justify-between  overflow-hidden rounded-lg border bg-accent/70 p-2 shadow-md transition-all duration-75 ease-in-out hover:bg-accent/50 md:p-4 "
+                      className="flex max-h-[80px] cursor-pointer justify-between  overflow-hidden rounded-lg border bg-accent/70 p-2 shadow-md transition-all duration-75 ease-in-out hover:bg-accent/50 md:p-4 "
                       key={faq.id}
                     >
                       <button
                         onClick={() =>
-                          void router.push(`/faq/${usernameParam}/${faq.title}`)
+                          void router.push(`/faq/${faq.title}`)
                         }
                         className="h-(calc(100%-30px)) w-full overflow-hidden text-left"
                       >
