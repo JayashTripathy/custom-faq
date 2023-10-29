@@ -78,7 +78,7 @@ function Dashboard() {
                   new Date(a.createdAt).getTime(),
               )
               .map((faq) =>  (
-                  <AlertDialog>
+                  <AlertDialog key={faq.id}>
                     <li
                       className="flex max-h-[80px] cursor-pointer justify-between  overflow-hidden rounded-lg border bg-accent/70 p-2 shadow-md transition-all duration-75 ease-in-out hover:bg-accent/50 md:p-4 "
                       key={faq.id}

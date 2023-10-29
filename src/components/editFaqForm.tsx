@@ -39,7 +39,7 @@ type cropperType = "logo" | "backdrop";
 export function EditFaqForm() {
   const router = useRouter();
   const { toast } = useToast();
-  const {theme, systemTheme} = useTheme();
+  const { theme, systemTheme } = useTheme();
 
   const [pageLogo, setPageLogo] = useState<string | null>(null);
   const [backdrop, setBackdrop] = useState<string | null>(null);
@@ -62,9 +62,10 @@ export function EditFaqForm() {
       description: "",
       address: "",
       faqs: [],
-      theme: "",
+      theme: "purple",
     },
   });
+  const [selectedTheme, setSelectedTheme] = useState(form.getValues("theme"));
 
   const { replace } = useFieldArray({ name: "faqs", control: form.control });
 
@@ -98,7 +99,12 @@ export function EditFaqForm() {
     const data: { secure_url: string } = await res.json();
     return data.secure_url;
   };
-  console.log(form.getValues());
+
+  const handlePageThemeChange = (themeName: string) => {
+    form.setValue("theme", themeName);
+    setSelectedTheme(themeName); // Update the local state immediately
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       let logo = values.logo;
@@ -182,7 +188,7 @@ export function EditFaqForm() {
         toast({
           title: "Success!",
           description: "Backdrop image updated.",
-          type: "background", 
+          type: "background",
           duration: 2000,
         });
       },
@@ -416,24 +422,58 @@ export function EditFaqForm() {
           </div>
         </div>
         <div>
-       
-
           <h1 className="text-2xl">Choose theme</h1>
-          
-          <div className="grid grid-cols-5 px-2">
+
+          <div className="grid  grid-cols-[repeat(auto-fit,_minmax(100px,1fr))] gap-2 px-2">
             {pagethemes.map((els, index) => {
+              const color =
+                theme === "system"
+                  ? systemTheme == "dark"
+                    ? els.darkColor
+                    : els.color
+                  : theme == "dark"
+                  ? els.darkColor
+                  : els.color;
+
+              const selected: boolean = selectedTheme === els.name;
+              console.log(selected);
               return (
                 <button
                   type="button"
                   key={index}
-                  onClick={() => form.setValue("theme", els.styles)}
-                  style={
-                    {
-                      color : theme === "system" ? (systemTheme == "dark" ? els.darkColor : els.color) : (theme == "dark" ? els.darkColor : els.color),
-                    }as CSSProperties
-                  }
+                  onClick={() => handlePageThemeChange(els.name)}
+                  className="mt-5 flex  w-full flex-col rounded-lg border p-5 text-left  duration-200 ease-in-out hover:bg-accent box-border h-32 justify-center   "
+                  style={{
+                    border: selected ? `2px solid ${color}` : "none",
+                  }}
                 >
-                  {els.name}
+                  <div
+                    className=" text-2xl   "
+                    style={{
+                      color: color,
+                    }}
+                  >
+                    {els.name}
+                  </div>
+                  {Array(2)
+                    .fill(0)
+                    .map((_, index) => (
+                      <div className="" key={els.name+index}>
+                        <span
+                          style={{
+                            color: color,
+                          }}
+                        >
+                          ▸
+                        </span>
+                        <div
+                          className=" w-full flex-grow border-b-[1px] "
+                          style={{
+                            borderColor: color,
+                          }}
+                        ></div>
+                      </div>
+                    ))}
                 </button>
               );
             })}
