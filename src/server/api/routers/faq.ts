@@ -24,21 +24,32 @@ export const faqRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { id } = ctx.session.user;
-
       const faq = await db.faq.findFirst({
         where: {
           id: input.faqId,
           userId: id,
         },
       });
-
+      
       if (!faq) throw new TRPCError({ code: "NOT_FOUND" });
 
-      return db.faq.delete({
+      const deleteFaqPage = db.faq.delete({
         where: {
           id: faq?.id,
         },
+        
       });
+
+      const deleteFaq = db.faqItem.deleteMany({
+        where:{
+          faqId: faq?.id,
+        }
+        
+      })
+      await db.$transaction([deleteFaq, deleteFaqPage]);
+      
+      return faq;
+   
     }),
   create: protectedProcedure
     .input(formSchema)

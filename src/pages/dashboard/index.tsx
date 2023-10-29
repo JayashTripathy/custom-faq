@@ -24,7 +24,6 @@ function Dashboard() {
   const session = useSession();
 
   const faqData = faqQuery?.data;
-  console.log(faqData, session?.data?.user);
   const { mutate: deleteFaqPage, isLoading: deleteFaqPageLoading } =
     api.faq.delete.useMutation({
       onSuccess: () => {
@@ -32,10 +31,6 @@ function Dashboard() {
       },
     });
 
-  const usernameParam = `${session.data?.user?.name
-    ?.split(" ")
-    .join("-")
-    .toLowerCase()}`;
 
   const CreateBtn = (): ReactNode => {
     return (
@@ -48,51 +43,48 @@ function Dashboard() {
   };
 
   return (
-    <AlertDialog>
-      <div className=" absolute top-0 z-0 flex h-screen w-full flex-col p-4  px-10 pt-32  ">
-        <div className="mb-4 flex justify-between text-4xl font-bold">
-          <div>Library</div>
-          <CreateBtn />
-        </div>
+    <div className=" absolute top-0 z-0 flex h-screen w-full flex-col p-4  px-10 pt-32  ">
+      <div className="mb-4 flex justify-between text-4xl font-bold">
+        <div>Library</div>
+        <CreateBtn />
+      </div>
 
-        <div className="h-full   overflow-auto  rounded-3xl border bg-muted/10 p-4 ">
-          {faqData && faqData?.length === 0 ? (
-            <div className=" flex h-full w-full flex-col items-center justify-center gap-3">
-              <Snail size={30} />
-              <div>seems this place is a quiet library</div>
-              <CreateBtn />
-            </div>
-          ) : faqQuery.isLoading ? (
-            <div className="flex flex-col gap-4">
-              {Array(20)
-                .fill(0)
-                .map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-20 w-full animate-pulse rounded-xl bg-muted p-3"
-                  >
-                    <div className=" animate-pulse  rounded-xl bg-muted p-3 delay-75 "></div>
-                  </div>
-                ))}
-            </div>
-          ) : (
-            <ul className="flex flex-col gap-4">
-              {faqData
-                ?.sort(
-                  (a, b) =>
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime(),
-                )
-                .map((faq) => (
-                  <>
+      <div className="h-full   overflow-auto  rounded-3xl border bg-muted/10 p-4 ">
+        {faqData && faqData?.length === 0 ? (
+          <div className=" flex h-full w-full flex-col items-center justify-center gap-3">
+            <Snail size={30} />
+            <div>seems this place is a quiet library</div>
+            <CreateBtn />
+          </div>
+        ) : faqQuery.isLoading ? (
+          <div className="flex flex-col gap-4">
+            {Array(20)
+              .fill(0)
+              .map((_, i) => (
+                <div
+                  key={i}
+                  className="h-20 w-full animate-pulse rounded-xl bg-muted p-3"
+                >
+                  <div className=" animate-pulse  rounded-xl bg-muted p-3 delay-75 "></div>
+                </div>
+              ))}
+          </div>
+        ) : (
+          <ul className="flex flex-col gap-4">
+            {faqData
+              ?.sort(
+                (a, b) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime(),
+              )
+              .map((faq) =>  (
+                  <AlertDialog>
                     <li
                       className="flex max-h-[80px] cursor-pointer justify-between  overflow-hidden rounded-lg border bg-accent/70 p-2 shadow-md transition-all duration-75 ease-in-out hover:bg-accent/50 md:p-4 "
                       key={faq.id}
                     >
                       <button
-                        onClick={() =>
-                          void router.push(`/faq/${faq.title}`)
-                        }
+                        onClick={() => void router.push(`/faq/${faq.title}`)}
                         className="h-(calc(100%-30px)) w-full overflow-hidden text-left"
                       >
                         <div>{faq.title}</div>
@@ -128,10 +120,10 @@ function Dashboard() {
                         </AlertDialogTitle>
                         <AlertDialogDescription>
                           This action cannot be undone. This will permanently
-                          delete your
+                          delete the
                           <span className="font-bold text-primary">
                             {" "}
-                            FAQ page{" "}
+                            {faq.title} 
                           </span>{" "}
                           and remove your data from our servers.
                         </AlertDialogDescription>
@@ -146,13 +138,13 @@ function Dashboard() {
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
-                  </>
-                ))}
-            </ul>
-          )}
-        </div>
+                  </AlertDialog>
+                )
+              )}
+          </ul>
+        )}
       </div>
-    </AlertDialog>
+    </div>
   );
 }
 
