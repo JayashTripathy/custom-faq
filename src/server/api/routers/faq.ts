@@ -83,18 +83,22 @@ export const faqRouter = createTRPCRouter({
       }
     }),
 
-  // getFaq: protectedProcedure
-  //   .input(
-  //     z.object({
-  //       faqId: z.string(),
-  //     }),
-  //   )
-  //   .query(({ ctx, input }) => {
-  //     return db.faq.findFirst({
-  //       where: {
-  //         id: input.faqId,
-  //         userId: ctx.session.user.id,
-  //       },
-  //     });
-  //   }),
+  getFaqPage: protectedProcedure
+    .input(
+      z.object({
+        faqTitle: z.string(),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      return db.faq.findFirst({
+        where: {
+          title: input.faqTitle,
+          userId: ctx.session.user.id,
+        },
+
+        include:{
+          faqs: true,
+        }
+      });
+    }),
 });
