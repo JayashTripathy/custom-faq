@@ -33,7 +33,7 @@ function Index() {
     theme: pageData.theme ?? undefined,
   } || null;
 
-  return faqPage ? <FaqSection {...faqPage} /> : <></>;
+  return faqPage ? <FaqSection faq={faqPage} /> : <></>;
 }
 
 export default Index;
