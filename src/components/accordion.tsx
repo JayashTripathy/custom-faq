@@ -22,8 +22,9 @@ const Accordion = (props: { faqs: Faq[] }) => {
 
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4 ">
-            {faqs.map((faq) => (
+            {faqs.map((faq, index) => (
               <AccordionItem
+              key={index}
                 header= {faq.question}
                 text={faq.answer}
               />

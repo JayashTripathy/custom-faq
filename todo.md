@@ -19,8 +19,8 @@
 
 # primary features to work on
 
- - Add Socials (which will include , array of (name and link)) 
- - Create the FAQ section of the page
+ -̶ A̶d̶d̶ S̶o̶c̶i̶a̶l̶s̶ (̶w̶h̶i̶c̶h̶ w̶i̶l̶l̶ i̶n̶c̶l̶u̶d̶e̶ ,̶ a̶r̶r̶a̶y̶ o̶f̶ (̶n̶a̶m̶e̶ a̶n̶d̶ l̶i̶n̶k̶)̶)̶ 
+ -̶ C̶r̶e̶a̶t̶e̶ t̶h̶e̶ F̶A̶Q̶ s̶e̶c̶t̶i̶o̶n̶ o̶f̶ t̶h̶e̶ p̶a̶g̶e̶
  - Configure theme colors for the page
   
 
@@ -28,7 +28,7 @@
 
 # Notes
 
-for collapsible faq's - https://ui.shadcn.com/docs/components/collapsible
+f̶o̶r̶ c̶o̶l̶l̶a̶p̶s̶i̶b̶l̶e̶ f̶a̶q̶'̶s̶ -̶ h̶t̶t̶p̶s̶:̶/̶/̶u̶i̶.̶s̶h̶a̶d̶c̶n̶.̶c̶o̶m̶/̶d̶o̶c̶s̶/̶c̶o̶m̶p̶o̶n̶e̶n̶t̶s̶/̶c̶o̶l̶l̶a̶p̶s̶i̶b̶l̶e̶
 
 
 

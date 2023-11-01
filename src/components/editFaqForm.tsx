@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
-import { Pencil, PlusCircle, Trash } from "lucide-react";
+import { Pencil, PlusCircle, Trash, X } from "lucide-react";
 import {
   CSSProperties,
   SyntheticEvent,
@@ -36,7 +36,6 @@ import { useTheme } from "next-themes";
 import { Social } from "@/types/faq";
 
 type cropperType = "logo" | "backdrop";
-
 
 export function EditFaqForm() {
   const router = useRouter();
@@ -229,9 +228,9 @@ export function EditFaqForm() {
     }
     setSocials((p) => [...p, socialInput]);
   };
-  console.log(socials);
+
   const selectedCropper = cropperConfig.find((c) => c.type === cropperType);
-  console.log(form.getValues());
+
   useEffect(() => {
     if (form.formState.errors.faqs) {
       toast({
@@ -443,7 +442,31 @@ export function EditFaqForm() {
 
         <h1 className="text-xl font-bold ">Socials</h1>
         <div>
-          <div className="flex w-full gap-2 ">
+          <div className="flex gap-3">
+            {socials.map((social, index) => (
+              <div
+                className="flex items-center justify-center gap-5 rounded-xl bg-secondary p-3"
+                key={index}
+              >
+                <div>
+                  {" "}
+                  <span className="font-bold "> {social.name} </span> -{" "}
+                  {social.url}
+                </div>
+                <Button
+                type="button"
+                  variant={"destructive"}
+                  className="m-0 h-5 w-5 rounded-full p-0"
+                  onClick={() =>
+                    setSocials((p) => p.filter((_, i) => i !== index))
+                  }
+                >
+                  <X className=" text-background" size={15} />
+                </Button>
+              </div>
+            ))}
+          </div>
+          <div className="flex w-full gap-2 p-3 ">
             <div className="mt-4 flex flex-col gap-2 ">
               <Label htmlFor="socialName" className="font-semibold">
                 {" "}
