@@ -9,7 +9,7 @@ function Layout({ children }: React.PropsWithChildren) {
   const router = useRouter();
   const user = data?.user;
 
-  const hideNavbarPaths = [""];
+  const hideNavbarPaths = ["/faq/[title]"];
   const protectedRoutes = ["/dashboard"];
 
   useEffect(() => {
