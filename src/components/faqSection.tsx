@@ -27,8 +27,8 @@ function FaqSection(props: {
 
   return (
     <div
-      className={`mx-auto  md:w-3/5  ${
-        faq.logo || faq.backdrop ? "md:translate-y-24" : ""
+      className={`mx-auto  md:w-3/4  ${
+        faq.logo ?? faq.backdrop ? "md:translate-y-24" : ""
       }`}
       style={
         {
@@ -63,7 +63,7 @@ function FaqSection(props: {
       )}
       <div className="pt-5 text-center text-3xl font-bold ">{faq.title}</div>
       {faq.organization && <div className="text-center text-sm italic opacity-70">{faq.organization}</div>}
-      <div className="my-4 mt-10 w-full  gap-2 md:flex">
+      <div className="my-4 mt-10 w-full  gap-10 md:flex">
         <div className={`${faq.address && "md:w-[70%]"}`}>
           <Subheading>Description</Subheading>
           <p className="py-1 text-sm  ">{faq.description}</p>

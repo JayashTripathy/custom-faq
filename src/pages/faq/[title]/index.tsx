@@ -31,7 +31,7 @@ function Index() {
     description: pageData.description ?? undefined,
     address: pageData.address ?? undefined,
     theme: pageData.theme ?? undefined,
-  } || null;
+  } || null; // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
 
   return faqPage ? <FaqSection faq={faqPage} /> : <></>;
 }
