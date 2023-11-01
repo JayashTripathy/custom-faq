@@ -84,7 +84,7 @@ model Faq {
     userId    String?
     theme     String?
     faqs      FaqItem[]
-    Social    Social[]
+    socials    Social[]
 
     @@unique([title, userId])
 }

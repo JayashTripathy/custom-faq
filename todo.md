@@ -23,3 +23,15 @@
  - Create the FAQ section of the page
  - Configure theme colors for the page
   
+
+
+
+# Notes
+
+for collapsible faq's - https://ui.shadcn.com/docs/components/collapsible
+
+
+
+# Features Wishlist
+
+ - last updated on

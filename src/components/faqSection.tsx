@@ -60,8 +60,9 @@ function FaqSection(props: {
           />
         </div>
       )}
-      <div className="text-center text-3xl font-bold pt-5 ">{faq.title}</div>
-      <div className="my-4 mt-10 gap-2  md:flex w-full" >
+      <div className="pt-5 text-center text-3xl font-bold ">{faq.title}</div>
+      {faq.organization && <div className="text-center text-sm italic opacity-70">{faq.organization}</div>}
+      <div className="my-4 mt-10 w-full  gap-2 md:flex">
         <div className={`${faq.address && "md:w-[70%]"}`}>
           <Subheading>Description</Subheading>
           <p className="py-1 text-sm  ">{faq.description}</p>

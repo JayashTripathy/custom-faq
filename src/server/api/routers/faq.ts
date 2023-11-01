@@ -98,6 +98,7 @@ export const faqRouter = createTRPCRouter({
 
         include:{
           faqs: true,
+          socials: true,
         }
       });
     }),
