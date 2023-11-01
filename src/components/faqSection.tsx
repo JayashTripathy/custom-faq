@@ -7,7 +7,7 @@ function FaqSection(props: {
   faq: z.infer<typeof formSchema>;
   admin?: boolean;
 }) {
-  const { faq, admin } = props;
+  const { faq, admin = false } = props;
 
   const Subheading = (props: {
     children: ReactNode;

@@ -35,6 +35,7 @@ import { pagethemes } from "@/utils/faqThemes";
 import { useTheme } from "next-themes";
 
 type cropperType = "logo" | "backdrop";
+type Social = { name: string; url: string };
 
 export function EditFaqForm() {
   const router = useRouter();
@@ -63,7 +64,13 @@ export function EditFaqForm() {
       address: "",
       faqs: [],
       theme: "purple",
+      socials: [],
     },
+  });
+  const [socials, setSocials] = useState<Social[]>(form.getValues("socials"));
+  const [socialInput, setSocialInput] = useState({
+    name: "",
+    url: "",
   });
   const [selectedTheme, setSelectedTheme] = useState(form.getValues("theme"));
 
@@ -210,7 +217,20 @@ export function EditFaqForm() {
     },
   ];
 
+  const addSocial = () => {
+    if (!socialInput.name || !socialInput.url) {
+      toast({
+        variant: "default",
+        title: "Error!",
+        description: `Please fill all the fields`,
+      });
+      return;
+    }
+    setSocials((p) => [...p, socialInput]);
+  };
+  console.log(socials);
   const selectedCropper = cropperConfig.find((c) => c.type === cropperType);
+  console.log(form.getValues());
   useEffect(() => {
     if (form.formState.errors.faqs) {
       toast({
@@ -230,6 +250,10 @@ export function EditFaqForm() {
       form.setValue("backdrop", backdrop);
     }
   }, [pageLogo, backdrop]);
+
+  useEffect(() => {
+    form.setValue("socials", socials);
+  }, [socials]);
 
   return (
     <Form {...form}>
@@ -301,7 +325,7 @@ export function EditFaqForm() {
           />
           <Label
             htmlFor="pageLogo"
-            className={`} absolute -bottom-16 left-1/2 grid  aspect-square
+            className={` absolute -bottom-16 left-1/2 grid  aspect-square
             w-[120px] -translate-x-1/2  items-center justify-center  rounded-3xl border-[5px] border-background bg-muted p-3   `}
             style={{
               backgroundImage: `url(${pageLogo})`,
@@ -415,6 +439,51 @@ export function EditFaqForm() {
             )}
           />
         </div>
+
+        <h1 className="text-xl font-bold ">Socials</h1>
+        <div>
+          <div className="flex w-full gap-2 ">
+            <div className="mt-4 flex flex-col gap-2 ">
+              <Label htmlFor="socialName" className="font-semibold">
+                {" "}
+                Name{" "}
+              </Label>
+              <Input
+                name="socialName"
+                value={socialInput.name}
+                onChange={(e) =>
+                  setSocialInput((p) => ({
+                    ...p,
+                    name: e.target.value,
+                  }))
+                }
+              />
+            </div>
+            <div className="mt-4 flex flex-1 flex-col gap-2">
+              <Label htmlFor="socialUrl" className="font-semibold">
+                {" "}
+                URL{" "}
+              </Label>
+              <Input
+                name="url"
+                value={socialInput.url}
+                onChange={(e) =>
+                  setSocialInput((p) => ({
+                    ...p,
+                    url: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <Button
+            type="button"
+            className="mt-3 w-full font-bold "
+            onClick={addSocial}
+          >
+            Add
+          </Button>
+        </div>
         <div>
           <h1 className="text-xl font-bold ">Add FAQ&apos;s</h1>
           <div className="my-3">
@@ -442,7 +511,7 @@ export function EditFaqForm() {
                   type="button"
                   key={index}
                   onClick={() => handlePageThemeChange(els.name)}
-                  className="mt-5 flex  w-full flex-col rounded-lg border p-5 text-left  duration-200 ease-in-out hover:bg-accent box-border h-32 justify-center   "
+                  className="mt-5 box-border  flex h-32 w-full flex-col justify-center rounded-lg  border p-5 text-left duration-200 ease-in-out hover:bg-accent   "
                   style={{
                     border: selected ? `2px solid ${color}` : "none",
                   }}
@@ -458,7 +527,7 @@ export function EditFaqForm() {
                   {Array(2)
                     .fill(0)
                     .map((_, index) => (
-                      <div className="" key={els.name+index}>
+                      <div className="" key={els.name + index}>
                         <span
                           style={{
                             color: color,

@@ -11,9 +11,9 @@ export const faqRouter = createTRPCRouter({
         userId: ctx.session.user.id,
       },
 
-      include:{
+      include: {
         faqs: true,
-      }
+      },
     });
   }),
   delete: protectedProcedure
@@ -30,26 +30,23 @@ export const faqRouter = createTRPCRouter({
           userId: id,
         },
       });
-      
+
       if (!faq) throw new TRPCError({ code: "NOT_FOUND" });
 
       const deleteFaqPage = db.faq.delete({
         where: {
           id: faq?.id,
         },
-        
       });
 
       const deleteFaq = db.faqItem.deleteMany({
-        where:{
+        where: {
           faqId: faq?.id,
-        }
-        
-      })
+        },
+      });
       await db.$transaction([deleteFaq, deleteFaqPage]);
-      
+
       return faq;
-   
     }),
   create: protectedProcedure
     .input(formSchema)
@@ -58,7 +55,7 @@ export const faqRouter = createTRPCRouter({
       try {
         const faq = await db.faq.create({
           data: {
-            ...input, 
+            ...input,
             faqs: {
               createMany: {
                 data: input.faqs.map((faq) => ({
@@ -67,10 +64,20 @@ export const faqRouter = createTRPCRouter({
                 })),
               },
             },
+            socials: {
+              createMany: {
+                data: input.socials.map((social) => ({
+                  name: social.name,
+                  url: social.url,
+                })),
+              },
+            },
             userId: id,
           },
+
           include: {
             faqs: true,
+            socials: true,
           },
         });
 
@@ -96,10 +103,10 @@ export const faqRouter = createTRPCRouter({
           userId: ctx.session.user.id,
         },
 
-        include:{
+        include: {
           faqs: true,
           socials: true,
-        }
+        },
       });
     }),
 });

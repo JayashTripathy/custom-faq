@@ -26,19 +26,26 @@ import { Textarea } from "./ui/textarea";
 import { UseFieldArrayReplace } from "react-hook-form";
 
 function FaqList(props: {
-  updateFaq: UseFieldArrayReplace<{
-    title: string;
-    faqs: {
+  updateFaq: UseFieldArrayReplace<
+    {
+      title: string;
+      faqs: {
         id: number;
         question: string;
         answer: string;
-    }[];
-    logo?: string | undefined;
-    backdrop?: string | undefined;
-    organization?: string | undefined;
-    description?: string | undefined;
-    address?: string | undefined;
-}, "faqs">;
+      }[];
+      logo?: string | undefined;
+      backdrop?: string | undefined;
+      organization?: string | undefined;
+      description?: string | undefined;
+      address?: string | undefined;
+      socials: {
+        name: string;
+        url: string;
+      }[];
+    },
+    "faqs"
+  >;
 }) {
   const { updateFaq } = props;
   const [faqs, setFaqs] = useState([] as Faq[]);
