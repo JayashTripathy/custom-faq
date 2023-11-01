@@ -2,6 +2,7 @@ import { formSchema } from "@/lib/validators/editFaqForm";
 import { pagethemes } from "@/utils/faqThemes";
 import React, { CSSProperties, ReactNode } from "react";
 import { z } from "zod";
+import Accordion from "./accordion";
 
 function FaqSection(props: {
   faq: z.infer<typeof formSchema>;
@@ -74,6 +75,8 @@ function FaqSection(props: {
           </div>
         )}
       </div>
+
+      <Accordion/>
     </div>
   );
 }
