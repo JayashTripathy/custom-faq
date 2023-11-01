@@ -78,12 +78,13 @@ model Faq {
     organization String?
     address      String?
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    User      User?    @relation(fields: [userId], references: [id])
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    User      User?     @relation(fields: [userId], references: [id])
     userId    String?
     theme     String?
-    faqs FaqItem[]
+    faqs      FaqItem[]
+    Social    Social[]
 
     @@unique([title, userId])
 }
@@ -94,7 +95,16 @@ model FaqItem {
     answer   String
 
     faqId String? @db.Uuid
-    faq   Faq?   @relation(fields: [faqId], references: [id])
+    faq   Faq?    @relation(fields: [faqId], references: [id])
 
     @@unique([question, answer, faqId])
+}
+
+model Social {
+    id   String @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+    name String
+    url  String
+
+    faqId String? @db.Uuid
+    faq   Faq?    @relation(fields: [faqId], references: [id])
 }
