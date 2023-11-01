@@ -1,56 +1,36 @@
+import { Faq } from "@/types/faq";
 import React, { useState } from "react";
 
-const Accordion = () => {
+const Accordion = (props: { faqs: Faq[] }) => {
+  const { faqs } = props;
   return (
     <section className="dark:bg-dark relative z-20 overflow-hidden  pb-12 pt-20 lg:pb-[90px] lg:pt-[120px]">
       <div className=" mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">
             <div className="mx-auto mb-[60px] max-w-[520px] text-center lg:mb-20">
-             
-              <h2 className="text-dark mb-2 text-2xl md:text-4xl font-bold text-primary">
+              <h2 className="text-dark mb-2 text-2xl font-bold text-primary md:text-4xl">
                 Frequently Asked Questions
               </h2>
               <p className=" text-sm ">
-                Here you can find answers to some of the most frequently asked questions
+                Here you can find answers to some of the most frequently asked
+                questions
               </p>
             </div>
           </div>
         </div>
 
         <div className="-mx-4 flex flex-wrap">
-          <div className="w-full px-4 lg:w-1/2">
-            <AccordionItem
-              header="How long we deliver your first blog post?"
-              text="It takes 2-3 weeks to get your first blog post ready. That includes the in-depth research & creation of your monthly content marketing strategy that we do before writing your first blog post, Ipsum available ."
-            />
-            <AccordionItem
-              header="How long we deliver your first blog post?"
-              text="It takes 2-3 weeks to get your first blog post ready. That includes the in-depth research & creation of your monthly content marketing strategy that we do before writing your first blog post, Ipsum available ."
-            />
-            <AccordionItem
-              header="How long we deliver your first blog post?"
-              text="It takes 2-3 weeks to get your first blog post ready. That includes the in-depth research & creation of your monthly content marketing strategy that we do before writing your first blog post, Ipsum available ."
-            />
-          </div>
-          <div className="w-full px-4 lg:w-1/2">
-            <AccordionItem
-              header="How long we deliver your first blog post?"
-              text="It takes 2-3 weeks to get your first blog post ready. That includes the in-depth research & creation of your monthly content marketing strategy that we do before writing your first blog post, Ipsum available ."
-            />
-            <AccordionItem
-              header="How long we deliver your first blog post?"
-              text="It takes 2-3 weeks to get your first blog post ready. That includes the in-depth research & creation of your monthly content marketing strategy that we do before writing your first blog post, Ipsum available ."
-            />
-            <AccordionItem
-              header="How long we deliver your first blog post?"
-              text="It takes 2-3 weeks to get your first blog post ready. That includes the in-depth research & creation of your monthly content marketing strategy that we do before writing your first blog post, Ipsum available ."
-            />
+          <div className="w-full px-4 ">
+            {faqs.map((faq) => (
+              <AccordionItem
+                header= {faq.question}
+                text={faq.answer}
+              />
+            ))}
           </div>
         </div>
       </div>
-
-     
     </section>
   );
 };
@@ -66,7 +46,7 @@ const AccordionItem = (props: { header: string; text: string }) => {
     setActive(!active);
   };
   return (
-    <div className=" mb-8 w-full rounded-lg  p-4 shadow-[0px_20px_25px_0px_black]  sm:p-8 lg:px-6 xl:px-8 border ">
+    <div className=" mb-8 w-full rounded-lg  border p-4  shadow-[0px_20px_25px_0px_black] sm:p-8 lg:px-6 xl:px-8 ">
       <button
         className={`faq-btn flex w-full text-left`}
         onClick={(e) => handleToggle(e)}
@@ -90,9 +70,7 @@ const AccordionItem = (props: { header: string; text: string }) => {
         </div>
 
         <div className="w-full">
-          <h4 className="text-dark mt-1 text-lg font-semibold ">
-            {header}
-          </h4>
+          <h4 className="text-dark mt-1 text-lg font-semibold ">{header}</h4>
         </div>
       </button>
 

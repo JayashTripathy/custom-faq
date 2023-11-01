@@ -76,7 +76,7 @@ function FaqSection(props: {
         )}
       </div>
 
-      <Accordion/>
+      <Accordion faqs={faq.faqs}/>
     </div>
   );
 }

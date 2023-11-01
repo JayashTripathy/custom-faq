@@ -33,9 +33,10 @@ import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import { pagethemes } from "@/utils/faqThemes";
 import { useTheme } from "next-themes";
+import { Social } from "@/types/faq";
 
 type cropperType = "logo" | "backdrop";
-type Social = { name: string; url: string };
+
 
 export function EditFaqForm() {
   const router = useRouter();
