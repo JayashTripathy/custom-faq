@@ -3,6 +3,9 @@ import { pagethemes } from "@/utils/faqThemes";
 import React, { CSSProperties, ReactNode } from "react";
 import { z } from "zod";
 import Accordion from "./accordion";
+import Link from "next/link";
+import { Link1Icon } from "@radix-ui/react-icons";
+import { LinkIcon } from "lucide-react";
 
 function FaqSection(props: {
   faq: z.infer<typeof formSchema>;
@@ -47,6 +50,7 @@ function FaqSection(props: {
           }
         ></div>
       )}
+      <div className="px-4">
       {faq.logo && (
         <div
           className={`relative my-3  grid w-full items-center gap-1.5 rounded-3xl bg-card py-6`}
@@ -62,21 +66,36 @@ function FaqSection(props: {
         </div>
       )}
       <div className="pt-5 text-center text-3xl font-bold ">{faq.title}</div>
-      {faq.organization && <div className="text-center text-sm italic opacity-70">{faq.organization}</div>}
-      <div className="my-4 mt-10 w-full  gap-10 md:flex">
+      {faq.organization && (
+        <div className="text-center text-sm italic opacity-70">
+          {faq.organization}
+        </div>
+      )}
+      <div className="my-4 mt-10 w-full flex flex-col md:flex-row gap-10">
         <div className={`${faq.address && "md:w-[70%]"}`}>
           <Subheading>Description</Subheading>
           <p className="py-1 text-sm  ">{faq.description}</p>
         </div>
-        {faq.address && (
+        {faq.socials && (
           <div className="">
             <Subheading>Socials</Subheading>
-            <p className="py-1 text-sm ">{faq.address}</p>
+            <div className="mt-1 flex">
+              {faq.socials.map((social, index) => (
+                <Link
+                  href={social.url}
+                  className=" flex gap-2 rounded-full bg-primary px-2 py-1 text-sm justify-center items-center"
+                >
+                  {social.name}
+                  <Link1Icon />
+                </Link>
+              ))}
+            </div>
           </div>
         )}
       </div>
 
-      <Accordion faqs={faq.faqs}/>
+      <Accordion faqs={faq.faqs} />
+      </div>
     </div>
   );
 }
