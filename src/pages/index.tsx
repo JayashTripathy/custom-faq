@@ -1,9 +1,9 @@
-import { storageAtom } from "@/storage";
-import { useAtom } from "jotai";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
+
 import React from "react";
 import { api } from "@/utils/api";
+import { Button } from "@/components/ui/button";
+import { ChevronRightCircle } from "lucide-react";
+import Link from "next/link";
 
 function index() {
   const alluser = api.example.getAllUsers.useQuery();
@@ -18,8 +18,12 @@ function index() {
       <div className="mx-auto max-w-[80%] overflow-hidden z-10 w-screen overflow-x-hidden  ">
         <div className="py-10  text-2xl md:text-4xl text text-center shrink-0 whitespace-nowrap ">
           Craft your FAQ pages
+
           <br />
           <span className="font-extrabold italic  md:text-7xl text-transparent bg-clip-text bg-gradient-to-br from-violet-400 to-primary "> Effortlessly!</span>
+          <Link href={"/dashboard"}>
+          <Button variant={"outline"}  className="flex mx-auto rounded-full text-2xl h-full outline-4 pr-2 justify-center items-center gap-3 mt-4 border-1 ">Get your own<span className=" bg-primary p-2 rounded-full"><ChevronRightCircle /></span></Button>
+          </Link>
           <img src="temp.png" alt="" className="w-4/5 mx-auto" />
         </div>
       </div>

@@ -82,6 +82,7 @@ function FaqSection(props: {
             <div className="mt-1 flex">
               {faq.socials.map((social, index) => (
                 <Link
+                key={index}
                   href={social.url}
                   className=" flex gap-2 rounded-full bg-primary px-2 py-1 text-sm justify-center items-center"
                 >
