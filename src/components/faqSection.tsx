@@ -6,12 +6,17 @@ import Accordion from "./accordion";
 import Link from "next/link";
 import { Link1Icon } from "@radix-ui/react-icons";
 import { LinkIcon } from "lucide-react";
+import { getTheme } from "@/utils/getPageTheme";
 
 function FaqSection(props: {
   faq: z.infer<typeof formSchema>;
   admin?: boolean;
 }) {
   const { faq, admin = false } = props;
+
+  const styles = getTheme(faq.theme);
+
+  console.log(styles);
 
   const Subheading = (props: {
     children: ReactNode;
@@ -21,6 +26,9 @@ function FaqSection(props: {
     return (
       <div
         className={`text-lg font-semibold ${faq.theme} text-primary `}
+        style={{
+          color: styles?.primary,
+        }}
         {...rest}
       >
         {children}
@@ -50,52 +58,60 @@ function FaqSection(props: {
           }
         ></div>
       )}
-      <div className="px-4">
-      {faq.logo && (
-        <div
-          className={`relative my-3  grid w-full items-center gap-1.5 rounded-3xl bg-card py-6`}
-        >
+      <div className="w-full overflow-visible">
+        {faq.logo && (
           <div
-            className={`} absolute -bottom-16 left-1/2 mb-14  grid
+            className={`relative my-3  grid w-full items-center gap-1.5 rounded-3xl bg-card py-6`}
+          >
+            <div
+              className={`} absolute -bottom-16 left-1/2 mb-14  grid
             aspect-square w-[120px]  -translate-x-1/2 items-center  justify-center rounded-3xl border-[5px] border-background bg-muted p-3   `}
-            style={{
-              backgroundImage: `url(${faq.logo})`,
-              backgroundSize: "cover",
-            }}
-          />
-        </div>
-      )}
-      <div className="pt-5 text-center text-3xl font-bold ">{faq.title}</div>
-      {faq.organization && (
-        <div className="text-center text-sm italic opacity-70">
-          {faq.organization}
-        </div>
-      )}
-      <div className="my-4 mt-10 w-full flex flex-col md:flex-row gap-10">
-        <div className={`${faq.address && "md:w-[70%]"}`}>
-          <Subheading>Description</Subheading>
-          <p className="py-1 text-sm  ">{faq.description}</p>
-        </div>
-        {faq.socials && (
-          <div className="">
-            <Subheading>Socials</Subheading>
-            <div className="mt-1 flex">
-              {faq.socials.map((social, index) => (
-                <Link
-                key={index}
-                  href={social.url}
-                  className=" flex gap-2 rounded-full bg-primary px-2 py-1 text-sm justify-center items-center"
-                >
-                  {social.name}
-                  <Link1Icon />
-                </Link>
-              ))}
-            </div>
+              style={{
+                backgroundImage: `url(${faq.logo})`,
+                backgroundSize: "cover",
+              }}
+            />
           </div>
         )}
-      </div>
+        <div className="pt-5 text-center text-3xl font-bold ">{faq.title}</div>
+        {faq.organization && (
+          <div className="text-center text-sm italic opacity-70">
+            {faq.organization}
+          </div>
+        )}
+        <div className="my-4 mt-10 flex w-full flex-col gap-10 md:flex-row">
+          <div className={`${faq.address && "md:w-[70%]"}`}>
+            <Subheading>Description</Subheading>
+            <p className="py-1 text-sm  ">{faq.description}</p>
+          </div>
+          {faq.socials && (
+            <div className="">
+              <Subheading
+               
+              >
+                Socials
+              </Subheading>
+              <div className="mt-1 flex">
+                {faq.socials.map((social, index) => (
+                  <Link
+                    key={index}
+                    href={social.url}
+                    className=" flex items-center justify-center gap-2 rounded-full  px-2 py-1 text-sm"
+                    style={{
+                      color: styles?.background,
+                      background: styles?.primary,
+                    }}
+                  >
+                    {social.name}
+                    <Link1Icon />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
 
-      <Accordion faqs={faq.faqs} />
+        <Accordion faq={faq} />
       </div>
     </div>
   );

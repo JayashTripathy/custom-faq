@@ -1,15 +1,26 @@
+import { formSchema } from "@/lib/validators/editFaqForm";
 import { Faq } from "@/types/faq";
+import { getTheme } from "@/utils/getPageTheme";
 import React, { useState } from "react";
+import { z } from "zod";
 
-const Accordion = (props: { faqs: Faq[] }) => {
-  const { faqs } = props;
+const Accordion = (props: { faq: z.infer<typeof formSchema> }) => {
+  const { faq } = props;
+  const faqs = faq.faqs;
+
+  const styles = getTheme(faq.theme);
   return (
     <section className="dark:bg-dark relative z-20 overflow-hidden  pb-12 pt-20 lg:pb-[90px] lg:pt-[120px]">
       <div className=" mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">
             <div className="mx-auto mb-[60px] max-w-[520px] text-center lg:mb-20">
-              <h2 className="text-dark mb-2 text-2xl font-bold text-primary md:text-4xl">
+              <h2
+                className="text-dark mb-2 text-2xl font-bold text-primary md:text-4xl"
+                style={{
+                  color: styles?.primary,
+                }}
+              >
                 Frequently Asked Questions
               </h2>
               <p className=" text-sm ">
@@ -21,11 +32,11 @@ const Accordion = (props: { faqs: Faq[] }) => {
         </div>
 
         <div className="-mx-4 flex flex-wrap">
-          <div className="w-full px-4 ">
+          <div className="w-full px-2 ">
             {faqs.map((faq, index) => (
               <AccordionItem
-              key={index}
-                header= {faq.question}
+                key={index}
+                header={faq.question}
                 text={faq.answer}
               />
             ))}
@@ -47,7 +58,7 @@ const AccordionItem = (props: { header: string; text: string }) => {
     setActive(!active);
   };
   return (
-    <div className=" mb-8 w-full rounded-lg  border p-4  shadow-[0px_20px_25px_0px_black] sm:p-8 lg:px-6 xl:px-8 ">
+    <div className=" mx-4 mb-6 rounded-lg  border p-4  shadow-xl sm:p-8 lg:px-6 xl:px-8 ">
       <button
         className={`faq-btn flex w-full text-left`}
         onClick={(e) => handleToggle(e)}
@@ -76,7 +87,7 @@ const AccordionItem = (props: { header: string; text: string }) => {
       </button>
 
       <div
-        className={`pl-[62px] duration-200 ease-in-out ${
+        className={` pl-[62px] duration-200 ease-in-out ${
           active ? "block" : "hidden"
         }`}
       >
