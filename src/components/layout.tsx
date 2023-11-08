@@ -21,11 +21,11 @@ function Layout({ children }: React.PropsWithChildren) {
   const hideNavbar = hideNavbarPaths.includes(router.pathname);
 
   return (
-    <div className="">
+    <>
       {!hideNavbar && <Navbar />}
       {children}
       <Toaster />
-    </div>
+    </>
   );
 }
 

@@ -33,11 +33,12 @@ const Accordion = (props: { faq: z.infer<typeof formSchema> }) => {
 
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-2 ">
-            {faqs.map((faq, index) => (
+            {faqs.map((item, index) => (
               <AccordionItem
                 key={index}
-                header={faq.question}
-                text={faq.answer}
+                header={item.question}
+                text={item.answer}
+                faq={faq}
               />
             ))}
           </div>
@@ -49,23 +50,42 @@ const Accordion = (props: { faq: z.infer<typeof formSchema> }) => {
 
 export default Accordion;
 
-const AccordionItem = (props: { header: string; text: string }) => {
-  const { header, text } = props;
+const AccordionItem = (props: {
+  header: string;
+  text: string;
+  faq: z.infer<typeof formSchema>;
+}) => {
+  const { header, text, faq } = props;
   const [active, setActive] = useState(false);
 
+  const styles = getTheme(faq.theme);
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setActive(!active);
   };
+
+  console.log(styles);
   return (
-    <div className=" mx-4 mb-6 rounded-lg  border p-4  shadow-xl sm:p-8 lg:px-6 xl:px-8 ">
+    <div
+      className=" mx-4 mb-6 rounded-lg   p-4  shadow-xl sm:p-8 lg:px-6 xl:px-8 "
+      style={{
+        borderWidth: "1px",
+        borderColor:  styles?.primary
+      }}
+    >
       <button
-        className={`faq-btn flex w-full text-left`}
+        className={` flex w-full text-left`}
         onClick={(e) => handleToggle(e)}
       >
-        <div className="mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-primary/5 text-primary dark:bg-white/5">
+        <div
+          className={`mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg   dark:bg-white/5`}
+          style={{
+            background: styles?.accent,
+            color: styles?.primary,
+          }}
+        >
           <svg
-            className={`fill-primary stroke-primary duration-200 ease-in-out ${
+            className={`fill-${styles?.primary} stroke-${styles?.primary} duration-200 ease-in-out ${
               active ? "rotate-180" : ""
             }`}
             width="17"

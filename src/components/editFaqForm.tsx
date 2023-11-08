@@ -31,7 +31,7 @@ import BottomDrawer from "./drawer/bottomDrawer";
 import { formSchema } from "@/lib/validators/editFaqForm";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
-import { pagethemes } from "@/utils/faqThemes";
+import { pagethemes } from "@/utils/pageThemes";
 import { useTheme } from "next-themes";
 import { Social } from "@/types/faq";
 
