@@ -28,7 +28,7 @@ function Client(props: { title: string }) {
       enabled: !!title,
     },
   );
-  const styles = { ...getTheme(faq?.theme ?? undefined) };
+  const styles = getTheme(faq?.theme ?? undefined) 
   const searchParams = useSearchParams();
   const adminMode = searchParams.get("adminMode");
 
