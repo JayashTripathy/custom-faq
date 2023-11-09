@@ -12,6 +12,9 @@ import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 import Accordion from "@/components/accordion";
+import { Copy, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
 
 function Client(props: { title: string }) {
   const { title } = props;
@@ -25,7 +28,7 @@ function Client(props: { title: string }) {
       enabled: !!title,
     },
   );
-  const styles = getTheme(faq?.theme || undefined);
+  const styles = { ...getTheme(faq?.theme ?? undefined) };
   const searchParams = useSearchParams();
   const adminMode = searchParams.get("adminMode");
 
@@ -40,7 +43,7 @@ function Client(props: { title: string }) {
       <div
         className={`text-lg font-semibold ${faq?.theme} text-primary `}
         style={{
-          color: styles?.primary || " ",
+          color: styles?.primary ?? " ",
         }}
         {...rest}
       >
@@ -48,6 +51,8 @@ function Client(props: { title: string }) {
       </div>
     );
   };
+
+  const pageUrl = window.location.href.split("?")[0];
 
   return (
     <div
@@ -61,9 +66,9 @@ function Client(props: { title: string }) {
     >
       {isAdmin && adminMode ? (
         <div
-          className=" mx-2 my-4 rounded-2xl  p-3  md:mx-auto md:w-3/4 "
+          className=" mx-2 my-4 mb-0  rounded-2xl p-3  md:mx-auto md:w-3/4 "
           style={{
-            background: styles?.accent,
+            background: styles.accent,
           }}
         >
           <div className="">
@@ -71,23 +76,61 @@ function Client(props: { title: string }) {
               <div className="max-w-[100px] rounded-full  p-4  ">
                 <img src="/stars.gif" className=" w-full  " />
               </div>
-              <div>
-                <div
-                  className="text-2xl font-bold "
-                  style={{
-                    color: styles?.primary,
-                  }}
-                >
-                  Your page is live!
+              <div className="flex w-full items-center justify-between">
+                <div>
+                  <div
+                    className="text-2xl font-bold "
+                    style={{
+                      color: styles?.primary,
+                    }}
+                  >
+                    Your page is live!
+                  </div>
+                  <div
+                    className="text-sm"
+                    style={{
+                      color: styles?.mutedForeground,
+                    }}
+                  >
+                    page is now accessible and you can share this where you
+                    viewers <br />
+                  </div>
                 </div>
-                <div
-                  className="text-sm"
-                  style={{
-                    color: styles?.mutedForeground,
-                  }}
-                >
-                  page is now accessible and you can share this where you
-                  viewers <br />
+                <div className="flex gap-2 p-3">
+                  <button
+                    className={` ] aspect-square h-full rounded-2xl p-3 `}
+                    style={{
+                      borderColor: styles.primary,
+                      borderWidth: "1px",
+                      borderStyle: "solid",
+                    }}
+                    onClick={async () => {
+                      if (pageUrl) {
+                        await navigator.clipboard.writeText(pageUrl);
+                        toast({
+                          title: "Success!",
+                          description: "Link copied to clipboard",
+                          type: "background",
+                          duration: 2000,
+                        });
+                      }
+                    }}
+                  >
+                    <Copy size={30} />
+                  </button>
+                  <button
+                    style={{
+                      background: styles?.primary,
+                      color: styles?.background,
+                    }}
+                    className=" aspect-square h-full rounded-2xl p-3"
+                    onClick={() =>
+                      pageUrl &&
+                      void window.open(pageUrl, "_blank", "noreferrer")
+                    }
+                  >
+                    <ExternalLink size={30} />
+                  </button>
                 </div>
               </div>
             </div>
@@ -98,7 +141,7 @@ function Client(props: { title: string }) {
       )}
       <div
         className={` mx-auto  md:w-3/4 ${
-          faq?.logo ?? faq?.backdrop ? "md:translate-y-14" : ""
+          faq?.logo ?? faq?.backdrop ? "md:translate-y-10" : ""
         }`}
       >
         {faq?.backdrop && (
@@ -163,7 +206,7 @@ function Client(props: { title: string }) {
             )}
           </div>
 
-          <Accordion faqs={faq?.faqs} theme={faq?.theme || undefined} />
+          <Accordion faqs={faq?.faqs} theme={faq?.theme ?? undefined} />
         </div>
       </div>
     </div>
