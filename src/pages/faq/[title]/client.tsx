@@ -68,7 +68,7 @@ function Client(props: { title: string }) {
         <div
           className=" mx-2 my-4 mb-0  rounded-2xl p-3  md:mx-auto md:w-3/4 "
           style={{
-            background: styles.accent,
+            background: styles?.accent,
           }}
         >
           <div className="">
@@ -100,7 +100,7 @@ function Client(props: { title: string }) {
                   <button
                     className={` ] aspect-square h-full rounded-2xl p-3 `}
                     style={{
-                      borderColor: styles.primary,
+                      borderColor: styles?.primary,
                       borderWidth: "1px",
                       borderStyle: "solid",
                     }}
