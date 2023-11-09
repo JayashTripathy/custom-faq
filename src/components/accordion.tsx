@@ -4,10 +4,7 @@ import { getTheme } from "@/utils/getPageTheme";
 import React, { useState } from "react";
 import { z } from "zod";
 
-const Accordion = (props: {
-  faqs: Faq[] | undefined;
-  theme?: string ;
-}) => {
+const Accordion = (props: { faqs: Faq[] | undefined; theme?: string }) => {
   const { faqs, theme } = props;
 
   const styles = getTheme(theme);
@@ -35,15 +32,14 @@ const Accordion = (props: {
 
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-2 ">
-            {faqs &&
-              faqs.map((item, index) => (
-                <AccordionItem
-                  key={index}
-                  header={item.question}
-                  text={item.answer}
-                  theme={theme}
-                />
-              ))}
+            {faqs?.map((item, index) => (
+              <AccordionItem
+                key={index}
+                header={item.question}
+                text={item.answer}
+                theme={theme}
+              />
+            ))}
           </div>
         </div>
       </div>
