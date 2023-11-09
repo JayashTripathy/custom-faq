@@ -4,11 +4,13 @@ import { getTheme } from "@/utils/getPageTheme";
 import React, { useState } from "react";
 import { z } from "zod";
 
-const Accordion = (props: { faq: z.infer<typeof formSchema> }) => {
-  const { faq } = props;
-  const faqs = faq.faqs;
+const Accordion = (props: {
+  faqs: Faq[] | undefined;
+  theme?: string ;
+}) => {
+  const { faqs, theme } = props;
 
-  const styles = getTheme(faq.theme);
+  const styles = getTheme(theme);
   return (
     <section className="dark:bg-dark relative z-20 overflow-hidden  pb-12 pt-20 lg:pb-[90px] lg:pt-[120px]">
       <div className=" mx-auto">
@@ -33,14 +35,15 @@ const Accordion = (props: { faq: z.infer<typeof formSchema> }) => {
 
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-2 ">
-            {faqs.map((item, index) => (
-              <AccordionItem
-                key={index}
-                header={item.question}
-                text={item.answer}
-                faq={faq}
-              />
-            ))}
+            {faqs &&
+              faqs.map((item, index) => (
+                <AccordionItem
+                  key={index}
+                  header={item.question}
+                  text={item.answer}
+                  theme={theme}
+                />
+              ))}
           </div>
         </div>
       </div>
@@ -53,24 +56,23 @@ export default Accordion;
 const AccordionItem = (props: {
   header: string;
   text: string;
-  faq: z.infer<typeof formSchema>;
+  theme?: string;
 }) => {
-  const { header, text, faq } = props;
+  const { header, text, theme } = props;
   const [active, setActive] = useState(false);
 
-  const styles = getTheme(faq.theme);
+  const styles = getTheme(theme);
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setActive(!active);
   };
 
-  console.log(styles);
   return (
     <div
       className=" mx-4 mb-6 rounded-lg   p-4  shadow-xl sm:p-8 lg:px-6 xl:px-8 "
       style={{
         borderWidth: "1px",
-        borderColor:  styles?.primary
+        borderColor: styles?.primary,
       }}
     >
       <button

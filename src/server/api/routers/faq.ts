@@ -1,5 +1,5 @@
 import { db } from "@/server/db";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { formSchema } from "@/lib/validators/editFaqForm";
@@ -90,7 +90,7 @@ export const faqRouter = createTRPCRouter({
       }
     }),
 
-  getFaqPage: protectedProcedure
+  getFaqPage: publicProcedure
     .input(
       z.object({
         faqTitle: z.string(),
@@ -100,7 +100,6 @@ export const faqRouter = createTRPCRouter({
       return db.faq.findFirst({
         where: {
           title: input.faqTitle,
-          userId: ctx.session.user.id,
         },
 
         include: {
