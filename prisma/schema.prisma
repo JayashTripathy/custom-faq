@@ -84,7 +84,7 @@ model Faq {
     userId    String?
     theme     String?
     faqs      FaqItem[]
-    socials    Social[]
+    socials   Social[]
 
     @@unique([title, userId])
 }
@@ -107,4 +107,10 @@ model Social {
 
     faqId String? @db.Uuid
     faq   Faq?    @relation(fields: [faqId], references: [id])
+}
+
+model Embeddings {
+    id      String                 @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+    content String
+    vector  Unsupported("vector")?
 }

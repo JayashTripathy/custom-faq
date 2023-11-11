@@ -4,8 +4,18 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { formSchema } from "@/lib/validators/editFaqForm";
 
+import { JSONLoader } from "langchain/document_loaders/fs/json";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+
+import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
+import { createClient } from "@supabase/supabase-js";
+
+import { TextLoader } from "langchain/document_loaders/fs/text";
+
+import { createEmbeddings } from "@/utils/createPageEmbeddings";
+
 export const faqRouter = createTRPCRouter({
-  getAll: protectedProcedure.query(({ ctx }) => {
+  getAll: protectedProcedure.query(async ({ ctx }) => {
     return db.faq.findMany({
       where: {
         userId: ctx.session.user.id,
@@ -96,8 +106,8 @@ export const faqRouter = createTRPCRouter({
         faqTitle: z.string(),
       }),
     )
-    .query(({ ctx, input }) => {
-      return db.faq.findFirst({
+    .query(async ({ ctx, input }) => {
+      const data = await db.faq.findFirst({
         where: {
           title: input.faqTitle,
         },
@@ -107,5 +117,11 @@ export const faqRouter = createTRPCRouter({
           socials: true,
         },
       });
+
+      return data;
     }),
 });
+
+// console.log("Processing embeddings")
+// await createEmbeddings({ data: data });
+// console.log("Processing complete")

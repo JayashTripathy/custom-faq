@@ -1,9 +1,5 @@
 "use client";
-
-import { formSchema } from "@/lib/validators/editFaqForm";
-
-import React, { CSSProperties, ReactNode } from "react";
-import { z } from "zod";
+import React, { CSSProperties, ReactNode, useEffect } from "react";
 import Link from "next/link";
 import { Link1Icon } from "@radix-ui/react-icons";
 import { getTheme } from "@/utils/getPageTheme";
@@ -13,8 +9,9 @@ import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 import Accordion from "@/components/accordion";
 import { Copy, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+
+
 
 function Client(props: { title: string }) {
   const { title } = props;
@@ -28,11 +25,15 @@ function Client(props: { title: string }) {
       enabled: !!title,
     },
   );
-  const styles = getTheme(faq?.theme ?? undefined) 
+  const styles = getTheme(faq?.theme ?? undefined);
   const searchParams = useSearchParams();
   const adminMode = searchParams.get("adminMode");
 
   const isAdmin = me?.id == faq?.userId;
+
+
+
+  
 
   const Subheading = (props: {
     children: ReactNode;
@@ -51,6 +52,8 @@ function Client(props: { title: string }) {
       </div>
     );
   };
+
+  console.log(faq);
 
   const pageUrl = window.location.href.split("?")[0];
 
