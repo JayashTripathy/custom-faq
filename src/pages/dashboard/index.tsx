@@ -84,7 +84,7 @@ function Dashboard() {
                       key={faq.id}
                     >
                       <button
-                        onClick={() => void router.push(`/faq/${faq.title}`)}
+                        onClick={() => void router.push(`/faq/${faq.title}?adminMode=true`)}
                         className="h-(calc(100%-30px)) w-full overflow-hidden text-left"
                       >
                         <div>{faq.title}</div>

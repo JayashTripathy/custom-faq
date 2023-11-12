@@ -6,8 +6,11 @@ import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
 import { supabaseClient } from "@/lib/supabaseClient";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Faq, Social } from "@/types/faq";
+import { formSchema } from "@/lib/validators/editFaqForm";
+import { z } from "zod";
 
-export const createEmbeddings = async (props: { data: any }) => {
+
+export const createEmbeddings = async (props: { data: z.infer<typeof formSchema> &{ id: string } }) => {
   const { data } = props;
   if (!data.faqs) return;
 
@@ -38,7 +41,7 @@ export const createEmbeddings = async (props: { data: any }) => {
 
   if (!data.faqs) return;
   const formattedFaq = data.faqs
-    .map((faq: Faq) => formatFAQ(faq.question, faq.answer))
+    .map((faq) => formatFAQ(faq.question, faq.answer))
     .join("\n");
 
   const stagingTrainingData = new Blob(

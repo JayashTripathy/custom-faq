@@ -3,15 +3,6 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { formSchema } from "@/lib/validators/editFaqForm";
-
-import { JSONLoader } from "langchain/document_loaders/fs/json";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-
-import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
-import { createClient } from "@supabase/supabase-js";
-
-import { TextLoader } from "langchain/document_loaders/fs/text";
-
 import { createEmbeddings } from "@/utils/createPageEmbeddings";
 
 export const faqRouter = createTRPCRouter({
@@ -120,8 +111,20 @@ export const faqRouter = createTRPCRouter({
 
       return data;
     }),
+
+  createVectorEmbeddings: protectedProcedure
+    .input(
+      z.object({
+        trainingData: z.any(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      if (!input.trainingData) return { message: "No data provided" };
+      await createEmbeddings({ data: input.trainingData });
+
+      return { message: "Embeddings created successfully" };
+    }),
 });
 
 // console.log("Processing embeddings")
-// await createEmbeddings({ data: data });
 // console.log("Processing complete")
