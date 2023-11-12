@@ -32,6 +32,7 @@ const config = {
         checksVoidReturn: false,
       },
     ],
+    "@typescript-eslint/prefer-optional-chain": "warn"
   },
 };
 

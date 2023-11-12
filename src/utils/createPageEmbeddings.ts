@@ -60,7 +60,7 @@ export const createEmbeddings = async (props: { data: z.infer<typeof formSchema>
   const dataset = await loader.load();
 
   const embeddings = new OpenAIEmbeddings({
-    openAIApiKey: process.env.OPENAI_API_KEY as string,
+    openAIApiKey: process.env.OPENAI_API_KEY!,
   });
 
   const trainingData = dataset.map((item) => ({

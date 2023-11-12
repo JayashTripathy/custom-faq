@@ -6,7 +6,7 @@ export const supabaseClient = () => {
   }
 
   return createClient(
-    process.env.SUPABASE_URL as string,
-    process.env.SUPABASE_KEY as string,
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_KEY!,
   );
 };
