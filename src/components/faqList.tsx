@@ -48,7 +48,7 @@ function FaqList(props: {
   >;
 }) {
   const { updateFaq } = props;
-  const [faqs, setFaqs] = useState([] as Faq[]);
+  const [faqs, setFaqs] = useState([] as Omit<Faq, 'faqId'>[]);
   const [formData, setFormData] = useState({
     question: "",
     answer: "",
