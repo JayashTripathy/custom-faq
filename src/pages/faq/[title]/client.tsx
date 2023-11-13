@@ -73,7 +73,7 @@ function Client(props: { title: string }) {
     );
   };
 
-  const pageUrl = window.location.href.split("?")[0];
+  const pageUrl = typeof window !== "undefined" && window.location.href.split("?")[0];
 
   return (
     <div
