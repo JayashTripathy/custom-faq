@@ -8,9 +8,18 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Faq, Social } from "@/types/faq";
 import { formSchema } from "@/lib/validators/editFaqForm";
 import { z } from "zod";
+import ChatOpenAI from "langchain/chat_models/openai";
+import { BufferMemory } from "langchain/memory";
+import { ConversationChain } from "langchain/chains";
+import { OpenAI } from "langchain/llms/openai";
 
+const embeddings = new OpenAIEmbeddings({
+  openAIApiKey: process.env.OPENAI_API_KEY!,
+});
 
-export const createEmbeddings = async (props: { data: z.infer<typeof formSchema> &{ id: string } }) => {
+export const createEmbeddings = async (props: {
+  data: z.infer<typeof formSchema> & { id: string };
+}) => {
   const { data } = props;
   if (!data.faqs) return;
 
@@ -58,10 +67,6 @@ export const createEmbeddings = async (props: { data: z.infer<typeof formSchema>
 
   const loader = new TextLoader(stagingTrainingData);
   const dataset = await loader.load();
-
-  const embeddings = new OpenAIEmbeddings({
-    openAIApiKey: process.env.OPENAI_API_KEY!,
-  });
 
   const trainingData = dataset.map((item) => ({
     pageContent: item.pageContent,

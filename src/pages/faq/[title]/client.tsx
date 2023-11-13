@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { createEmbeddings } from "@/utils/createPageEmbeddings";
 
 function Client(props: { title: string }) {
   const { title } = props;
@@ -28,24 +29,24 @@ function Client(props: { title: string }) {
 
   const me = data?.user;
   const router = useRouter();
-  const { data: faq } = api.faq.getFaqPage.useQuery(
+  const { data: faq, refetch: refetchFaq } = api.faq.getFaqPage.useQuery(
     { faqTitle: title },
     {
       enabled: !!title,
     },
   );
   const createVectorEmbedings = api.faq.createVectorEmbeddings.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       toast({
         title: "Success!",
         description: "AI bot is now live on your page",
         type: "background",
         duration: 2000,
       });
+
+      await refetchFaq();
     },
   });
-
-  console.log(createVectorEmbedings.isLoading);
 
   const styles = getTheme(faq?.theme ?? undefined);
   const searchParams = useSearchParams();
@@ -73,7 +74,8 @@ function Client(props: { title: string }) {
     );
   };
 
-  const pageUrl = typeof window !== "undefined" && window.location.href.split("?")[0];
+  const pageUrl =
+    typeof window !== "undefined" && window.location.href.split("?")[0];
 
   return (
     <div
@@ -130,7 +132,9 @@ function Client(props: { title: string }) {
                           }}
                           disabled={createVectorEmbedings.isLoading}
                         >
-                          {createVectorEmbedings.isLoading ? (
+                          {createVectorEmbedings.isLoading ||
+                            (faq.aiMode ? "AI Enabled" : "AI")}
+                          {createVectorEmbedings.isLoading && (
                             <div className="flex items-center gap-2 text-xl ">
                               <svg
                                 aria-hidden="true"
@@ -159,8 +163,6 @@ function Client(props: { title: string }) {
                                 </div>
                               </div>
                             </div>
-                          ) : (
-                            "AI"
                           )}
                         </button>
                       )}
@@ -184,7 +186,7 @@ function Client(props: { title: string }) {
                         </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() =>
-                            createVectorEmbedings.mutate({ trainingData: faq })
+                            faq && createVectorEmbedings.mutate({ trainingData: faq, faqId: faq.id })
                           }
                           className="w-full"
                           style={{

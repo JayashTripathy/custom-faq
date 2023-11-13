@@ -116,15 +116,26 @@ export const faqRouter = createTRPCRouter({
     .input(
       z.object({
         trainingData: z.any(),
+        faqId: z.string(),
       }),
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      const { id } = ctx.session.user;
       if (!input.trainingData) return { message: "No data provided" };
       await createEmbeddings({ data: input.trainingData });
 
+      await db.faq.update({
+        where: {
+          id: input.faqId,
+          userId: id,
+        },
+        data: {
+          aiMode: true,
+        },
+      });
+
       return { message: "Embeddings created successfully" };
     }),
+
 });
 
-// console.log("Processing embeddings")
-// console.log("Processing complete")
