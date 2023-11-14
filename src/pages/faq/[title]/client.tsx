@@ -1,5 +1,5 @@
 "use client";
-import React, { CSSProperties, ReactNode, useEffect } from "react";
+import React, { CSSProperties, ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import { Link1Icon } from "@radix-ui/react-icons";
 import { getTheme } from "@/utils/getPageTheme";
@@ -28,9 +28,11 @@ import ChatBox from "@/components/chatbox";
 function Client(props: { title: string }) {
   const { title } = props;
   const { data } = useSession();
-
   const me = data?.user;
   const router = useRouter();
+
+  const [isChatboxOpen, setIsChatboxOpen] = useState(false);
+
   const { data: faq, refetch: refetchFaq } = api.faq.getFaqPage.useQuery(
     { faqTitle: title },
     {
@@ -317,20 +319,25 @@ function Client(props: { title: string }) {
         </div>
       </div>
 
-      <div className="fixed bottom-6 right-5  opacity-100 md:right-32 z-50">
+      <div className="fixed bottom-6 right-5  z-50 opacity-100 md:right-32">
         <Button
           style={{
             background: styles?.primary,
             color: styles?.background,
           }}
           className="rounded-full p-5 font-bold md:text-2xl"
+          onClick={() => setIsChatboxOpen(true)}
         >
           AI Bot &nbsp;
           <Bot size={30} />
         </Button>
-        
       </div>
-      <ChatBox theme={faq?.theme ?? undefined}/>
+      {isChatboxOpen && (
+        <ChatBox
+          theme={faq?.theme ?? undefined}
+          onClose={() => setIsChatboxOpen(false)}
+        />
+      )}
     </div>
   );
 }
