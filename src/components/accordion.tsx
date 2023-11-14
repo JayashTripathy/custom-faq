@@ -15,7 +15,7 @@ const Accordion = (props: { faqs: Faq[] | undefined; theme?: string }) => {
           <div className="w-full px-4">
             <div className="mx-auto mb-[60px] max-w-[520px] text-center lg:mb-20">
               <h2
-                className="text-dark mb-2 text-2xl font-bold text-primary md:text-4xl"
+                className="text-dark mb-2 text-2xl font-bold text-primary md:text-4xl z"
                 style={{
                   color: styles?.primary,
                 }}

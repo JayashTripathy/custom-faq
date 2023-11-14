@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 import Accordion from "@/components/accordion";
-import { Copy, ExternalLink } from "lucide-react";
+import { Copy, ExternalLink, Bot } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import {
   AlertDialog,
@@ -22,6 +22,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { createEmbeddings } from "@/utils/createPageEmbeddings";
+import { Button } from "@/components/ui/button";
+import ChatBox from "@/components/chatbox";
 
 function Client(props: { title: string }) {
   const { title } = props;
@@ -186,7 +188,11 @@ function Client(props: { title: string }) {
                         </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() =>
-                            faq && createVectorEmbedings.mutate({ trainingData: faq, faqId: faq.id })
+                            faq &&
+                            createVectorEmbedings.mutate({
+                              trainingData: faq,
+                              faqId: faq.id,
+                            })
                           }
                           className="w-full"
                           style={{
@@ -310,6 +316,21 @@ function Client(props: { title: string }) {
           <Accordion faqs={faq?.faqs} theme={faq?.theme ?? undefined} />
         </div>
       </div>
+
+      <div className="fixed bottom-6 right-5  opacity-100 md:right-32 z-50">
+        <Button
+          style={{
+            background: styles?.primary,
+            color: styles?.background,
+          }}
+          className="rounded-full p-5 font-bold md:text-2xl"
+        >
+          AI Bot &nbsp;
+          <Bot size={30} />
+        </Button>
+        
+      </div>
+      <ChatBox theme={faq?.theme ?? undefined}/>
     </div>
   );
 }
