@@ -65,14 +65,14 @@ const AccordionItem = (props: {
 
   return (
     <div
-      className=" mx-4 mb-6 rounded-lg   p-4  shadow-xl sm:p-8 lg:px-6 xl:px-8 "
+      className=" mx-4 mb-6 rounded-lg   p-4  shadow-xl sm:p-8 lg:px-6 xl:px-8  "
       style={{
         borderWidth: "1px",
         borderColor: styles?.primary,
       }}
     >
       <button
-        className={` flex w-full text-left`}
+        className={` flex w-full text-left justify-center items-center`}
         onClick={(e) => handleToggle(e)}
       >
         <div
@@ -100,7 +100,7 @@ const AccordionItem = (props: {
         </div>
 
         <div className="w-full">
-          <h4 className="text-dark mt-1 text-lg font-semibold ">{header}</h4>
+          <h4 className="text-dark mt-1 md:text-lg text-sm font-semibold ">{header}</h4>
         </div>
       </button>
 
@@ -109,7 +109,7 @@ const AccordionItem = (props: {
           active ? "block" : "hidden"
         }`}
       >
-        <p className="text-body-color dark:text-dark-6 py-3 text-base leading-relaxed">
+        <p className="text-body-color dark:text-dark-6 py-3 md:text-base text-sm leading-relaxed">
           {text}
         </p>
       </div>

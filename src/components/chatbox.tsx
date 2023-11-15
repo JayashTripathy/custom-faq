@@ -2,14 +2,15 @@ import { getTheme } from "@/utils/getPageTheme";
 import React, { useEffect, useRef, useState } from "react";
 import { Bot, Send, SendHorizontal, X } from "lucide-react";
 import { Textarea } from "./ui/textarea";
-function ChatBox(props: { theme?: string; onClose?: () => void }) {
-  const { theme, onClose } = props;
+function ChatBox(props: { theme?: string; onClose?: () => void, open?: boolean }) {
+  const { theme, onClose , open } = props;
   const styles = getTheme(theme);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [input, setInput] = useState("");
-
+  
+  const chatAnimation = open ? "chat  backdrop-blur-md" : "hideChat"
   return (
-    <div className="fixed left-0 top-0 z-[51] flex h-screen  w-screen  backdrop-blur-md transition-all duration-200  " >
+    <div className={`fixed left-0 top-0 z-[51] flex h-screen  w-screen   transition-all duration-200 ${chatAnimation}   `} >
       <div
         className=" relative mx-5 my-10 flex   w-full flex-col rounded-3xl shadow-lg lg:mx-auto lg:w-2/5 "
         style={{
