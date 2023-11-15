@@ -10,7 +10,7 @@ function ChatBox(props: { theme?: string; onClose?: () => void, open?: boolean }
   
   const chatAnimation = open ? "chat  backdrop-blur-md" : "hideChat"
   return (
-    <div className={`fixed left-0 top-0 z-[51] flex h-screen  w-screen   transition-all duration-200 ${chatAnimation}   `} >
+    <div className={`fixed left-0 top-0 z-[51] flex h-screen  w-screen ${chatAnimation}   `} >
       <div
         className=" relative mx-5 my-10 flex   w-full flex-col rounded-3xl shadow-lg lg:mx-auto lg:w-2/5 "
         style={{
