@@ -123,12 +123,12 @@ function Client(props: { title: string }) {
                     viewers <br />
                   </div>
                 </div>
-                <AlertDialog >
-                  <div className="flex h-20 gap-2 items-center p-2 ">
+                <AlertDialog>
+                  <div className="flex h-20 items-center gap-2 p-2 ">
                     <AlertDialogTrigger asChild>
                       {isAIMode && (
                         <button
-                          className={` flex h-full  items-center justify-center  rounded-2xl md:text-2xl font-bold px-2 `}
+                          className={` flex h-full  items-center justify-center  rounded-2xl px-2 font-bold md:text-2xl `}
                           style={{
                             borderColor: styles?.primary,
                             borderWidth: "1px",
@@ -206,7 +206,7 @@ function Client(props: { title: string }) {
                       </AlertDialogFooter>
                     </AlertDialogContent>
                     <button
-                      className={` aspect-square h-full rounded-2xl p-3 flex justify-center items-center `}
+                      className={` flex aspect-square h-full items-center justify-center rounded-2xl p-3 `}
                       style={{
                         borderColor: styles?.primary,
                         borderWidth: "1px",
@@ -224,20 +224,20 @@ function Client(props: { title: string }) {
                         }
                       }}
                     >
-                      <Copy  />
+                      <Copy />
                     </button>
                     <button
                       style={{
                         background: styles?.primary,
                         color: styles?.background,
                       }}
-                      className=" aspect-square h-full rounded-2xl p-3 flex justify-center items-center"
+                      className=" flex aspect-square h-full items-center justify-center rounded-2xl p-3"
                       onClick={() =>
                         pageUrl &&
                         void window.open(pageUrl, "_blank", "noreferrer")
                       }
                     >
-                      <ExternalLink  />
+                      <ExternalLink />
                     </button>
                   </div>
                 </AlertDialog>
@@ -319,26 +319,29 @@ function Client(props: { title: string }) {
         </div>
       </div>
 
-      <div className="fixed bottom-6 right-5  z-50 opacity-100 md:right-32">
-        <Button
-          style={{
-            background: styles?.primary,
-            color: styles?.background,
-          }}
-          className="rounded-full p-5 font-bold md:text-2xl"
-          onClick={() => setIsChatboxOpen(true)}
-        >
-          AI Bot &nbsp;
-          <Bot size={30} />
-        </Button>
-      </div>
-  
-        <ChatBox
-          theme={faq?.theme ?? undefined}
-          onClose={() => setIsChatboxOpen(false)}
-          open={isChatboxOpen}
-        />
-    
+      {faq?.aiMode && (
+        <>
+          <div className="fixed bottom-6 right-5  z-50 opacity-100 md:right-32">
+            <Button
+              style={{
+                background: styles?.primary,
+                color: styles?.background,
+              }}
+              className="rounded-full p-5 font-bold md:text-2xl"
+              onClick={() => setIsChatboxOpen(true)}
+            >
+              AI Bot &nbsp;
+              <Bot size={30} />
+            </Button>
+          </div>
+
+          <ChatBox
+            theme={faq?.theme ?? undefined}
+            onClose={() => setIsChatboxOpen(false)}
+            open={isChatboxOpen}
+          />
+        </>
+      )}
     </div>
   );
 }
