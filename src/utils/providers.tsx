@@ -6,18 +6,19 @@ function AppProviders({ children }: React.PropsWithChildren) {
   const [storage, setStorage] = useAtom(storageAtom);
 
   const getStorage = () => {
-    const storage = localStorage.getItem("storage");
+    const storage = localStorage.getItem("wiseFAQ-store");
+    console.log(storage);
 
     if (storage) {
       setStorage(JSON.parse(storage) as SetStateAction<Storage | null>);
     } else {
-      setStorage({});
+      setStorage((p) => ({ ...p, messages: [] }));
     }
   };
 
   useEffect(() => {
     if (storage === null) return;
-    localStorage.setItem("storage", JSON.stringify(storage));
+    localStorage.setItem("wiseFAQ-store", JSON.stringify(storage));
   }, [storage]);
 
   useEffect(() => {

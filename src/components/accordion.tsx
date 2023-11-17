@@ -9,7 +9,7 @@ const Accordion = (props: { faqs: Faq[] | undefined; theme?: string }) => {
 
   const styles = getTheme(theme);
   return (
-    <section className="dark:bg-dark relative z-20 overflow-hidden  pb-12 pt-20 lg:pb-[90px] lg:pt-[120px]">
+    <section className="dark:bg-dark relative z-20 overflow-hidden  pb-12 pt-10 lg:pb-[90px] lg:pt-[80px]">
       <div className=" mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">

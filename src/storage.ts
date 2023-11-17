@@ -1,7 +1,12 @@
 import { atom } from "jotai";
 
 export type Storage = {
-    test?: string;
-}
+  messages: {
+    faqid: string;
+    isSent: boolean;
+    timestamp: number;
+    message: string;
+  }[];
+};
 
-export const storageAtom = atom<Storage | null>(null)
+export const storageAtom = atom<Storage | null>(null);

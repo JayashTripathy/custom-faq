@@ -1,16 +1,50 @@
 import { getTheme } from "@/utils/getPageTheme";
 import React, { useEffect, useRef, useState } from "react";
-import { Bot, Send, SendHorizontal, X } from "lucide-react";
+import {
+  Bot,
+  Send,
+  SendHorizontal,
+  User,
+  User2,
+  User2Icon,
+  X,
+} from "lucide-react";
 import { Textarea } from "./ui/textarea";
-function ChatBox(props: { theme?: string; onClose?: () => void, open?: boolean }) {
-  const { theme, onClose , open } = props;
+import { useAtom } from "jotai";
+import { Storage, storageAtom } from "@/storage";
+function ChatBox(props: {
+  theme?: string;
+  onClose?: () => void;
+  open?: boolean;
+  faqId: string;
+}) {
+  const { theme, onClose, open, faqId } = props;
   const styles = getTheme(theme);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [input, setInput] = useState("");
-  
-  const chatAnimation = open ? "chat  backdrop-blur-md" : "hideChat"
+  const [storage, setStorage] = useAtom(storageAtom);
+
+  const chatAnimation = open ? "chat " : "hideChat";
+
+  const onSend = () => {
+    setStorage((p) => ({
+      ...p,
+      messages: [
+        ...(p?.messages || []),
+        {
+          faqid: faqId,
+          isSent: true,
+          timestamp: Date.now(),
+          message: input,
+        },
+      ],
+    }));
+  };
+
   return (
-    <div className={`fixed left-0 top-0 z-[51] flex h-screen  w-screen ${chatAnimation}   `} >
+    <div
+      className={`fixed left-0 top-0 z-[51] flex h-screen  w-screen ${chatAnimation}   `}
+    >
       <div
         className=" relative mx-5 my-10 flex   w-full flex-col rounded-3xl shadow-lg lg:mx-auto lg:w-2/5 "
         style={{
@@ -19,9 +53,18 @@ function ChatBox(props: { theme?: string; onClose?: () => void, open?: boolean }
         }}
       >
         <div>
-          <div className="flex justify-between p-5">
-            <div className="flex gap-2 font-bold ">
-              <Bot /> Chat with AI
+          <div className="flex justify-between px-5">
+            <div className="my-3 flex items-center gap-2 font-bold ">
+              <span
+                className="aspect-square rounded-full p-2"
+                style={{
+                  backgroundColor: styles?.primary,
+                  color: styles?.primaryForeground,
+                }}
+              >
+                <Bot />{" "}
+              </span>
+              AI
             </div>
             <button onClick={onClose}>
               <X className="cursor-pointer transition-all duration-100 hover:scale-75 hover:opacity-60" />
@@ -36,7 +79,27 @@ function ChatBox(props: { theme?: string; onClose?: () => void, open?: boolean }
             }}
           ></div>
         </div>
-        <div className=" flex-1 overflow-auto">sda</div>
+
+        <div className=" flex flex-1 flex-col  overflow-auto ">
+          {storage?.messages?.map((item, index) => (
+            <div
+              key={index}
+              className="px-4 py-2 "
+              style={{
+                backgroundColor: item.isSent ? " " : styles?.muted,
+                color: item.isSent ? " " : styles?.primary,
+              }}
+            >
+              <div className="flex gap-5">
+                <div className=" opacity-50 ">
+                  {item.isSent ? <User2Icon /> : <Bot />}
+                </div>
+                {item.message}
+              </div>
+            </div>
+          ))}
+        </div>
+
         <div className="absolute bottom-0 flex w-full  items-end p-1 ">
           <textarea
             className=" h-[50px]  max-h-[400px] flex-1 resize-none overflow-auto rounded-2xl p-3  outline-none"
@@ -53,14 +116,15 @@ function ChatBox(props: { theme?: string; onClose?: () => void, open?: boolean }
                 e.currentTarget.scrollHeight + "px";
             }}
           />
-          <div
+          <button
             className="absolute right-2  flex cursor-pointer items-center justify-center rounded-2xl p-3"
             style={{
               color: styles?.primary,
             }}
+            onClick={onSend}
           >
             <SendHorizontal />
-          </div>
+          </button>
         </div>
       </div>
     </div>

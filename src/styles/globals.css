@@ -84,7 +84,6 @@ body,
 @keyframes hideChatAnimation {
   0% {
     transform: translateY(0%);
-
     opacity: 1;
   }
   100% {
@@ -99,9 +98,14 @@ body,
     transform: translateY(100%);
     opacity: 0;
     display: none;
+    @apply backdrop-blur-0;
   }
-  100% {
+  70% {
     transform: translateY(0%);
     opacity: 1;
+    @apply backdrop-blur-0;
+  }
+  100% {
+    @apply backdrop-blur-md;
   }
 }

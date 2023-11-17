@@ -92,48 +92,45 @@ function Client(props: { title: string }) {
       }
     >
       {isAdmin && adminMode ? (
-        <div
-          className=" mx-2 my-4 mb-0  rounded-2xl p-3  md:mx-auto md:w-3/4  "
-          style={{
-            background: styles?.accent,
-          }}
-        >
-          <div className="">
-            <div className="flex items-center">
-              <div className="max-w-[100px] rounded-full  p-4  ">
-                <img src="/stars.gif" className=" w-full  " />
-              </div>
-              <div className="w-full items-center justify-between md:flex">
-                <div>
+        <>
+          <div className=" mx-2 my-4 mb-0  rounded-2xl p-3  md:mx-auto md:w-3/4  ">
+            <div className="">
+              <div className="flex flex-col items-center justify-between gap-6 md:flex-row ">
+                <div className=" flex  w-full items-center gap-2">
                   <div
-                    className="font-bold md:text-2xl "
+                    className="max-w-[80px] overflow-hidden  rounded-full   "
                     style={{
-                      color: styles?.primary,
+                      background: styles?.muted,
                     }}
                   >
-                    Your page is live!
+                    <img src="/stars.gif" className=" w-full  " />
                   </div>
-                  <div
-                    className="text-sm"
-                    style={{
-                      color: styles?.mutedForeground,
-                    }}
-                  >
-                    page is now accessible and you can share this where you
-                    viewers <br />
+                  <div>
+                    <div
+                      className="font-bold md:text-2xl "
+                      style={{
+                        color: styles?.primary,
+                      }}
+                    >
+                      Your page is live!
+                    </div>
+                    <div
+                      className="text-sm"
+                      style={{
+                        color: styles?.mutedForeground,
+                      }}
+                    >
+                      page is now accessible and you can share this with your
+                      viewers <br />
+                    </div>
                   </div>
                 </div>
                 <AlertDialog>
-                  <div className="flex h-20 items-center gap-2 p-2 ">
+                  <div className="flex h-20 w-full  items-center gap-2 p-2 md:justify-end ">
                     <AlertDialogTrigger asChild>
                       {isAIMode && (
-                        <button
-                          className={` flex h-full  items-center justify-center  rounded-2xl px-2 font-bold md:text-2xl `}
-                          style={{
-                            borderColor: styles?.primary,
-                            borderWidth: "1px",
-                            borderStyle: "solid",
-                          }}
+                        <Button
+                          className={` flex h-full  items-center justify-center  rounded-2xl bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 px-3 font-bold md:text-2xl  `}
                           disabled={createVectorEmbedings.isLoading}
                         >
                           {createVectorEmbedings.isLoading ||
@@ -168,7 +165,7 @@ function Client(props: { title: string }) {
                               </div>
                             </div>
                           )}
-                        </button>
+                        </Button>
                       )}
                     </AlertDialogTrigger>
 
@@ -244,7 +241,15 @@ function Client(props: { title: string }) {
               </div>
             </div>
           </div>
-        </div>
+          <div
+            style={{
+              height: "1px",
+              marginTop: "20px",
+              background: styles?.mutedForeground,
+              width: "100%",
+            }}
+          ></div>
+        </>
       ) : (
         <></>
       )}
@@ -314,6 +319,16 @@ function Client(props: { title: string }) {
               </div>
             )}
           </div>
+          <div
+            style={{
+              height: ".1px",
+              background: styles?.mutedForeground,
+              width: "100%",
+              margin: "auto",
+              marginTop: "70px",
+              opacity: 0.2,
+            }}
+          ></div>
 
           <Accordion faqs={faq?.faqs} theme={faq?.theme ?? undefined} />
         </div>
@@ -339,6 +354,8 @@ function Client(props: { title: string }) {
             theme={faq?.theme ?? undefined}
             onClose={() => setIsChatboxOpen(false)}
             open={isChatboxOpen}
+            faqId={faq?.id}
+          
           />
         </>
       )}
