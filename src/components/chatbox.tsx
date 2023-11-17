@@ -30,7 +30,7 @@ function ChatBox(props: {
     setStorage((p) => ({
       ...p,
       messages: [
-        ...(p?.messages || []),
+        ...(p?.messages ?? []),
         {
           faqid: faqId,
           isSent: true,
