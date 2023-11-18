@@ -12,6 +12,7 @@ import {
 import { Textarea } from "./ui/textarea";
 import { useAtom } from "jotai";
 import { Storage, storageAtom } from "@/storage";
+import { api } from "@/utils/api";
 function ChatBox(props: {
   theme?: string;
   onClose?: () => void;
@@ -26,6 +27,8 @@ function ChatBox(props: {
 
   const chatAnimation = open ? "chat " : "hideChat";
 
+  const aiMsgMutation = api.faq.generateAIResponse.useMutation();
+
   const onSend = () => {
     setStorage((p) => ({
       ...p,
@@ -39,6 +42,8 @@ function ChatBox(props: {
         },
       ],
     }));
+    setInput(() => " ");
+    aiMsgMutation.mutate({ faqId: faqId, question: input });
   };
 
   return (
@@ -108,12 +113,18 @@ function ChatBox(props: {
               color: styles?.mutedForeground,
             }}
             ref={inputRef}
-            defaultValue={input}
+            value={input}
             onInput={(e) => {
               setInput(e.currentTarget.value);
               e.currentTarget.style.height = "50px";
               e.currentTarget.style.height =
                 e.currentTarget.scrollHeight + "px";
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                onSend();
+              }
             }}
           />
           <button

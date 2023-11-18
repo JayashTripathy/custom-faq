@@ -21,7 +21,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { createEmbeddings } from "@/utils/createPageEmbeddings";
 import { Button } from "@/components/ui/button";
 import ChatBox from "@/components/chatbox";
 

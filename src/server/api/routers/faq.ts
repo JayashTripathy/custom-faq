@@ -3,7 +3,8 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { formSchema } from "@/lib/validators/editFaqForm";
-import { createEmbeddings } from "@/utils/createPageEmbeddings";
+import { vectorEmbeddings } from "@/utils/createPageEmbeddings";
+
 
 export const faqRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -122,7 +123,7 @@ export const faqRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const { id } = ctx.session.user;
       if (!input.trainingData) return { message: "No data provided" };
-      await createEmbeddings({ data: input.trainingData });
+      await vectorEmbeddings.create({ data: input.trainingData });
 
       await db.faq.update({
         where: {
@@ -137,5 +138,20 @@ export const faqRouter = createTRPCRouter({
       return { message: "Embeddings created successfully" };
     }),
 
+  generateAIResponse: publicProcedure
+    .input(
+      z.object({
+        faqId: z.string(),
+        question: z.string(),
+        prevMsgs: z.array(z.string()).optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const res = await vectorEmbeddings.find({
+        faqId: input.faqId,
+        question: input.question,
+      });
+      return res;
+    
+    }),
 });
-
