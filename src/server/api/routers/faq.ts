@@ -147,11 +147,11 @@ export const faqRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const res = await vectorEmbeddings.find({
+      const similarRes = await vectorEmbeddings.find({
         faqId: input.faqId,
         question: input.question,
       });
-      return res;
-    
+
+      return similarRes;
     }),
 });

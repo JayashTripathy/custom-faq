@@ -30,7 +30,7 @@ function Client(props: { title: string }) {
   const me = data?.user;
   const router = useRouter();
 
-  const [isChatboxOpen, setIsChatboxOpen] = useState(false);
+  const [isChatboxOpen, setIsChatboxOpen] = useState<boolean | null>(null);
 
   const { data: faq, refetch: refetchFaq } = api.faq.getFaqPage.useQuery(
     { faqTitle: title },
@@ -332,7 +332,7 @@ function Client(props: { title: string }) {
           <Accordion faqs={faq?.faqs} theme={faq?.theme ?? undefined} />
         </div>
       </div>
-
+            
       {faq?.aiMode && (
         <>
           <div className="fixed bottom-6 right-5  z-50 opacity-100 md:right-32">
@@ -348,7 +348,7 @@ function Client(props: { title: string }) {
               <Bot size={30} />
             </Button>
           </div>
-
+              
           <ChatBox
             theme={faq?.theme ?? undefined}
             onClose={() => setIsChatboxOpen(false)}

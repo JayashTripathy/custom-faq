@@ -11,12 +11,14 @@ import {
 } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { useAtom } from "jotai";
-import { Storage, storageAtom } from "@/storage";
+import { storageAtom } from "@/storage";
 import { api } from "@/utils/api";
+import { toast } from "./ui/use-toast";
+import { Stream } from "stream";
 function ChatBox(props: {
   theme?: string;
   onClose?: () => void;
-  open?: boolean;
+  open?: boolean | null;
   faqId: string;
 }) {
   const { theme, onClose, open, faqId } = props;
@@ -24,12 +26,21 @@ function ChatBox(props: {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [input, setInput] = useState("");
   const [storage, setStorage] = useAtom(storageAtom);
-
-  const chatAnimation = open ? "chat " : "hideChat";
+  const [streamingRes, setStreamingRes] = useState("");
+  const chatAnimation =
+    open === null ? "-translate-y-[100%]" : open ? "chat " : "hideChat";
 
   const aiMsgMutation = api.faq.generateAIResponse.useMutation();
 
   const onSend = () => {
+    if (!input) {
+      toast({
+        variant: "default",
+        title: "Error!",
+        description: ` Message cannot be empty!`,
+      });
+      return;
+    }
     setStorage((p) => ({
       ...p,
       messages: [
@@ -42,8 +53,62 @@ function ChatBox(props: {
         },
       ],
     }));
-    setInput(() => " ");
-    aiMsgMutation.mutate({ faqId: faqId, question: input });
+    setInput(() => "");
+    aiMsgMutation.mutate(
+      { faqId: faqId, question: input },
+      {
+        onSuccess: async (data: any) => {
+          try {
+            const response = await fetch("/api/ask", {
+              method: "POST",
+              body: JSON.stringify({
+                faqId: faqId,
+                question: input,
+                context: data,
+                prevQuestions: storage?.messages.slice(-5),
+              }),
+            });
+            if (response.status === 500) {
+              toast({
+                variant: "default",
+                title: "Error!",
+                description: `Something went wrong!`,
+              });
+              return;
+            }
+
+            if (response.body) {
+              const reader = response.body.getReader();
+              const decoder = new TextDecoder();
+              let done = false;
+              let finalRes = "";
+              while (!done) {
+                const { value, done: doneReading } = await reader.read();
+                done = doneReading;
+                const chunkValue = decoder.decode(value);
+                setStreamingRes((p) => p + chunkValue);
+                finalRes += chunkValue;
+              }
+              setStreamingRes("");
+              setStorage((p) => ({
+                ...p,
+                messages: [
+                  ...(p?.messages ?? []),
+                  {
+                    faqid: faqId,
+                    isSent: false,
+                    timestamp: Date.now(),
+                    message: finalRes,
+                  },
+                ],
+              }));
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        },
+      },
+    );
   };
 
   return (
@@ -85,7 +150,7 @@ function ChatBox(props: {
           ></div>
         </div>
 
-        <div className=" flex flex-1 flex-col  overflow-auto ">
+        <div className=" mb-16 flex flex-1  flex-col overflow-auto ">
           {storage?.messages?.map((item, index) => (
             <div
               key={index}
@@ -103,6 +168,22 @@ function ChatBox(props: {
               </div>
             </div>
           ))}
+          {streamingRes && (
+            <div
+              className="px-4 py-2 "
+              style={{
+                backgroundColor: styles?.muted,
+                color: styles?.primary,
+              }}
+            >
+              <div className="flex gap-5">
+                <div className=" opacity-50 ">
+                  <Bot />
+                </div>
+                {streamingRes}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="absolute bottom-0 flex w-full  items-end p-1 ">

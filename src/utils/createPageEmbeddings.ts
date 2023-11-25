@@ -81,7 +81,7 @@ export const vectorEmbeddings = {
     }));
 
     const splitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 3000,
+      chunkSize: 1000,
       chunkOverlap: 50,
       lengthFunction: (item) => item.length,
     });
@@ -112,7 +112,7 @@ export const vectorEmbeddings = {
       },
     );
 
-    const result = await vectorStore.similaritySearch(question, 1, {
+    const result = await vectorStore.similaritySearch(question, 2, {
       faqId: faqId,
     });
 

@@ -7,8 +7,6 @@ function AppProviders({ children }: React.PropsWithChildren) {
 
   const getStorage = () => {
     const storage = localStorage.getItem("wiseFAQ-store");
-    console.log(storage);
-
     if (storage) {
       setStorage(JSON.parse(storage) as SetStateAction<Storage | null>);
     } else {

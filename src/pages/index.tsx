@@ -6,7 +6,7 @@ import { ChevronRightCircle } from "lucide-react";
 import Link from "next/link";
 
 function index() {
-  const alluser = api.example.getAllUsers.useQuery();
+ 
 
   return (
     <>
