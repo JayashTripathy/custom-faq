@@ -353,8 +353,8 @@ function Client(props: { title: string }) {
             theme={faq?.theme ?? undefined}
             onClose={() => setIsChatboxOpen(false)}
             open={isChatboxOpen}
-            faqId={faq?.id}
-          
+            faqId={faq.id}  
+            faqTitle={title}
           />
         </>
       )}
