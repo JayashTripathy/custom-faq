@@ -27,10 +27,19 @@ function ChatBox(props: {
   const [input, setInput] = useState("");
   const [storage, setStorage] = useAtom(storageAtom);
   const [streamingRes, setStreamingRes] = useState("");
+  const messageContainerRef = useRef<HTMLDivElement>(null);
+
   const chatAnimation =
     open === null ? "-translate-y-[100%]" : open ? "chat " : "hideChat";
 
   const aiMsgMutation = api.faq.generateAIResponse.useMutation();
+
+  const scrollChatToBottom = () => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
+    }
+  };
 
   const onSend = () => {
     if (!input) {
@@ -83,6 +92,7 @@ function ChatBox(props: {
               let done = false;
               let finalRes = "";
               while (!done) {
+                scrollChatToBottom();
                 const { value, done: doneReading } = await reader.read();
                 done = doneReading;
                 const chunkValue = decoder.decode(value);
@@ -110,6 +120,12 @@ function ChatBox(props: {
       },
     );
   };
+
+  useEffect(() => {
+    if (storage?.messages) {
+      scrollChatToBottom();
+    }
+  }, [storage?.messages]);
 
   return (
     <div
@@ -150,7 +166,10 @@ function ChatBox(props: {
           ></div>
         </div>
 
-        <div className=" mb-16 flex flex-1  flex-col overflow-auto ">
+        <div
+          className=" mb-16 flex flex-1  flex-col overflow-auto "
+          ref={messageContainerRef}
+        >
           {storage?.messages?.map((item, index) => (
             <div
               key={index}
