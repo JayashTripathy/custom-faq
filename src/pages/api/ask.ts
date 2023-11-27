@@ -29,11 +29,11 @@ const handler = async (req: NextRequest) => {
       {
         role: "system",
         content:
-          "Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format.",
+          "Use the following pieces of context (or previous conversaton if needed) which includes data of a faq page which include all the pagedata including mainly faq's for it  to answer the users question in text format.",
       },
       {
         role: "user",
-        content: `Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
+        content: `Use the following pieces of context (or previous conversaton if needed) to answer the users question in text format. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
             
    
         \n----------------\n

@@ -55,7 +55,7 @@ function ChatBox(props: {
   };
   const messages = storage?.messages.filter((item) => item.faqid === faqId);
 
-  const noMessages = messages.length > 0;
+  const noMessages = messages && messages.length > 0;
 
   const onSend = () => {
     if (!input) {
