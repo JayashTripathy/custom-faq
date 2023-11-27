@@ -35,7 +35,7 @@ function Dashboard() {
   const CreateBtn = (): ReactNode => {
     return (
       <Link href="/dashboard/editfaq">
-        <Button className="flex gap-1  p-3 text-xl" variant={"secondary"}>
+        <Button className="flex gap-1  p-3 md:text-xl" variant={"secondary"}>
           Create <Plus size={23} className="text-primary" />{" "}
         </Button>
       </Link>
@@ -43,8 +43,8 @@ function Dashboard() {
   };
 
   return (
-    <div className=" absolute top-0 z-0 flex h-screen w-full flex-col p-4  px-10 pt-32  ">
-      <div className="mb-4 flex justify-between text-4xl font-bold">
+    <div className=" absolute top-0 z-0 flex h-screen w-full flex-col p-4   md:px-10 md:pt-32 pt-20  ">
+      <div className="mb-4 flex justify-between md:text-4xl text-2xl font-bold">
         <div>Library</div>
         <CreateBtn />
       </div>

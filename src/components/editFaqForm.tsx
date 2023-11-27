@@ -440,8 +440,8 @@ export function EditFaqForm() {
           />
         </div>
 
-        <h1 className="text-xl font-bold ">Socials</h1>
         <div>
+        <h1 className="text-xl font-bold ">Socials</h1>
           <div className="flex gap-3">
             {socials.map((social, index) => (
               <div
@@ -454,7 +454,7 @@ export function EditFaqForm() {
                   {social.url}
                 </div>
                 <Button
-                type="button"
+                  type="button"
                   variant={"destructive"}
                   className="m-0 h-5 w-5 rounded-full p-0"
                   onClick={() =>
@@ -515,7 +515,7 @@ export function EditFaqForm() {
           </div>
         </div>
         <div>
-          <h1 className="text-2xl">Choose theme</h1>
+          <h1 className="text-xl font-bold ">Choose theme</h1>
 
           <div className="grid  grid-cols-[repeat(auto-fit,_minmax(100px,1fr))] gap-2 px-2">
             {pagethemes.map((els, index) => {
@@ -529,15 +529,14 @@ export function EditFaqForm() {
                   : els.color;
 
               const selected: boolean = selectedTheme === els.name;
-              console.log(selected);
               return (
                 <button
                   type="button"
                   key={index}
                   onClick={() => handlePageThemeChange(els.name)}
-                  className="mt-5 box-border  flex h-32 w-full flex-col justify-center rounded-lg  border p-5 text-left duration-200 ease-in-out hover:bg-accent   "
+                  className="mt-5 box-border  flex h-32 w-full flex-col justify-center rounded-lg  border p-5 text-left duration-200 ease-in-out hover:bg-accent    "
                   style={{
-                    border: selected ? `2px solid ${color}` : "none",
+                    border: selected ? `2px solid ${color}` : "2px solid 		rgb(72, 86, 106, .2)",
                   }}
                 >
                   <div
@@ -546,12 +545,12 @@ export function EditFaqForm() {
                       color: color,
                     }}
                   >
-                    {els.name}
+                    {els.name}<span className="text-sm "> {els.name === "purple" && "(default)"}</span>
                   </div>
                   {Array(2)
                     .fill(0)
                     .map((_, index) => (
-                      <div className="" key={els.name + index}>
+                      <div className="w-full" key={els.name + index}>
                         <span
                           style={{
                             color: color,
@@ -580,6 +579,7 @@ export function EditFaqForm() {
           Submit
         </Button>
       </form>
+        <br/>
     </Form>
   );
 }

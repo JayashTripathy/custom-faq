@@ -48,7 +48,7 @@ function FaqList(props: {
   >;
 }) {
   const { updateFaq } = props;
-  const [faqs, setFaqs] = useState([] as Omit<Faq, 'faqId'>[]);
+  const [faqs, setFaqs] = useState([] as Omit<Faq, "faqId">[]);
   const [formData, setFormData] = useState({
     question: "",
     answer: "",
@@ -99,18 +99,23 @@ function FaqList(props: {
       <StrictModeDroppable droppableId="faqs">
         {(provided) => (
           <ul
-            className="flex flex-col gap-3 rounded-2xl border p-4"
+            className="flex flex-col gap-3 rounded-2xl border p-2 md:p-4"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
             <AlertDialog>
               <div className="flex items-center justify-between ">
                 ALL FAQ&apos;s
-                <AlertDialogTrigger asChild>
-                  <Button className="" variant={"outline"}>
-                    Add more <Plus size={20} className="ml-2 text-primary" />
+                <div>
+                  <Button className="mx-2" variant={"outline"} type="button">
+                    Import JSON
                   </Button>
-                </AlertDialogTrigger>
+                  <AlertDialogTrigger asChild>
+                    <Button className="" variant={"outline"}>
+                      Add <Plus size={20} className="ml-2 text-primary" />
+                    </Button>
+                  </AlertDialogTrigger>
+                </div>
               </div>
               <AlertDialogContent>
                 <AlertDialogHeader className=" mb-6  flex items-start">
@@ -163,12 +168,12 @@ function FaqList(props: {
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
                     >
-                      <div className=" flex  h-full items-center justify-center p-4">
+                      <div className=" flex  h-full items-center justify-center md:p-4 p-1">
                         <GripVertical size={25} className="text-gray-400/70" />
                       </div>
 
-                      <div className="flex-1 border-l-2 border-background/30 p-4 ">
-                        <div className="text-lg ">{faq.question}</div>
+                      <div className="flex-1 border-l-2 border-background/30 md:p-4 p-2 ">
+                        <div className="md:text-lg text-sm">{faq.question}</div>
                         <div className="">{faq.answer}</div>
                       </div>
 
