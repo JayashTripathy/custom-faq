@@ -107,9 +107,11 @@ function FaqList(props: {
               <div className="flex items-center justify-between ">
                 ALL FAQ&apos;s
                 <div>
-                  <Button className="mx-2" variant={"outline"} type="button">
+
+                  {/* feature to add  */}
+                  {/* <Button className="mx-2" variant={"outline"} type="button">
                     Import JSON
-                  </Button>
+                  </Button> */}
                   <AlertDialogTrigger asChild>
                     <Button className="" variant={"outline"}>
                       Add <Plus size={20} className="ml-2 text-primary" />

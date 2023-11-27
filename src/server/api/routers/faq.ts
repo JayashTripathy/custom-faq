@@ -122,6 +122,7 @@ export const faqRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const { id } = ctx.session.user;
+
       if (!input.trainingData) return { message: "No data provided" };
       await vectorEmbeddings.create({ data: input.trainingData });
 

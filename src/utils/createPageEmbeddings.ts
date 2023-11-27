@@ -28,6 +28,7 @@ export const vectorEmbeddings = {
   }) => {
     const { data } = props;
     if (!data.faqs) return;
+    
 
     function formatFAQ(question: string, answer: string) {
       return `Question: ${question}\nAnswer: ${answer}`;

@@ -53,8 +53,9 @@ function ChatBox(props: {
         messageContainerRef.current.scrollHeight;
     }
   };
+  const messages = storage?.messages.filter((item) => item.faqid === faqId);
 
-  const noMessages = storage?.messages && storage?.messages.length > 0;
+  const noMessages = messages.length > 0;
 
   const onSend = () => {
     if (!input) {
@@ -89,7 +90,7 @@ function ChatBox(props: {
                 faqId: faqId,
                 question: input,
                 context: data,
-                prevQuestions: storage?.messages.slice(-5),
+                prevQuestions: messages && messages.slice(-5),
               }),
             });
             if (response.status === 500) {
@@ -156,7 +157,7 @@ function ChatBox(props: {
         >
           <div>
             <div className="flex justify-between px-5">
-              <div className="my-3 flex flex-1 items-center gap-2  font-bold text-xs md:text-base ">
+              <div className="my-3 flex flex-1 items-center gap-2  text-xs font-bold md:text-base ">
                 <span
                   className="aspect-square rounded-full p-1 md:p-2"
                   style={{
@@ -166,12 +167,12 @@ function ChatBox(props: {
                 >
                   <Bot />{" "}
                 </span>
-               {faqTitle} AI
+                {faqTitle} AI
               </div>
               {noMessages && (
                 <AlertDialogTrigger>
                   <button
-                    className="md:mx-10 mr-3  flex items-center justify-center gap-2  rounded-full  px-2 py-1 text-xs font-semibold transition-all duration-100 hover:opacity-80"
+                    className="mr-3 flex  items-center justify-center gap-2 rounded-full  px-2  py-1 text-xs font-semibold transition-all duration-100 hover:opacity-80 md:mx-10"
                     style={{
                       backgroundColor: styles?.destructiveForeground,
                       color: styles?.destructive,
@@ -214,7 +215,15 @@ function ChatBox(props: {
                     style={{
                       backgroundColor: styles?.primary,
                     }}
-                    onClick={() => setStorage((p) => ({ ...p, messages: [] }))}
+                    onClick={() => {
+                      const newMessages = storage?.messages.filter(
+                        (item) => item.faqid !== faqId,
+                      );
+                      setStorage((p) => ({
+                        ...p,
+                        messages: newMessages ? newMessages : [],
+                      }));
+                    }}
                   >
                     Delete
                   </AlertDialogAction>
@@ -239,32 +248,36 @@ function ChatBox(props: {
             ref={messageContainerRef}
           >
             {!noMessages && (
-              <div className="flex h-full w-full flex-col items-center justify-center " 
-              style={{
-                color: styles?.mutedForeground,
-              }}
-              >
-                <img src="/bot.gif" className="w-20 "></img>
-               {` Ask anything about ${faqTitle}...`}
-              </div>
-            )}
-            {storage?.messages?.map((item, index) => (
               <div
-                key={index}
-                className="px-4 py-2 "
+                className="flex h-full w-full flex-col items-center justify-center "
                 style={{
-                  backgroundColor: item.isSent ? " " : styles?.muted,
-                  color: item.isSent ? " " : styles?.primary,
+                  color: styles?.mutedForeground,
                 }}
               >
-                <div className="flex gap-5">
-                  <div className=" opacity-50 ">
-                    {item.isSent ? <User2Icon /> : <Bot />}
-                  </div>
-                  {item.message}
-                </div>
+                <img src="/bot.gif" className="w-20 "></img>
+                {` Ask anything about ${faqTitle}...`}
               </div>
-            ))}
+            )}
+            {storage?.messages?.map(
+              (item, index) =>
+                faqId === item.faqid && (
+                  <div
+                    key={index}
+                    className="px-4 py-2 "
+                    style={{
+                      backgroundColor: item.isSent ? " " : styles?.muted,
+                      color: item.isSent ? " " : styles?.primary,
+                    }}
+                  >
+                    <div className="flex gap-5">
+                      <div className=" opacity-50 ">
+                        {item.isSent ? <User2Icon /> : <Bot />}
+                      </div>
+                      {item.message}
+                    </div>
+                  </div>
+                ),
+            )}
             {streamingRes && (
               <div
                 className="px-4 py-2 "

@@ -129,7 +129,7 @@ function Client(props: { title: string }) {
                     <AlertDialogTrigger asChild>
                       {isAIMode && (
                         <Button
-                          className={` flex h-full  items-center justify-center  rounded-2xl bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 px-3 font-bold md:text-2xl  `}
+                          className={` flex h-full  items-center justify-center bg-gray-800 hover:bg-gray-500  rounded-2xl  px-3 font-bold md:text-2xl  `}
                           disabled={createVectorEmbedings.isLoading}
                         >
                           {createVectorEmbedings.isLoading ||
