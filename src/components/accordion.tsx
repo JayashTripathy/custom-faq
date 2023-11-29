@@ -15,7 +15,7 @@ const Accordion = (props: { faqs: Faq[] | undefined; theme?: string }) => {
           <div className="w-full px-4">
             <div className="mx-auto mb-[60px] max-w-[520px] text-center lg:mb-20">
               <h2
-                className="text-dark mb-2 text-2xl font-bold text-primary md:text-4xl z"
+                className="text-dark mb-2 text-2xl font-bold md:text-4xl z"
                 style={{
                   color: styles?.primary,
                 }}
@@ -100,7 +100,7 @@ const AccordionItem = (props: {
         </div>
 
         <div className="w-full">
-          <h4 className="text-dark mt-1 md:text-lg text-sm font-semibold ">{header}</h4>
+          <h4 className=" mt-1 md:text-lg text-sm font-semibold ">{header}</h4>
         </div>
       </button>
 
@@ -109,7 +109,7 @@ const AccordionItem = (props: {
           active ? "block" : "hidden"
         }`}
       >
-        <p className="text-body-color dark:text-dark-6 py-3 md:text-base text-sm leading-relaxed">
+        <p className="  py-3 md:text-base text-sm leading-relaxed">
           {text}
         </p>
       </div>

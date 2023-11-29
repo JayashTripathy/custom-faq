@@ -66,7 +66,7 @@ function Client(props: { title: string }) {
     const { children, ...rest } = props;
     return (
       <div
-        className={`text-lg font-semibold ${faq?.theme} text-primary `}
+        className={`text-lg font-semibold ${faq?.theme}  `}
         style={{
           color: styles?.primary ?? " ",
         }}
@@ -275,7 +275,7 @@ function Client(props: { title: string }) {
             >
               <div
                 className={`} absolute -bottom-16 left-1/2 mb-14  grid
-            aspect-square w-[120px]  -translate-x-1/2 items-center  justify-center rounded-3xl border-[5px] border-background bg-muted p-3   `}
+            aspect-square w-[120px]  -translate-x-1/2 items-center  justify-center rounded-3xl border-[5px]   p-3   `}
                 style={{
                   backgroundImage: `url(${faq.logo})`,
                   backgroundSize: "cover",
