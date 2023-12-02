@@ -54,8 +54,9 @@ function Navbar() {
       >
         <div className="ml-10 hidden w-full  md:flex">
           <ul className="flex gap-10 text-xl">
-            {components.map((component) => (
+            {components.map((component, ind) => (
               <li
+                key={ind}
                 className="cursor-pointer transition-all duration-100 ease-in-out hover:text-foreground/75"
                 onClick={component.onClick}
               >
@@ -97,8 +98,8 @@ function Navbar() {
               <h1 className="text-left text-xl font-bold"> Options </h1>
             </SheetHeader>
             <div className="flex flex-col items-start justify-start gap-3 py-8 text-lg ">
-              {components.map((component) => (
-                <SheetClose className="" asChild>
+              {components.map((component, ind) => (
+                <SheetClose className="" asChild key={ind}>
                   <button
                     type="submit"
                     onClick={() => void router.push(component.href)}
