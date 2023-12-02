@@ -33,6 +33,10 @@ function Navbar() {
       title: "Dashboard",
       href: "/dashboard",
     },
+    {
+      title: "FAQ's",
+      href: "/faq/WiseFAQ",
+    },
   ];
 
   useEffect(() => {
@@ -49,15 +53,15 @@ function Navbar() {
         }
       >
         <div className="ml-10 hidden w-full  md:flex">
-          <ul>
-            <li>
-              <Link
-                href={"/dashboard"}
-                className="transition-all duration-100 ease-in-out hover:text-foreground/75"
+          <ul className="flex gap-10 text-xl">
+            {components.map((component) => (
+              <li
+                className="cursor-pointer transition-all duration-100 ease-in-out hover:text-foreground/75"
+                onClick={component.onClick}
               >
-                Dashboard
-              </Link>
-            </li>
+                <Link href={component.href}>{component.title}</Link>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="hidden items-center justify-center gap-3 md:flex">
@@ -92,24 +96,29 @@ function Navbar() {
             <SheetHeader>
               <h1 className="text-left text-xl font-bold"> Options </h1>
             </SheetHeader>
-            <SheetClose className="py-8" asChild>
-              <button
-                type="submit"
-                onClick={() => void router.push("/dashboard")}
-                className="transition-all duration-100 ease-in-out hover:text-foreground/75"
-              >
-                Dashboard
-              </button>
-            </SheetClose>
+            <div className="flex flex-col items-start justify-start gap-3 py-8 text-lg ">
+              {components.map((component) => (
+                <SheetClose className="" asChild>
+                  <button
+                    type="submit"
+                    onClick={() => void router.push(component.href)}
+                    className="transition-all duration-100 ease-in-out hover:text-foreground/75"
+                  >
+                    {component.title}
+                  </button>
+                </SheetClose>
+              ))}
+            </div>
             <SheetFooter>
               {!data ? (
                 <SheetClose asChild>
-             
-                    <Button type="submit" onClick={() => void router.push("/auth/signin")} className="text-lg font-semibold">
-                      SignIn
-                    </Button>
-             
-
+                  <Button
+                    type="submit"
+                    onClick={() => void router.push("/auth/signin")}
+                    className="text-lg font-semibold"
+                  >
+                    SignIn
+                  </Button>
                 </SheetClose>
               ) : (
                 <Button

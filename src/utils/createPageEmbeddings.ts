@@ -16,9 +16,11 @@ import { BufferMemory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import { OpenAI } from "langchain/llms/openai";
 
-const embeddings = new OpenAIEmbeddings({
-  openAIApiKey: process.env.OPENAI_API_KEY!,
-});
+const embeddings =
+  process.env.OPENAI_API_KEY &&
+  new OpenAIEmbeddings({
+    openAIApiKey: process.env.OPENAI_API_KEY,
+  });
 
 const client = supabaseClient();
 
@@ -28,7 +30,6 @@ export const vectorEmbeddings = {
   }) => {
     const { data } = props;
     if (!data.faqs) return;
-    
 
     function formatFAQ(question: string, answer: string) {
       return `Question: ${question}\nAnswer: ${answer}`;
@@ -88,11 +89,16 @@ export const vectorEmbeddings = {
     });
     const splittedTrainingData = await splitter.splitDocuments(trainingData);
 
-    await SupabaseVectorStore.fromDocuments(splittedTrainingData, embeddings, {
-      client,
-      tableName: "documents",
-      queryName: "match_documents",
-    });
+    embeddings &&
+      (await SupabaseVectorStore.fromDocuments(
+        splittedTrainingData,
+        embeddings,
+        {
+          client,
+          tableName: "documents",
+          queryName: "match_documents",
+        },
+      ));
   },
   find: async (props: { faqId: string; question: string }) => {
     const { faqId, question } = props;
@@ -104,18 +110,19 @@ export const vectorEmbeddings = {
       throw new Error("question is required");
     }
 
-    const vectorStore = await SupabaseVectorStore.fromExistingIndex(
-      embeddings,
-      {
+    const vectorStore =
+      embeddings &&
+      (await SupabaseVectorStore.fromExistingIndex(embeddings, {
         client,
         tableName: "documents",
         queryName: "match_documents",
-      },
-    );
+      }));
 
-    const result = await vectorStore.similaritySearch(question, 2, {
-      faqId: faqId,
-    });
+    const result =
+      vectorStore &&
+      (await vectorStore.similaritySearch(question, 2, {
+        faqId: faqId,
+      }));
 
     return result;
   },

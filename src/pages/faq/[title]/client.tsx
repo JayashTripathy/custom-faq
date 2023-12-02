@@ -299,7 +299,7 @@ function Client(props: { title: string }) {
             {faq?.socials && (
               <div className="">
                 <Subheading>Socials</Subheading>
-                <div className="mt-1 flex">
+                <div className="mt-1 flex gap-2">
                   {faq.socials.map((social, index) => (
                     <Link
                       key={index}
