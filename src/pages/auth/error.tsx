@@ -3,9 +3,9 @@ import { ArrowRight } from "lucide-react";
 import React from "react";
 import Link from "next/link";
 
-type Props = {};
 
-function error({}: Props) {
+
+function error() {
   return (
     <div className="grid h-screen place-content-center px-4">
       <div className="text-center">
