@@ -10,7 +10,7 @@
  - F̶i̶x̶ u̶r̶l̶ p̶a̶t̶h̶ (̶"̶/̶u̶s̶e̶r̶n̶a̶m̶e̶/̶t̶i̶t̶l̶e̶"̶)̶ w̶i̶l̶l̶ n̶o̶t̶ w̶o̶r̶k̶
 
 
-
+ - Add JSON option to add FAQs
  - Add edit functionality to FAQs
  - Setup CDN when user removes the img
  - delete image if submission failed

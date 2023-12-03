@@ -133,7 +133,6 @@ export function EditFaqForm() {
 
       createFaqMutation.mutate(finalValues, {
         onSuccess: (data) => {
-          console.log("submitted data", data);
           toast({
             title: "Success!",
             description: "Your FAQ page has been created successfully.",

@@ -159,7 +159,7 @@ function Client(props: { title: string }) {
                               <div className="leading- text-left">
                                 <span>Processing...</span>
                                 <div className="text-xs opacity-40">
-                                  please be patience.
+                                  It will take a while...
                                 </div>
                               </div>
                             </div>
