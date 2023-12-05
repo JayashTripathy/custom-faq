@@ -1,9 +1,9 @@
-import { EditFaqForm } from "@/components/editFaqForm";
+import { FaqForm } from "@/components/faqForm";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
-function EditFaq() {
+function CreateFaqPage() {
   const router = useRouter();
   return (
     <div className="mx-auto  h-full rounded-3xl  md:p-8 px-4 md:mt-4 md:max-w-[1200px] ">
@@ -15,9 +15,9 @@ function EditFaq() {
       <br />
       <h1 className=" text-xl ">Customize your page</h1>
 
-      <EditFaqForm />
+      <FaqForm />
     </div>
   );
 }
 
-export default EditFaq;
+export default CreateFaqPage;

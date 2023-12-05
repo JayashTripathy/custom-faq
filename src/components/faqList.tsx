@@ -33,8 +33,10 @@ import { Label } from "@radix-ui/react-label";
 import { Textarea } from "./ui/textarea";
 import { UseFieldArrayReplace, set } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
+import { v4 as uuidv4 } from "uuid";
 
 type FaqMode = "add" | "edit";
+type FaqDetails = Omit<Faq, "faqId" | "id">;
 
 function FaqList(props: {
   updateFaq: UseFieldArrayReplace<
@@ -61,12 +63,13 @@ function FaqList(props: {
   const { toast } = useToast();
   const { updateFaq } = props;
   const [faqs, setFaqs] = useState([] as Omit<Faq, "faqId">[]);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FaqDetails>({
     question: "",
     answer: "",
   });
   const [editMode, setEditMode] = useState<null | FaqMode>(null);
   const [currFaqId, setCurrFaqId] = useState<number | null>(null);
+  const [jsonData, setJsonData] = useState("");
 
   function handleOnDragEnd(result: DropResult) {
     if (!result.destination) return;
@@ -81,15 +84,17 @@ function FaqList(props: {
 
     setFaqs(items);
   }
-  const validateFaq = () => {
-    if (formData.question === "") {
+  const validateFaq = (data: FaqDetails) => {
+    if (!data) return false;
+
+    if (data.question === "") {
       toast({
         title: "Question is required.",
         type: "background",
         duration: 2000,
       });
       return false;
-    } else if (formData.answer === "") {
+    } else if (data.answer === "") {
       toast({
         title: "Answer is required.",
         type: "background",
@@ -100,16 +105,17 @@ function FaqList(props: {
     return true;
   };
 
-  const addFaq = () => {
-    const isValid = validateFaq();
+  const addFaq = (data: FaqDetails) => {
+    const isValid = validateFaq(data);
+    const idIndex = new Date().getTime();
+
     if (isValid) {
-      const index = faqs.length + 1;
       try {
-        setFaqs([
+        setFaqs((p) => [
           ...faqs,
           {
-            ...formData,
-            id: index,
+            ...data,
+            id: idIndex,
           },
         ]);
 
@@ -144,7 +150,7 @@ function FaqList(props: {
   useEffect(() => {
     updateFaq(faqs);
   }, [faqs]);
-
+  console.log(faqs);
   return (
     <>
       <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -158,10 +164,54 @@ function FaqList(props: {
               <div className="flex items-center justify-between ">
                 ALL FAQ&apos;s
                 <div>
-                  {/* feature to add  */}
-                  {/* <Button className="mx-2" variant={"outline"} type="button">
-                    Import JSON
-                  </Button> */}
+                  <AlertDialog>
+                    {faqs.length == 0 && (
+                      <AlertDialogTrigger>
+                        <Button
+                          className="mx-2"
+                          variant={"outline"}
+                          type="button"
+                        >
+                          Import JSON
+                        </Button>
+                      </AlertDialogTrigger>
+                    )}
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Enter JSON</AlertDialogTitle>
+                      </AlertDialogHeader>
+                      <Textarea
+                        value={jsonData}
+                        onChange={(e) => setJsonData(e.target.value)}
+                      />
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => {
+                            try {
+                              const jsonDataString = `
+                                ${jsonData}
+                              `;
+                              const parsedData = JSON.parse(jsonDataString);
+                              const newFaqData = parsedData.map(
+                                (item: Omit<Faq, "faqId">, ind: number) => ({
+                                  ...item,
+                                  id: faqs.length + ind + 1,
+                                }),
+                              );
+                              console.log({ ...faqs, ...newFaqData });
+                              newFaqData && setFaqs(newFaqData);
+                            } catch (e) {
+                              console.log(e);
+                            }
+                          }}
+                          className="bg-primary hover:bg-primary/90"
+                        >
+                          Add
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
 
                   <Button
                     className=""
@@ -296,7 +346,7 @@ function FaqList(props: {
             <AlertDialogAction
               className="bg-primary hover:bg-primary/90"
               onClick={() => {
-                const isValid = validateFaq();
+                const isValid = validateFaq(formData);
                 if (editMode === "edit" && isValid) {
                   const index = faqs.findIndex((faq) => faq.id === currFaqId);
                   const newFaq = [...faqs];
@@ -314,7 +364,7 @@ function FaqList(props: {
                     });
                   }
                 } else if (editMode === "add") {
-                  addFaq();
+                  addFaq(formData);
                 }
               }}
             >

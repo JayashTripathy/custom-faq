@@ -31,10 +31,9 @@ function Dashboard() {
       },
     });
 
-
   const CreateBtn = (): ReactNode => {
     return (
-      <Link href="/dashboard/editfaq">
+      <Link href="/dashboard/createFaqPage">
         <Button className="flex gap-1  p-3 md:text-xl" variant={"secondary"}>
           Create <Plus size={23} className="text-primary" />{" "}
         </Button>
@@ -43,8 +42,8 @@ function Dashboard() {
   };
 
   return (
-    <div className=" absolute top-0 z-0 flex h-screen w-full flex-col p-4   md:px-10 md:pt-32 pt-20  ">
-      <div className="mb-4 flex justify-between md:text-4xl text-2xl font-bold">
+    <div className=" absolute top-0 z-0 flex h-screen w-full flex-col p-4   pt-20 md:px-10 md:pt-32  ">
+      <div className="mb-4 flex justify-between text-2xl font-bold md:text-4xl">
         <div>Library</div>
         <CreateBtn />
       </div>
@@ -77,70 +76,80 @@ function Dashboard() {
                   new Date(b.createdAt).getTime() -
                   new Date(a.createdAt).getTime(),
               )
-              .map((faq) =>  (
-                  <AlertDialog key={faq.id}>
-                    <li
-                      className="flex max-h-[80px] cursor-pointer justify-between  overflow-hidden rounded-lg border bg-accent/70 p-2 shadow-md transition-all duration-75 ease-in-out hover:bg-accent/50 md:p-4 "
-                      key={faq.id}
+              .map((faq) => (
+                <AlertDialog key={faq.id}>
+                  <li
+                    className="flex max-h-[80px] cursor-pointer justify-between  overflow-hidden rounded-lg border bg-accent/70 p-2 shadow-md transition-all duration-75 ease-in-out hover:bg-accent/50 md:p-4 "
+                    key={faq.id}
+                  >
+                    <button
+                      onClick={() =>
+                        void router.push(`/faq/${faq.title}?adminMode=true`)
+                      }
+                      className="h-(calc(100%-30px)) w-full overflow-hidden text-left"
                     >
-                      <button
-                        onClick={() => void router.push(`/faq/${faq.title}?adminMode=true`)}
-                        className="h-(calc(100%-30px)) w-full overflow-hidden text-left"
-                      >
-                        <div>{faq.title}</div>
-                        <div className=" inline-block  w-[calc(80%)] text-ellipsis  text-sm ">
-                          {faq.description}
-                        </div>
-                      </button>
-                      <div className="flex items-center justify-center gap-1">
-                        <Button variant={"outline"} className="h-12 w-12">
-                          <Edit2 />
-                        </Button>
-                        {deleteFaqPageLoading ? (
-                          <div className="h-12 w-12 p-3">
-                            <div className="h-full w-full animate-spin rounded-md border-2 border-t-4 border-primary "></div>
-                          </div>
-                        ) : (
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              variant={"destructive"}
-                              className=" h-12 w-12"
-                            >
-                              <Trash />
-                            </Button>
-                          </AlertDialogTrigger>
-                        )}
+                      <div>{faq.title}</div>
+                      <div className=" inline-block  w-[calc(80%)] text-ellipsis  text-sm ">
+                        {faq.description}
                       </div>
-                    </li>
+                    </button>
+                    <div className="flex items-center justify-center gap-1">
+                      <Button
+                        variant={"outline"}
+                        className="h-12 w-12"
+                        type="button"
+                        onClick={(e) => {
+                          void router.push(
+                            `/dashboard/editFaqPage/${faq.title}`,
+                          );
+                        }}
+                      >
+                        <Edit2 />
+                      </Button>
+                      {deleteFaqPageLoading ? (
+                        <div className="h-12 w-12 p-3">
+                          <div className="h-full w-full animate-spin rounded-md border-2 border-t-4 border-primary "></div>
+                        </div>
+                      ) : (
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant={"destructive"}
+                            className=" h-12 w-12"
+                          >
+                            <Trash />
+                          </Button>
+                        </AlertDialogTrigger>
+                      )}
+                    </div>
+                  </li>
 
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you absolutely sure?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete the
-                          <span className="font-bold text-primary">
-                            {" "}
-                            {faq.title} 
-                          </span>{" "}
-                          and remove your data from our servers.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => deleteFaqPage({ faqId: faq.id })}
-                          className="bg-red-500 hover:bg-red-600"
-                        >
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                )
-              )}
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete the
+                        <span className="font-bold text-primary">
+                          {" "}
+                          {faq.title}
+                        </span>{" "}
+                        and remove your data from our servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => deleteFaqPage({ faqId: faq.id })}
+                        className="bg-red-500 hover:bg-red-600"
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              ))}
           </ul>
         )}
       </div>

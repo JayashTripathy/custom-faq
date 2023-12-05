@@ -130,7 +130,7 @@ function Client(props: { title: string }) {
                       {isAIMode && (
                         <Button
                           className={` flex h-full  items-center justify-center bg-gray-800 hover:bg-gray-500  rounded-2xl  px-3 font-bold md:text-2xl  `}
-                          disabled={createVectorEmbedings.isLoading}
+                          disabled={createVectorEmbedings.isLoading || faq.aiMode}
                         >
                           {createVectorEmbedings.isLoading ||
                             (faq.aiMode ? "AI Enabled" : "AI")}

@@ -37,7 +37,7 @@ import { Social } from "@/types/faq";
 
 type cropperType = "logo" | "backdrop";
 
-export function EditFaqForm() {
+export function FaqForm() {
   const router = useRouter();
   const { toast } = useToast();
   const { theme, systemTheme } = useTheme();

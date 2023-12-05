@@ -6,7 +6,14 @@ import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { GripVertical, LogOut, MoreHorizontal } from "lucide-react";
+import {
+  Github,
+  GripVertical,
+  LayoutDashboard,
+  LogOut,
+  MoreHorizontal,
+  ShieldQuestionIcon,
+} from "lucide-react";
 
 import {
   Sheet,
@@ -20,7 +27,7 @@ import {
 } from "@/components/ui/sheet";
 
 import { useRouter } from "next/router";
-import { Icons } from "./icons";
+
 
 function Navbar() {
   const router = useRouter();
@@ -28,15 +35,22 @@ function Navbar() {
   const [logoTheme, setLogoTheme] = React.useState<string>("logo-dark.svg");
   const { data } = useSession();
 
-  const components: { title: string; href: string; onClick?: () => void }[] = [
+  const components: { title: string; href: string; icon: React.ReactNode }[] = [
     {
       title: "Dashboard",
       href: "/dashboard",
+      icon: <LayoutDashboard size={18} />,
     },
     {
-      title: "FAQ's",
+      title: "FAQ",
       href: "/faq/WiseFAQ",
+      icon: <ShieldQuestionIcon size={18} />,
     },
+    {
+      title: "Github",
+      href: "https://github.com/JayashTripathy/wise-faq",
+      icon: <Github size={18}/>, 
+    }
   ];
 
   useEffect(() => {
@@ -57,9 +71,9 @@ function Navbar() {
             {components.map((component, ind) => (
               <li
                 key={ind}
-                className="cursor-pointer transition-all duration-100 ease-in-out hover:text-foreground/75"
-                onClick={component.onClick}
+                className="flex cursor-pointer items-center gap-2 transition-all duration-100 ease-in-out hover:text-foreground text-foreground/75"
               >
+                {component.icon}
                 <Link href={component.href}>{component.title}</Link>
               </li>
             ))}
@@ -103,9 +117,9 @@ function Navbar() {
                   <button
                     type="submit"
                     onClick={() => void router.push(component.href)}
-                    className="transition-all duration-100 ease-in-out hover:text-foreground/75"
+                    className="transition-all duration-100 ease-in-out hover:text-foreground/75 flex gap-2 items-center"
                   >
-                    {component.title}
+                   {component.icon} {component.title}
                   </button>
                 </SheetClose>
               ))}
