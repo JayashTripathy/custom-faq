@@ -82,7 +82,7 @@ function Client(props: { title: string }) {
 
   return (
     <div
-      className={` absolute inset-0 h-screen overflow-auto   `}
+      className={`absolute inset-0 h-screen overflow-auto`}
       style={
         {
           background: styles?.background,
@@ -129,8 +129,10 @@ function Client(props: { title: string }) {
                     <AlertDialogTrigger asChild>
                       {isAIMode && (
                         <Button
-                          className={` flex h-full  items-center justify-center bg-gray-800 hover:bg-gray-500  rounded-2xl  px-3 font-bold md:text-2xl  `}
-                          disabled={createVectorEmbedings.isLoading || faq.aiMode}
+                          className={` flex h-full  items-center justify-center rounded-2xl bg-gray-800  px-3  font-bold hover:bg-gray-500 md:text-2xl  `}
+                          disabled={
+                            createVectorEmbedings.isLoading || faq.aiMode
+                          }
                         >
                           {createVectorEmbedings.isLoading ||
                             (faq.aiMode ? "AI Enabled" : "AI")}
@@ -253,7 +255,7 @@ function Client(props: { title: string }) {
         <></>
       )}
       <div
-        className={` mx-auto  md:w-3/4 ${
+        className={`mx-auto mt-20  md:w-3/4 ${
           faq?.logo ?? faq?.backdrop ? "md:translate-y-10" : ""
         }`}
       >
@@ -296,7 +298,7 @@ function Client(props: { title: string }) {
               <Subheading>Description</Subheading>
               <p className="py-1 text-sm  ">{faq?.description}</p>
             </div>
-            {faq?.socials && (
+            {faq && faq.socials?.length > 0 && (
               <div className="">
                 <Subheading>Socials</Subheading>
                 <div className="mt-1 flex gap-2">
@@ -332,7 +334,7 @@ function Client(props: { title: string }) {
           <Accordion faqs={faq?.faqs} theme={faq?.theme ?? undefined} />
         </div>
       </div>
-            
+
       {faq?.aiMode && (
         <>
           <div className="fixed bottom-6 right-5  z-50 opacity-100 md:right-32">
@@ -348,12 +350,12 @@ function Client(props: { title: string }) {
               <Bot size={30} />
             </Button>
           </div>
-              
+
           <ChatBox
             theme={faq?.theme ?? undefined}
             onClose={() => setIsChatboxOpen(false)}
             open={isChatboxOpen}
-            faqId={faq.id}  
+            faqId={faq.id}
             faqTitle={title}
           />
         </>

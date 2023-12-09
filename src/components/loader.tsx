@@ -1,8 +1,8 @@
 import React from "react";
 
-type Props = {};
 
-function Loader({}: Props) {
+
+function Loader() {
   return (
     <div
       role="status"

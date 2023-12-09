@@ -1,4 +1,4 @@
-import { formSchema } from "@/lib/validators/editFaqForm";
+import { formSchema } from "@/lib/validators/FaqForm";
 import { Faq } from "@/types/faq";
 import { getTheme } from "@/utils/getPageTheme";
 import React, { useState } from "react";

@@ -28,20 +28,23 @@ import FaqList from "./faqList";
 import { useToast } from "@/components/ui/use-toast";
 import CropperModal from "./modals/cropperModal";
 import BottomDrawer from "./drawer/bottomDrawer";
-import { formSchema } from "@/lib/validators/editFaqForm";
+import { formSchema } from "@/lib/validators/FaqForm";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import { pagethemes } from "@/utils/pageThemes";
 import { useTheme } from "next-themes";
-import { Social } from "@/types/faq";
+import type { Faq, Social, FaqItem } from "@prisma/client";
 
 type cropperType = "logo" | "backdrop";
 
-export function FaqForm() {
+export function FaqForm(props: {
+  mode?: "create" | "edit";
+  existingFaqData?: Faq & { socials: Social[] } & { faqs: FaqItem[] };
+}) {
+  const { mode = "create", existingFaqData } = props;
   const router = useRouter();
   const { toast } = useToast();
   const { theme, systemTheme } = useTheme();
-
   const [pageLogo, setPageLogo] = useState<string | null>(null);
   const [backdrop, setBackdrop] = useState<string | null>(null);
 
@@ -51,6 +54,7 @@ export function FaqForm() {
   const [cropperType, setCropperType] = useState<cropperType | null>(null);
 
   const createFaqMutation = api.faq.create.useMutation();
+  const updateFaqMutation = api.faq.update.useMutation();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -67,12 +71,14 @@ export function FaqForm() {
       socials: [],
     },
   });
-  const [socials, setSocials] = useState<Social[]>(form.getValues("socials"));
+  const [socials, setSocials] = useState(form.getValues("socials"));
   const [socialInput, setSocialInput] = useState({
     name: "",
     url: "",
   });
-  const [selectedTheme, setSelectedTheme] = useState(form.getValues("theme"));
+  const [selectedTheme, setSelectedTheme] = useState(
+    existingFaqData?.theme ?? form.getValues("theme"),
+  );
 
   const { replace } = useFieldArray({ name: "faqs", control: form.control });
 
@@ -112,7 +118,7 @@ export function FaqForm() {
     setSelectedTheme(themeName); // Update the local state immediately
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       let logo = values.logo;
       let backdrop = values.backdrop;
@@ -138,12 +144,12 @@ export function FaqForm() {
             description: "Your FAQ page has been created successfully.",
             duration: 3000,
           });
-          void router.push("/");
+          void router.push("/dashboard");
         },
         onError: (err) => {
           toast({
             title: "Error!",
-            description: err.message,
+            description: "Internaval server error. Please try again later.",
           });
         },
       });
@@ -151,7 +157,56 @@ export function FaqForm() {
       console.error("Error converting Blob URL to File:", error);
       return null;
     }
-  }
+  };
+  const onUpdate = async (values: z.infer<typeof formSchema>) => {
+    try {
+      let logo = values.logo;
+      let backdrop = values.backdrop;
+
+      if (values.logo) {
+        logo = await uploadToCdn(values.logo);
+      }
+
+      if (values.backdrop) {
+        backdrop = await uploadToCdn(values.backdrop);
+      }
+
+      const finalValues = {
+        ...values,
+        logo,
+        backdrop,
+      };
+
+      {
+        existingFaqData?.id &&
+          updateFaqMutation.mutate(
+            {
+              faqId: existingFaqData.id,
+              ...finalValues,
+            },
+            {
+              onSuccess: (data) => {
+                toast({
+                  title: "Updated!",
+                  description: "Your FAQ page has been updated successfully.",
+                  duration: 3000,
+                });
+                void router.push("/dashboard");
+              },
+              onError: (err) => {
+                toast({
+                  title: "Error!",
+                  description: "Internaval server error. Please try again later.",
+                });
+              },
+            },
+          );
+      }
+    } catch (error) {
+      console.error("Error converting Blob URL to File:", error);
+      return null;
+    }
+  };
 
   const closeCropper = () => {
     setCropperOpen(false);
@@ -243,16 +298,43 @@ export function FaqForm() {
   useEffect(() => {
     if (pageLogo) {
       form.setValue("logo", pageLogo);
+    } else {
+      form.setValue("logo", "");
     }
 
     if (backdrop) {
       form.setValue("backdrop", backdrop);
+    } else {
+      form.setValue("backdrop", "");
     }
   }, [pageLogo, backdrop]);
 
   useEffect(() => {
     form.setValue("socials", socials);
   }, [socials]);
+
+  // this updates all the values if we are in edit mode
+  useEffect(() => {
+    if (mode == "edit" && existingFaqData) {
+      form.setValue("title", existingFaqData.title);
+      existingFaqData.organization &&
+        form.setValue("organization", existingFaqData.organization);
+      existingFaqData.description &&
+        form.setValue("description", existingFaqData.description);
+      existingFaqData.address &&
+        form.setValue("address", existingFaqData.address);
+      existingFaqData.theme && handlePageThemeChange(existingFaqData.theme);
+      setPageLogo(existingFaqData.logo);
+      setBackdrop(existingFaqData.backdrop);
+      setSocials(existingFaqData.socials);
+
+      // existingFaqData.faqs?.map((faq) => {
+      //   if ("faqId" in faq) {
+      //     delete faq.faqId;
+      //   }
+      // });
+    }
+  }, [mode]);
 
   return (
     <Form {...form}>
@@ -269,7 +351,7 @@ export function FaqForm() {
         onSubmit={(e) => {
           e.preventDefault();
           form
-            .handleSubmit(onSubmit)()
+            .handleSubmit(mode == "create" ? onSubmit : onUpdate)()
             .catch((err) => console.log("Unexpected error", err));
         }}
         className="space-y-8"
@@ -440,7 +522,7 @@ export function FaqForm() {
         </div>
 
         <div>
-        <h1 className="text-xl font-bold ">Socials</h1>
+          <h1 className="text-xl font-bold ">Socials</h1>
           <div className="flex gap-3">
             {socials.map((social, index) => (
               <div
@@ -510,7 +592,10 @@ export function FaqForm() {
         <div>
           <h1 className="text-xl font-bold ">Add FAQ&apos;s</h1>
           <div className="my-3">
-            <FaqList updateFaq={replace} />
+            <FaqList
+              updateFaq={replace}
+              defaultFaqs={existingFaqData?.faqs ?? undefined}
+            />
           </div>
         </div>
         <div>
@@ -524,8 +609,8 @@ export function FaqForm() {
                     ? els.darkColor
                     : els.color
                   : theme == "dark"
-                  ? els.darkColor
-                  : els.color;
+                    ? els.darkColor
+                    : els.color;
 
               const selected: boolean = selectedTheme === els.name;
               return (
@@ -535,7 +620,9 @@ export function FaqForm() {
                   onClick={() => handlePageThemeChange(els.name)}
                   className="mt-5 box-border  flex h-32 w-full flex-col justify-center rounded-lg  border p-5 text-left duration-200 ease-in-out hover:bg-accent    "
                   style={{
-                    border: selected ? `2px solid ${color}` : "2px solid 		rgb(72, 86, 106, .2)",
+                    border: selected
+                      ? `2px solid ${color}`
+                      : "2px solid 		rgb(72, 86, 106, .2)",
                   }}
                 >
                   <div
@@ -544,7 +631,11 @@ export function FaqForm() {
                       color: color,
                     }}
                   >
-                    {els.name}<span className="text-sm "> {els.name === "purple" && "(default)"}</span>
+                    {els.name}
+                    <span className="text-sm ">
+                      {" "}
+                      {els.name === "purple" && "(default)"}
+                    </span>
                   </div>
                   {Array(2)
                     .fill(0)
@@ -570,15 +661,25 @@ export function FaqForm() {
             })}
           </div>
         </div>
-        <Button
-          type="submit"
-          disabled={createFaqMutation.isLoading}
-          className="w-full py-6 text-2xl font-bold"
-        >
-          Submit
-        </Button>
+        {mode == "create" ? (
+          <Button
+            type="submit"
+            disabled={createFaqMutation.isLoading}
+            className="w-full py-6 text-2xl font-bold"
+          >
+            Submit
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            disabled={createFaqMutation.isLoading}
+            className="w-full py-6 text-2xl font-bold"
+          >
+            Save
+          </Button>
+        )}
       </form>
-        <br/>
+      <br />
     </Form>
   );
 }

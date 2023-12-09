@@ -33,7 +33,6 @@ import { Label } from "@radix-ui/react-label";
 import { Textarea } from "./ui/textarea";
 import { UseFieldArrayReplace, set } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
-import { v4 as uuidv4 } from "uuid";
 
 type FaqMode = "add" | "edit";
 type FaqDetails = Omit<Faq, "faqId" | "id">;
@@ -59,7 +58,9 @@ function FaqList(props: {
     },
     "faqs"
   >;
+  defaultFaqs?: Faq[];
 }) {
+  const { defaultFaqs } = props;
   const { toast } = useToast();
   const { updateFaq } = props;
   const [faqs, setFaqs] = useState([] as Omit<Faq, "faqId">[]);
@@ -70,7 +71,6 @@ function FaqList(props: {
   const [editMode, setEditMode] = useState<null | FaqMode>(null);
   const [currFaqId, setCurrFaqId] = useState<number | null>(null);
   const [jsonData, setJsonData] = useState("");
-
   function handleOnDragEnd(result: DropResult) {
     if (!result.destination) return;
 
@@ -150,7 +150,12 @@ function FaqList(props: {
   useEffect(() => {
     updateFaq(faqs);
   }, [faqs]);
-  console.log(faqs);
+
+  useEffect(() => {
+    if (!defaultFaqs) return;
+    setFaqs(defaultFaqs);
+  }, [defaultFaqs]);
+
   return (
     <>
       <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -192,14 +197,14 @@ function FaqList(props: {
                               const jsonDataString = `
                                 ${jsonData}
                               `;
-                              const parsedData = JSON.parse(jsonDataString);
+                              const parsedData: Array<Omit<Faq, "faqId">> =
+                                JSON.parse(jsonDataString);
                               const newFaqData = parsedData.map(
                                 (item: Omit<Faq, "faqId">, ind: number) => ({
                                   ...item,
                                   id: faqs.length + ind + 1,
                                 }),
                               );
-                              console.log({ ...faqs, ...newFaqData });
                               newFaqData && setFaqs(newFaqData);
                             } catch (e) {
                               console.log(e);

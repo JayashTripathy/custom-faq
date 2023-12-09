@@ -2,9 +2,8 @@ import { db } from "@/server/db";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { formSchema } from "@/lib/validators/editFaqForm";
+import { formSchema } from "@/lib/validators/FaqForm";
 import { vectorEmbeddings } from "@/utils/createPageEmbeddings";
-
 
 export const faqRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -92,6 +91,49 @@ export const faqRouter = createTRPCRouter({
       }
     }),
 
+  update: protectedProcedure
+    .input(formSchema.extend({ faqId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      if (!input.faqId) throw new TRPCError({ code: "NOT_FOUND" });
+      const { faqId, ...updateFinalData } = input;
+
+      const faq = await db.$transaction([
+        db.faq.update({
+          where: {
+            id: input.faqId,
+          },
+          data: {
+            ...updateFinalData,
+            aiMode: false,
+            faqs: {
+              deleteMany: {
+                faqId: input.faqId,
+              },
+              createMany: {
+                data: input.faqs.map((faq) => ({
+                  question: faq.question,
+                  answer: faq.answer,
+                })),
+              },
+            },
+            socials: {
+              deleteMany: {
+                faqId: input.faqId,
+              },
+              createMany: {
+                data: input.socials.map((social) => ({
+                  name: social.name,
+                  url: social.url,
+                })),
+              },
+            },
+          },
+        }),
+        db.$executeRaw`DELETE FROM documents WHERE metadata->>'faqId' = ${input.faqId}`,
+      ]);
+
+      return faq;
+    }),
   getFaqPage: publicProcedure
     .input(
       z.object({
@@ -125,7 +167,6 @@ export const faqRouter = createTRPCRouter({
 
       if (!input.trainingData) return { message: "No data provided" };
       await vectorEmbeddings.create({ data: input.trainingData });
-
       await db.faq.update({
         where: {
           id: input.faqId,

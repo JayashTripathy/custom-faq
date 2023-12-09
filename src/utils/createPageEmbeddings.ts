@@ -9,12 +9,8 @@ import {
 import { supabaseClient } from "@/lib/supabaseClient";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Faq, Social } from "@/types/faq";
-import { formSchema } from "@/lib/validators/editFaqForm";
+import { formSchema } from "@/lib/validators/FaqForm";
 import { z } from "zod";
-import ChatOpenAI from "langchain/chat_models/openai";
-import { BufferMemory } from "langchain/memory";
-import { ConversationChain } from "langchain/chains";
-import { OpenAI } from "langchain/llms/openai";
 
 const embeddings =
   process.env.OPENAI_API_KEY &&
@@ -123,7 +119,29 @@ export const vectorEmbeddings = {
       (await vectorStore.similaritySearch(question, 2, {
         faqId: faqId,
       }));
-
     return result;
   },
+  // delete: async (props: { faqId: string }) => {
+  //   const { faqId } = props;
+
+  //   if (!faqId) {
+  //     throw new Error("faqId is required");
+  //   }
+
+  //   const vectorStore =
+  //     embeddings &&
+  //     (await SupabaseVectorStore.fromExistingIndex(embeddings, {
+  //       client,
+  //       tableName: "documents",
+  //       queryName: "match_documents",
+  //     }));
+  //   const result = vectorStore && (await vectorStore.addDocuments([]));
+
+  //   console.log("test", result);
+
+  
+  //   // const result = vectorStore && (await vectorStore.delete({ ids: [11] }));
+  //   console.log("test", result);
+  //   return result;
+  // },
 };
