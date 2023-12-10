@@ -1,16 +1,23 @@
-import React from "react";
+import React, { HTMLProps } from "react";
 
+interface LoaderProps extends HTMLProps<HTMLDivElement> {
+  fill?: string;
+}
 
+function Loader(props: LoaderProps) {
 
-function Loader() {
   return (
     <div
+      {...props}
       role="status"
-      className="flex h-full w-full items-center justify-center"
+      className={`flex h-full w-full items-center justify-center`}
     >
       <svg
         aria-hidden="true"
-        className="h-8 w-8 animate-spin fill-primary text-secondary dark:text-gray-600"
+        className="h-8 w-8 animate-spin  text-secondary dark:text-gray-600"
+        style={{
+          fill: props.fill ? props.fill : "gray",
+        }}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

@@ -4,6 +4,7 @@ import React from "react";
 import { api } from "@/utils/api";
 import Loader from "@/components/loader";
 import { FaqForm } from "@/components/faqForm";
+import { ArrowLeft } from "lucide-react";
 
 function Page() {
   const router = useRouter();
@@ -26,6 +27,15 @@ function Page() {
         <Loader />
       ) : (
         <div className="mx-auto  h-full rounded-3xl  px-4 md:mt-4 md:max-w-[1200px] md:p-8 ">
+          <button
+            className="flex gap-2 py-3 text-primary"
+            onClick={() => router.back()}
+          >
+            {" "}
+            <ArrowLeft /> back to dashboard
+          </button>
+          <hr />
+          <br />
           <FaqForm mode="edit" existingFaqData={faq} />
         </div>
       )}

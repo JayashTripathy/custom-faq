@@ -196,7 +196,8 @@ export function FaqForm(props: {
               onError: (err) => {
                 toast({
                   title: "Error!",
-                  description: "Internaval server error. Please try again later.",
+                  description:
+                    "Internaval server error. Please try again later.",
                 });
               },
             },
@@ -316,26 +317,24 @@ export function FaqForm(props: {
   // this updates all the values if we are in edit mode
   useEffect(() => {
     if (mode == "edit" && existingFaqData) {
-      form.setValue("title", existingFaqData.title);
+      form.setValue("title", existingFaqData.title, { shouldDirty: false });
       existingFaqData.organization &&
-        form.setValue("organization", existingFaqData.organization);
+        form.setValue("organization", existingFaqData.organization, { shouldDirty: false });
       existingFaqData.description &&
-        form.setValue("description", existingFaqData.description);
+        form.setValue("description", existingFaqData.description, { shouldDirty: false });
       existingFaqData.address &&
         form.setValue("address", existingFaqData.address);
       existingFaqData.theme && handlePageThemeChange(existingFaqData.theme);
       setPageLogo(existingFaqData.logo);
       setBackdrop(existingFaqData.backdrop);
       setSocials(existingFaqData.socials);
-
-      // existingFaqData.faqs?.map((faq) => {
-      //   if ("faqId" in faq) {
-      //     delete faq.faqId;
-      //   }
-      // });
     }
   }, [mode]);
 
+  const existingFaqKeys = existingFaqData && Object.keys(existingFaqData);
+
+  // const saveBtnActive = form.formState.isDirty || existingFaqKeys?.length > 0
+  console.log(form.formState.isDirty);
   return (
     <Form {...form}>
       {selectedCropper && (

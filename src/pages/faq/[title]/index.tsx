@@ -4,6 +4,7 @@ import Client from "./client";
 import { PrismaClient } from "@prisma/client";
 import { api } from "@/utils/api";
 
+
 function Index(props: { faqData: string }) {
   const router = useRouter();
   const title = router.query.title as string;

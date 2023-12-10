@@ -10,11 +10,9 @@
  - F̶i̶x̶ u̶r̶l̶ p̶a̶t̶h̶ (̶"̶/̶u̶s̶e̶r̶n̶a̶m̶e̶/̶t̶i̶t̶l̶e̶"̶)̶ w̶i̶l̶l̶ n̶o̶t̶ w̶o̶r̶k̶
 
 
- - 
  - A̶d̶d̶ e̶d̶i̶t̶ f̶u̶n̶c̶t̶i̶o̶n̶a̶l̶i̶t̶y̶ t̶o̶ F̶A̶Q̶s̶
- - remove vector embeddings if user updates the faq page 
-
- - Add a footer
+ - r̶e̶m̶o̶v̶e̶ v̶e̶c̶t̶o̶r̶ e̶m̶b̶e̶d̶d̶i̶n̶g̶s̶ i̶f̶ u̶s̶e̶r̶ u̶p̶d̶a̶t̶e̶s̶ t̶h̶e̶ f̶a̶q̶ p̶a̶g̶e̶ 
+ - clean up react state to react hook state in faqForm component
  - Setup a preview of FAQ page while creating FAQ page
  - delete image if submission failed
  - Setup CDN when user removes the img
@@ -24,6 +22,7 @@
  -̶ A̶d̶d̶ S̶o̶c̶i̶a̶l̶s̶ (̶w̶h̶i̶c̶h̶ w̶i̶l̶l̶ i̶n̶c̶l̶u̶d̶e̶ ,̶ a̶r̶r̶a̶y̶ o̶f̶ (̶n̶a̶m̶e̶ a̶n̶d̶ l̶i̶n̶k̶)̶)̶ 
  -̶ C̶r̶e̶a̶t̶e̶ t̶h̶e̶ F̶A̶Q̶ s̶e̶c̶t̶i̶o̶n̶ o̶f̶ t̶h̶e̶ p̶a̶g̶e̶
  - Configure theme colors for the page
+ - Add a footer
   
 
 
