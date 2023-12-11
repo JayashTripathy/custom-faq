@@ -29,7 +29,7 @@ const handler = async (req: NextRequest) => {
       {
         role: "system",
         content:
-          "Use the following pieces of context (or previous conversaton if needed) which includes data of a faq page which include all the pagedata including mainly faq's for it  to answer the users question in text format.",
+          "Use the following pieces of context (or previous conversaton if needed) which includes data of a faq page which include all the pagedata including mainly faq's, title, description, etc for it  to answer the users question in markdown format.",
       },
       {
         role: "user",
@@ -39,13 +39,20 @@ const handler = async (req: NextRequest) => {
         \n----------------\n
   
         PREVIOUS CONVERSATION:
-   
+        ${data.prevQuestions
+          .map((r) => r.message)
+          .join("\n\n")}\n\n----------------\n}
         
         \n----------------\n
       CONTEXT:
       ${data.context.map((r) => r.pageContent).join("\n\n")}
       
-      Question: ${data.question}`,
+      Question is ${data.question}
+      
+      just give answer directly dont include Answer: in the answer
+      `,
+
+
       },
     ],
   });

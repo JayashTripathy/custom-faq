@@ -278,6 +278,35 @@ function ChatBox(props: {
                   </div>
                 ),
             )}
+            {aiMsgMutation.isLoading && (
+              <div
+                className="px-4 py-2 flex space-x-2  "
+                style={{
+                  backgroundColor: styles?.muted,
+                  color: styles?.primary,
+                }}
+              >
+                <span className="sr-only">Loading...</span>
+                <div
+                  className="h-2 w-2 animate-bounce rounded-full  [animation-delay:-0.3s]"
+                  style={{
+                    backgroundColor: styles?.mutedForeground,
+                  }}
+                ></div>
+                <div
+                  className="h-2 w-2 animate-bounce rounded-full [animation-delay:-0.15s]"
+                  style={{
+                    backgroundColor: styles?.primary,
+                  }}
+                ></div>
+                <div
+                  className="h-2 w-2 animate-bounce rounded-full"
+                  style={{
+                    backgroundColor: styles?.mutedForeground,
+                  }}
+                ></div>
+              </div>
+            )}
             {streamingRes && (
               <div
                 className="px-4 py-2 "

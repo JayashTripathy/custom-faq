@@ -34,6 +34,7 @@ import { useRouter } from "next/router";
 import { pagethemes } from "@/utils/pageThemes";
 import { useTheme } from "next-themes";
 import type { Faq, Social, FaqItem } from "@prisma/client";
+import Loader from "./loader";
 
 type cropperType = "logo" | "backdrop";
 
@@ -319,9 +320,13 @@ export function FaqForm(props: {
     if (mode == "edit" && existingFaqData) {
       form.setValue("title", existingFaqData.title, { shouldDirty: false });
       existingFaqData.organization &&
-        form.setValue("organization", existingFaqData.organization, { shouldDirty: false });
+        form.setValue("organization", existingFaqData.organization, {
+          shouldDirty: false,
+        });
       existingFaqData.description &&
-        form.setValue("description", existingFaqData.description, { shouldDirty: false });
+        form.setValue("description", existingFaqData.description, {
+          shouldDirty: false,
+        });
       existingFaqData.address &&
         form.setValue("address", existingFaqData.address);
       existingFaqData.theme && handlePageThemeChange(existingFaqData.theme);
@@ -666,7 +671,7 @@ export function FaqForm(props: {
             disabled={createFaqMutation.isLoading}
             className="w-full py-6 text-2xl font-bold"
           >
-            Submit
+            {!createFaqMutation.isLoading ? "Submit" : <Loader />}
           </Button>
         ) : (
           <Button
