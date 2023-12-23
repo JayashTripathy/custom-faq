@@ -180,7 +180,7 @@ export function FaqForm(props: {
 
       const finalValues = {
         ...values,
-        title: values.title.trim(),gi
+        title: values.title.trim(),
         logo,
         backdrop,
       };
