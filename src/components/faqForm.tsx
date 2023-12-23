@@ -35,6 +35,7 @@ import { pagethemes } from "@/utils/pageThemes";
 import { useTheme } from "next-themes";
 import type { Faq, Social, FaqItem } from "@prisma/client";
 import Loader from "./loader";
+import { title } from "process";
 
 type cropperType = "logo" | "backdrop";
 
@@ -48,7 +49,6 @@ export function FaqForm(props: {
   const { theme, systemTheme } = useTheme();
   const [pageLogo, setPageLogo] = useState<string | null>(null);
   const [backdrop, setBackdrop] = useState<string | null>(null);
-
   const [cropperOpen, setCropperOpen] = useState(false);
   const [cropperImage, setCropperImage] = useState<string | null>(null);
 
@@ -73,6 +73,7 @@ export function FaqForm(props: {
     },
   });
   const [socials, setSocials] = useState(form.getValues("socials"));
+  const [loading, setLoading] = useState(false);
   const [socialInput, setSocialInput] = useState({
     name: "",
     url: "",
@@ -121,6 +122,7 @@ export function FaqForm(props: {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      setLoading(true);
       let logo = values.logo;
       let backdrop = values.backdrop;
 
@@ -134,6 +136,7 @@ export function FaqForm(props: {
 
       const finalValues = {
         ...values,
+        title: values.title.trim(),
         logo,
         backdrop,
       };
@@ -145,6 +148,7 @@ export function FaqForm(props: {
             description: "Your FAQ page has been created successfully.",
             duration: 3000,
           });
+          setLoading(false);
           void router.push("/dashboard");
         },
         onError: (err) => {
@@ -152,6 +156,7 @@ export function FaqForm(props: {
             title: "Error!",
             description: "Internaval server error. Please try again later.",
           });
+          setLoading(false);
         },
       });
     } catch (error) {
@@ -161,6 +166,7 @@ export function FaqForm(props: {
   };
   const onUpdate = async (values: z.infer<typeof formSchema>) => {
     try {
+      setLoading(true);
       let logo = values.logo;
       let backdrop = values.backdrop;
 
@@ -174,6 +180,7 @@ export function FaqForm(props: {
 
       const finalValues = {
         ...values,
+        title: values.title.trim(),gi
         logo,
         backdrop,
       };
@@ -192,6 +199,7 @@ export function FaqForm(props: {
                   description: "Your FAQ page has been updated successfully.",
                   duration: 3000,
                 });
+                setLoading(false);
                 void router.push("/dashboard");
               },
               onError: (err) => {
@@ -200,6 +208,7 @@ export function FaqForm(props: {
                   description:
                     "Internaval server error. Please try again later.",
                 });
+                setLoading(false);
               },
             },
           );
@@ -613,8 +622,8 @@ export function FaqForm(props: {
                     ? els.darkColor
                     : els.color
                   : theme == "dark"
-                    ? els.darkColor
-                    : els.color;
+                  ? els.darkColor
+                  : els.color;
 
               const selected: boolean = selectedTheme === els.name;
               return (
@@ -668,18 +677,18 @@ export function FaqForm(props: {
         {mode == "create" ? (
           <Button
             type="submit"
-            disabled={createFaqMutation.isLoading}
+            disabled={loading}
             className="w-full py-6 text-2xl font-bold"
           >
-            {!createFaqMutation.isLoading ? "Submit" : <Loader />}
+            {!loading ? "Submit" : <Loader />}
           </Button>
         ) : (
           <Button
             type="submit"
-            disabled={createFaqMutation.isLoading}
+            disabled={loading}
             className="w-full py-6 text-2xl font-bold"
           >
-            Save
+             {!loading ? "save" : <Loader />}
           </Button>
         )}
       </form>
