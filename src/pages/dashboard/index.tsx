@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { api } from "@/utils/api";
+import { get } from "http";
 
 import { Edit2, Plus, Snail, Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
+import type { Faq, Social, FaqItem } from "@prisma/client";
 
 function Dashboard() {
   const router = useRouter();
@@ -24,12 +26,25 @@ function Dashboard() {
   const session = useSession();
 
   const faqData = faqQuery?.data;
-  const { mutate: deleteFaqPage, isLoading: deleteFaqPageLoading } =
+  const { mutate: deleteFaqPageMutation, isLoading: deleteFaqPageLoading } =
     api.faq.delete.useMutation({
       onSuccess: () => {
         void faqQuery.refetch();
       },
     });
+  const getPublicIdFromUrl = (url: string) => {
+    const regex = /\/v\d+\/([^/]+)\.\w{3,4}$/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
+  const handleDeleteFaqPage = ({ faq }: { faq: Faq }) => {
+    //for deleteting images from cloudinary
+    // reference blog https://www.obytes.com/blog/cloudinary-in-nextjs
+    // const logoId = faq.logo && getPublicIdFromUrl(faq.logo);
+    // const backdropId = faq.backdrop && getPublicIdFromUrl(faq.backdrop);
+
+    deleteFaqPageMutation({ faqId: faq.id });
+  };
 
   const CreateBtn = (): ReactNode => {
     return (
@@ -141,7 +156,7 @@ function Dashboard() {
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={() => deleteFaqPage({ faqId: faq.id })}
+                        onClick={() => handleDeleteFaqPage({ faq })}
                         className="bg-red-500 hover:bg-red-600"
                       >
                         Delete
