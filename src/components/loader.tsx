@@ -10,11 +10,11 @@ function Loader(props: LoaderProps) {
     <div
       {...props}
       role="status"
-      className={`flex h-full w-full items-center justify-center`}
+     
     >
       <svg
         aria-hidden="true"
-        className="h-8 w-8 animate-spin  text-secondary dark:text-gray-600"
+        className="h-full w-full animate-spin  text-secondary dark:text-gray-600"
         style={{
           fill: props.fill ? props.fill : "gray",
         }}

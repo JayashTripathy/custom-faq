@@ -4,6 +4,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { formSchema } from "@/lib/validators/FaqForm";
 import { vectorEmbeddings } from "@/utils/createPageEmbeddings";
+import { title } from "process";
 
 export const faqRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -195,5 +196,24 @@ export const faqRouter = createTRPCRouter({
       });
 
       return similarRes;
+    }),
+  checkIsTitleAvailable: publicProcedure
+    .input(
+      z.object({
+        title: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const title = await db.faq.findFirst({
+        where: {
+          title: input.title,
+        },
+      });
+
+      if (title) {
+        return false;
+      }
+
+      return true;
     }),
 });

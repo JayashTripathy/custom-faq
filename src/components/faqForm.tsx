@@ -1,7 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { set, useFieldArray, useForm } from "react-hook-form";
-
 import * as z from "zod";
 import { Button } from "./ui/button";
 import {
@@ -15,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
-import { Pencil, PlusCircle, Trash, X } from "lucide-react";
+import { CheckCircle, Pencil, PlusCircle, Trash, X } from "lucide-react";
 import {
   CSSProperties,
   SyntheticEvent,
@@ -36,6 +35,7 @@ import { useTheme } from "next-themes";
 import type { Faq, Social, FaqItem } from "@prisma/client";
 import Loader from "./loader";
 import { title } from "process";
+import useDebounce from "@/hooks/useDebounce";
 
 type cropperType = "logo" | "backdrop";
 
@@ -53,9 +53,11 @@ export function FaqForm(props: {
   const [cropperImage, setCropperImage] = useState<string | null>(null);
 
   const [cropperType, setCropperType] = useState<cropperType | null>(null);
+  const [titleAvailable, setTitleAvailable] = useState<boolean | null>(null);
 
   const createFaqMutation = api.faq.create.useMutation();
   const updateFaqMutation = api.faq.update.useMutation();
+  const isTitleAvailableMutation = api.faq.checkIsTitleAvailable.useMutation();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -83,7 +85,7 @@ export function FaqForm(props: {
   );
 
   const { replace } = useFieldArray({ name: "faqs", control: form.control });
-
+  console.log("title availabe", titleAvailable);
   const uploadToCdn = async (blogUrl: string) => {
     const logoImg = await fetch(blogUrl as RequestInfo | URL);
     if (!logoImg.ok) {
@@ -114,7 +116,7 @@ export function FaqForm(props: {
     const data: { secure_url: string } = await res.json();
     return data.secure_url;
   };
-
+  
   const handlePageThemeChange = (themeName: string) => {
     form.setValue("theme", themeName);
     setSelectedTheme(themeName); // Update the local state immediately
@@ -347,8 +349,33 @@ export function FaqForm(props: {
 
   const existingFaqKeys = existingFaqData && Object.keys(existingFaqData);
 
-  // const saveBtnActive = form.formState.isDirty || existingFaqKeys?.length > 0
-  console.log(form.formState.isDirty);
+  const debouncedTitleCheck = useDebounce(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (
+        (existingFaqData &&
+          e.target.value === existingFaqData?.title) ||
+        e.target.value == ""
+      ) {
+        setTitleAvailable(null);
+        return;
+      }
+      isTitleAvailableMutation.mutate(
+        { title: e.target.value },
+        {
+          onSuccess: (data) => {
+            console.log("request success  ");
+            if (data == true) {
+              setTitleAvailable(true);
+            } else {
+              setTitleAvailable(false);
+            }
+          },
+        },
+      );
+    },
+    1000,
+  )
+
   return (
     <Form {...form}>
       {selectedCropper && (
@@ -471,9 +498,31 @@ export function FaqForm(props: {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Title</FormLabel>
-                  <FormControl>
+                  <FormControl
+                    onChange={debouncedTitleCheck}
+                  >
                     <Input placeholder="WiseFAQ" {...field} />
                   </FormControl>
+                  {isTitleAvailableMutation.isLoading && (
+                    <div className="flex whitespace-nowrap text-sm text-secondary-foreground/50 ">
+                      <Loader className="mx-2 w-3" />
+                      Checking availability of title...{" "}
+                    </div>
+                  )}
+                  {!isTitleAvailableMutation.isLoading &&
+                  titleAvailable == true ? (
+                    <div className="flex items-center whitespace-nowrap text-sm  text-green-400 ">
+                      <CheckCircle className="mx-2 w-3" />
+                      Title is available{" "}
+                    </div>
+                  ) : titleAvailable == false ? (
+                    <div className="flex items-center whitespace-nowrap text-sm  text-red-400 ">
+                      <CheckCircle className="mx-2 w-3" />
+                      Title not available{" "}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                   <FormDescription>
                     This is main title of your page.
                   </FormDescription>
@@ -677,18 +726,18 @@ export function FaqForm(props: {
         {mode == "create" ? (
           <Button
             type="submit"
-            disabled={loading}
+            disabled={loading || titleAvailable == false}
             className="w-full py-6 text-2xl font-bold"
           >
-            {!loading ? "Submit" : <Loader />}
+            {!loading ? "Submit" : <Loader className="w-6 " />}
           </Button>
         ) : (
           <Button
             type="submit"
-            disabled={loading}
+            disabled={loading || titleAvailable == false}
             className="w-full py-6 text-2xl font-bold"
           >
-             {!loading ? "save" : <Loader />}
+            {!loading ? "save" : <Loader className="w-6 " />}
           </Button>
         )}
       </form>
