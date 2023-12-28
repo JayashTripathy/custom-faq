@@ -78,7 +78,7 @@ const AccordionItem = (props: {
         <div
           className={`mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg   dark:bg-white/5`}
           style={{
-            background: styles?.accent,
+            background: styles?.primary,
             color: styles?.primary,
           }}
         >

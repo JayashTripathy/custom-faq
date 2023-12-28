@@ -16,13 +16,17 @@
  - Setup a preview of FAQ page while creating FAQ page
  - delete image if submission failed
  - Setup CDN when user removes the img
+ - add email login and signup
+ - Add fonts
+ - change hsl values to normal value and add hsl while applying
 
 # primary features to work on
 
  -̶ A̶d̶d̶ S̶o̶c̶i̶a̶l̶s̶ (̶w̶h̶i̶c̶h̶ w̶i̶l̶l̶ i̶n̶c̶l̶u̶d̶e̶ ,̶ a̶r̶r̶a̶y̶ o̶f̶ (̶n̶a̶m̶e̶ a̶n̶d̶ l̶i̶n̶k̶)̶)̶ 
  -̶ C̶r̶e̶a̶t̶e̶ t̶h̶e̶ F̶A̶Q̶ s̶e̶c̶t̶i̶o̶n̶ o̶f̶ t̶h̶e̶ p̶a̶g̶e̶
- - Configure theme colors for the page
+ - Configure theme colors for the page (give different sections for dark and light themes)
  - Add a footer
+ - Add multiple font options and faq style
   
 
 

@@ -24,9 +24,8 @@ function Page() {
   return (
     <>
       {!faq ? (
-        <div className="w-full h-full flex justify-center items-center">
-
-        <Loader className="w-10 " />
+        <div className="flex h-full w-full items-center justify-center">
+          <Loader className="w-10 " />
         </div>
       ) : (
         <div className="mx-auto  h-full rounded-3xl  px-4 md:mt-4 md:max-w-[1200px] md:p-8 ">

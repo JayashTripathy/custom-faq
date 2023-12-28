@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 import Accordion from "@/components/accordion";
-import { Copy, ExternalLink, Bot } from "lucide-react";
+import { Copy, ExternalLink, Bot, ArrowLeft } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import Loader from "@/components/loader";
 import {
@@ -88,7 +88,9 @@ function Client(props: { title: string }) {
   return (
     <>
       {pageLoading ? (
-        <Loader />
+        <div className="flex h-full w-full items-center justify-center">
+          <Loader className="w-10 " />
+        </div>
       ) : (
         <div
           className={`absolute inset-0 h-screen overflow-auto`}
@@ -101,8 +103,21 @@ function Client(props: { title: string }) {
         >
           {isAdmin && adminMode ? (
             <>
-              <div className="  p-3  md:mx-auto md:w-3/4 ">
-                <div className="">
+              <div className="md:mx-auto md:w-3/4 mx-1 ">
+                <br />
+                <button
+                  className="flex gap-2 py-3 "
+                  onClick={() => router.back()}
+                >
+                  {" "}
+                  <ArrowLeft /> back
+                </button>
+                <div
+                  className="p-1 rounded-2xl md:p-8 mb-6"
+                  style={{
+                    background: styles?.muted,
+                  }}
+                >
                   <div className="flex flex-col items-center justify-between gap-6 md:flex-row ">
                     <div className=" flex  w-full items-center gap-2">
                       <div
@@ -253,14 +268,6 @@ function Client(props: { title: string }) {
                   </div>
                 </div>
               </div>
-              <div
-                style={{
-                  height: "1px",
-                  marginTop: "20px",
-                  background: styles?.mutedForeground,
-                  width: "100%",
-                }}
-              ></div>
             </>
           ) : (
             <></>
@@ -319,7 +326,7 @@ function Client(props: { title: string }) {
                           href={social.url}
                           className=" flex items-center justify-center gap-2 rounded-full  px-2 py-1 text-sm"
                           style={{
-                            color: styles?.background,
+                            color: styles?.foreground,
                             background: styles?.primary,
                           }}
                         >
