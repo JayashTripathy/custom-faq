@@ -26,6 +26,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { RadioGroup } from "@radix-ui/react-dropdown-menu";
 
 function ChatBox(props: {
   theme?: string;
@@ -151,8 +152,9 @@ function ChatBox(props: {
         <div
           className=" relative mx-5 my-10 mb-32 flex   w-full flex-col rounded-3xl shadow-lg lg:mx-auto lg:w-2/5 "
           style={{
-            backgroundColor: styles?.popover,
+            backgroundColor: styles?.secondary,
             color: styles?.popoverForeground,
+          
           }}
         >
           <div>
@@ -174,7 +176,7 @@ function ChatBox(props: {
                   <button
                     className="mr-3 flex  items-center justify-center gap-2 rounded-full  px-2  py-1 text-xs font-semibold transition-all duration-100 hover:opacity-80 md:mx-10"
                     style={{
-                      backgroundColor: styles?.destructiveForeground,
+                      backgroundColor: styles?.background,
                       color: styles?.destructive,
                       borderColor: styles?.destructive,
                       borderWidth: "1px",
@@ -265,7 +267,7 @@ function ChatBox(props: {
                     key={index}
                     className="px-4 py-2 "
                     style={{
-                      backgroundColor: item.isSent ? " " : styles?.muted,
+                      backgroundColor: item.isSent ? " " : "rgba(0,0,0,0.3)",
                       color: item.isSent ? " " : styles?.primary,
                     }}
                   >
@@ -311,7 +313,7 @@ function ChatBox(props: {
               <div
                 className="px-4 py-2 "
                 style={{
-                  backgroundColor: styles?.muted,
+                  backgroundColor: "rgba(0,0,0,0.3)",
                   color: styles?.primary,
                 }}
               >
@@ -329,11 +331,12 @@ function ChatBox(props: {
             <textarea
               className=" h-[50px]  max-h-[400px] flex-1 resize-none overflow-auto rounded-2xl p-3  outline-none"
               style={{
-                background: styles?.muted,
+                background: styles?.background,
                 color: styles?.mutedForeground,
               }}
               ref={inputRef}
               value={input}
+              placeholder="Type your question..."
               onInput={(e) => {
                 setInput(e.currentTarget.value);
                 e.currentTarget.style.height = "50px";

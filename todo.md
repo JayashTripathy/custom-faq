@@ -19,6 +19,7 @@
  - add email login and signup
  - Add fonts
  - change hsl values to normal value and add hsl while applying
+ - fix chatbot ui styling
 
 # primary features to work on
 
