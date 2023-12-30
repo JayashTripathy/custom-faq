@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import ChatBox from "@/components/chatbox";
+import { fontVariables } from "@/utils/pageThemes";
+
 
 function Client(props: { title: string }) {
   const { title } = props;
@@ -98,12 +100,13 @@ function Client(props: { title: string }) {
             {
               background: styles?.background,
               color: styles?.foreground,
+              fontFamily: faq?.font && `var(${fontVariables[faq.font]})`,
             } as CSSProperties
           }
         >
           {isAdmin && adminMode ? (
             <>
-              <div className="md:mx-auto md:w-3/4 mx-1 ">
+              <div className="mx-1 md:mx-auto md:w-3/4 ">
                 <br />
                 <button
                   className="flex gap-2 py-3 "
@@ -113,7 +116,7 @@ function Client(props: { title: string }) {
                   <ArrowLeft /> back
                 </button>
                 <div
-                  className="p-1 rounded-2xl md:p-8 mb-6"
+                  className="mb-6 rounded-2xl p-1 md:p-8"
                   style={{
                     background: styles?.muted,
                   }}

@@ -70,8 +70,16 @@ model Faq {
   User         User?     @relation(fields: [userId], references: [id])
   faqs         FaqItem[]
   socials      Social[]
+  font         FONT     @default(LATO)
 
   @@unique([title, userId])
+}
+
+enum FONT {
+  ROBOTO
+  OPEN_SANS
+  LATO
+  POPPINS
 }
 
 model FaqItem {
@@ -98,4 +106,3 @@ model documents {
   metadata  Json?
   embedding Unsupported("vector")?
 }
-

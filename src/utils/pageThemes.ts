@@ -1,4 +1,5 @@
 import { PageTheme } from "@/types/PageTheme";
+import { FONT } from "@prisma/client";
 
 export const pagethemes: PageTheme[] = [
   {
@@ -112,3 +113,14 @@ export const pagethemes: PageTheme[] = [
     },
   },
 ];
+
+type FontVariables = {
+  [key in FONT]: string;
+};
+
+export const fontVariables: FontVariables = {
+  [FONT.ROBOTO]: "--font-roboto",
+  [FONT.OPEN_SANS]: "--font-open-sans",
+  [FONT.LATO]: "--font-lato",
+  [FONT.POPPINS]: "--font-poppins",
+};
