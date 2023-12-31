@@ -17,7 +17,7 @@ const Accordion = (props: { faqs: Faq[] | undefined; theme?: string }) => {
               <h2
                 className="text-dark mb-2 text-2xl font-bold md:text-4xl z"
                 style={{
-                  color: styles?.primary,
+                  color: `hsl(${styles?.primary})`,
                 }}
               >
                 Frequently Asked Questions
@@ -68,7 +68,7 @@ const AccordionItem = (props: {
       className=" mx-4 mb-6 rounded-lg   p-4  shadow-xl sm:p-8 lg:px-6 xl:px-8  "
       style={{
         borderWidth: "1px",
-        borderColor: styles?.primary,
+        borderColor: `hsl(${styles?.primary})`,
       }}
     >
       <button
@@ -78,12 +78,12 @@ const AccordionItem = (props: {
         <div
           className={`mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg   dark:bg-white/5`}
           style={{
-            background: styles?.primary,
-            color: styles?.primary,
+            background: `hsl(${styles?.primary})`,
+            color: `hsl(${styles?.primary})`,
           }}
         >
           <svg
-            className={`fill-${styles?.primary} stroke-${styles?.primary} duration-200 ease-in-out ${
+            className={`fill-${`hsl(${styles?.primary})`} stroke-${`hsl(${styles?.primary})`} duration-200 ease-in-out ${
               active ? "rotate-180" : ""
             }`}
             width="17"

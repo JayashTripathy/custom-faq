@@ -25,7 +25,7 @@ import {
 import { Button } from "@/components/ui/button";
 import ChatBox from "@/components/chatbox";
 import { pageFonts } from "@/utils/pageThemes";
-
+import Image from "next/image";
 
 function Client(props: { title: string }) {
   const { title } = props;
@@ -75,7 +75,7 @@ function Client(props: { title: string }) {
       <div
         className={`text-lg font-semibold ${faq?.theme}  `}
         style={{
-          color: styles?.primary ?? " ",
+          color: `hsl(${styles?.primary})` ?? " ",
         }}
         {...rest}
       >
@@ -98,8 +98,8 @@ function Client(props: { title: string }) {
           className={`absolute inset-0 h-screen overflow-auto`}
           style={
             {
-              background: styles?.background,
-              color: styles?.foreground,
+              background: `hsl(${styles?.background})`,
+              color: `hsl(${styles?.foreground})`,
               fontFamily: faq?.font && `var(${pageFonts[faq.font]})`,
             } as CSSProperties
           }
@@ -118,7 +118,7 @@ function Client(props: { title: string }) {
                 <div
                   className="mb-6 rounded-2xl p-1 md:p-8"
                   style={{
-                    background: styles?.muted,
+                    background: `hsla(${styles?.muted}/.3)`,
                   }}
                 >
                   <div className="flex flex-col items-center justify-between gap-6 md:flex-row ">
@@ -126,24 +126,28 @@ function Client(props: { title: string }) {
                       <div
                         className="max-w-[80px] overflow-hidden  rounded-full   "
                         style={{
-                          background: styles?.muted,
+                          background: `hsl(${styles?.background})`,
+                       
                         }}
+                        aria-disabled={true}
                       >
-                        <img src="/stars.gif" className=" w-full  " />
+                        <Image
+                          width="30"
+                          height="30"
+                          src="/stars.gif"
+                          className=" w-full  "
+                          alt=""
+                          aria-disabled={true}
+                        />
                       </div>
                       <div>
-                        <div
-                          className="font-bold md:text-2xl "
-                          style={{
-                            color: styles?.primary,
-                          }}
-                        >
+                        <div className="font-bold md:text-2xl ">
                           Your page is live!
                         </div>
                         <div
                           className="text-sm"
                           style={{
-                            color: styles?.mutedForeground,
+                            color: `hsl(${styles?.mutedForeground})`,
                           }}
                         >
                           page is now accessible and you can share this with
@@ -169,8 +173,8 @@ function Client(props: { title: string }) {
                                     aria-hidden="true"
                                     className="h-8 w-8 animate-spin "
                                     style={{
-                                      fill: styles?.primary,
-                                      color: styles?.mutedForeground,
+                                      fill: `hsl(${styles?.primary})`,
+                                      color: `hsl(${styles?.mutedForeground})`,
                                     }}
                                     viewBox="0 0 100 101"
                                     fill="none"
@@ -225,7 +229,7 @@ function Client(props: { title: string }) {
                               }
                               className="w-full"
                               style={{
-                                background: styles?.primary,
+                                background: `hsl(${styles?.primary})`,
                               }}
                             >
                               Start
@@ -235,7 +239,7 @@ function Client(props: { title: string }) {
                         <button
                           className={` flex aspect-square h-full items-center justify-center rounded-2xl p-3 `}
                           style={{
-                            borderColor: styles?.primary,
+                            borderColor: `hsl(${styles?.primary})`,
                             borderWidth: "1px",
                             borderStyle: "solid",
                           }}
@@ -255,8 +259,8 @@ function Client(props: { title: string }) {
                         </button>
                         <button
                           style={{
-                            background: styles?.primary,
-                            color: styles?.background,
+                            background: `hsl(${styles?.primary})`,
+                            color: `hsl(${styles?.background})`,
                           }}
                           className=" flex aspect-square h-full items-center justify-center rounded-2xl p-3"
                           onClick={() =>
@@ -329,8 +333,8 @@ function Client(props: { title: string }) {
                           href={social.url}
                           className=" flex items-center justify-center gap-2 rounded-full  px-2 py-1 text-sm"
                           style={{
-                            color: styles?.foreground,
-                            background: styles?.primary,
+                            color: `hsl(${styles?.foreground})`,
+                            background: `hsl(${styles?.primary})`,
                           }}
                         >
                           {social.name}
@@ -344,7 +348,7 @@ function Client(props: { title: string }) {
               <div
                 style={{
                   height: ".1px",
-                  background: styles?.mutedForeground,
+                  background: `hsl(${styles?.mutedForeground})`,
                   width: "100%",
                   margin: "auto",
                   marginTop: "70px",
@@ -361,8 +365,8 @@ function Client(props: { title: string }) {
               <div className="fixed bottom-6 right-5  z-50 opacity-100 md:right-32">
                 <Button
                   style={{
-                    background: styles?.primary,
-                    color: styles?.background,
+                    background: `hsl(${styles?.primary})`,
+                    color: `hsl(${styles?.background})`,
                   }}
                   className="rounded-full p-5 font-bold md:text-2xl"
                   onClick={() => setIsChatboxOpen(true)}
