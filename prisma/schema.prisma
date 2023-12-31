@@ -76,10 +76,10 @@ model Faq {
 }
 
 enum FONT {
-  ROBOTO
-  OPEN_SANS
   LATO
-  POPPINS
+  QUICKSAND
+  PLAYFAIR
+  CORMORANT
 }
 
 model FaqItem {

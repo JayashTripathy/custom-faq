@@ -118,9 +118,9 @@ type FontVariables = {
   [key in FONT]: string;
 };
 
-export const fontVariables: FontVariables = {
-  [FONT.ROBOTO]: "--font-roboto",
-  [FONT.OPEN_SANS]: "--font-open-sans",
+export const pageFonts: FontVariables = {
   [FONT.LATO]: "--font-lato",
-  [FONT.POPPINS]: "--font-poppins",
+  [FONT.QUICKSAND]: "--font-quicksand",
+  [FONT.PLAYFAIR]: "--font-playfair",
+  [FONT.CORMORANT]: "--font-cormorant",
 };

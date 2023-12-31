@@ -30,11 +30,11 @@ import BottomDrawer from "./drawer/bottomDrawer";
 import { formSchema } from "@/lib/validators/FaqForm";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
-import { pagethemes } from "@/utils/pageThemes";
+import { pageFonts, pagethemes } from "@/utils/pageThemes";
 import { useTheme } from "next-themes";
 import type { Faq, Social, FaqItem } from "@prisma/client";
 import Loader from "./loader";
-import { title } from "process";
+import { FONT } from "@prisma/client";
 import useDebounce from "@/hooks/useDebounce";
 
 type cropperType = "logo" | "backdrop";
@@ -72,8 +72,10 @@ export function FaqForm(props: {
       faqs: [],
       theme: "purple",
       socials: [],
+      font: FONT.LATO,
     },
   });
+
   const [socials, setSocials] = useState(form.getValues("socials"));
   const [loading, setLoading] = useState(false);
   const [socialInput, setSocialInput] = useState({
@@ -85,7 +87,7 @@ export function FaqForm(props: {
   );
 
   const { replace } = useFieldArray({ name: "faqs", control: form.control });
-  console.log("title availabe", titleAvailable);
+
   const uploadToCdn = async (blogUrl: string) => {
     const logoImg = await fetch(blogUrl as RequestInfo | URL);
     if (!logoImg.ok) {
@@ -116,7 +118,7 @@ export function FaqForm(props: {
     const data: { secure_url: string } = await res.json();
     return data.secure_url;
   };
-  
+
   const handlePageThemeChange = (themeName: string) => {
     form.setValue("theme", themeName);
     setSelectedTheme(themeName); // Update the local state immediately
@@ -352,8 +354,7 @@ export function FaqForm(props: {
   const debouncedTitleCheck = useDebounce(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (
-        (existingFaqData &&
-          e.target.value === existingFaqData?.title) ||
+        (existingFaqData && e.target.value === existingFaqData?.title) ||
         e.target.value == ""
       ) {
         setTitleAvailable(null);
@@ -374,7 +375,7 @@ export function FaqForm(props: {
       );
     },
     1000,
-  )
+  );
 
   return (
     <Form {...form}>
@@ -498,9 +499,7 @@ export function FaqForm(props: {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Title</FormLabel>
-                  <FormControl
-                    onChange={debouncedTitleCheck}
-                  >
+                  <FormControl onChange={debouncedTitleCheck}>
                     <Input placeholder="WiseFAQ" {...field} />
                   </FormControl>
                   {isTitleAvailableMutation.isLoading && (
@@ -658,6 +657,32 @@ export function FaqForm(props: {
               updateFaq={replace}
               defaultFaqs={existingFaqData?.faqs ?? undefined}
             />
+          </div>
+        </div>
+        <div>
+          <h1 className="text-xl font-bold ">Choose Font</h1>
+          <br />
+          <div className="grid  grid-cols-[repeat(auto-fit,_minmax(200px,1fr))] gap-2 px-2">
+            {Object.entries(pageFonts)?.map(([fontName, variable], index) => {
+              return (
+                <button
+                  key={fontName}
+                  type="button"
+                  className={` "mt-5 box-border  flex h-32 w-full flex-col justify-center rounded-lg  border p-5 text-left duration-200 ease-in-out hover:bg-accent   ${
+                    fontName == form.watch("font") && "bg-accent"
+                  } `}
+                  style={{
+                    fontFamily: `var(${variable})`,
+                  }}
+                  onClick={() => form.setValue("font", fontName)}
+                >
+                  <h1 className="text-lg font-bold">
+                    {fontName.replace("_", " ")}
+                  </h1>
+                  This is a quick brown fox jumps over the lazy dog
+                </button>
+              );
+            })}
           </div>
         </div>
         <div>

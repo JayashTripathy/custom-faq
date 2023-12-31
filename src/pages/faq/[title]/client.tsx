@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import ChatBox from "@/components/chatbox";
-import { fontVariables } from "@/utils/pageThemes";
+import { pageFonts } from "@/utils/pageThemes";
 
 
 function Client(props: { title: string }) {
@@ -100,7 +100,7 @@ function Client(props: { title: string }) {
             {
               background: styles?.background,
               color: styles?.foreground,
-              fontFamily: faq?.font && `var(${fontVariables[faq.font]})`,
+              fontFamily: faq?.font && `var(${pageFonts[faq.font]})`,
             } as CSSProperties
           }
         >

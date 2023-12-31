@@ -17,9 +17,10 @@
  - delete image if submission failed
  - Setup CDN when user removes the img
  - add email login and signup
- - Add fonts
+ -̶ A̶d̶d̶ f̶o̶n̶t̶s̶
  - change hsl values to normal value and add hsl while applying
- - fix chatbot ui styling
+ -̶ f̶i̶x̶ c̶h̶a̶t̶b̶o̶t̶ u̶i̶ s̶t̶y̶l̶i̶n̶g̶
+ - create enums for themes 
 
 # primary features to work on
 
@@ -27,7 +28,8 @@
  -̶ C̶r̶e̶a̶t̶e̶ t̶h̶e̶ F̶A̶Q̶ s̶e̶c̶t̶i̶o̶n̶ o̶f̶ t̶h̶e̶ p̶a̶g̶e̶
  - Configure theme colors for the page (give different sections for dark and light themes)
  - Add a footer
- - Add multiple font options and faq style
+ -̶ A̶d̶d̶ m̶u̶l̶t̶i̶p̶l̶e̶ f̶o̶n̶t̶ o̶p̶t̶i̶o̶n̶s̶ a̶n̶d̶ f̶a̶q̶ s̶t̶y̶l̶e̶
+ - add a alert while updating the page that it will remove the ai bot and you have to train ai bot again 
   
 
 

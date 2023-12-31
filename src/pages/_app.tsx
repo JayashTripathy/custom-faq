@@ -9,19 +9,12 @@ import { api } from "@/utils/api";
 import "@/styles/globals.css";
 import Layout from "@/components/layout";
 
-import { Roboto, Open_Sans, Lato, Poppins } from "next/font/google";
-
-const roboto = Roboto({
-  weight: ["100", "300", "500", "700", "900"],
-  subsets: ["latin-ext"],
-  variable: "--font-roboto",
-});
-
-const openSans = Open_Sans({
-  weight: ["300", "500", "700", "800"],
-  subsets: ["latin-ext"],
-  variable: "--font-opensans",
-});
+import {
+  Lato,
+  Quicksand,
+  Playfair_Display,
+  Cormorant_Garamond,
+} from "next/font/google";
 
 const lato = Lato({
   weight: ["300", "400", "700", "900"],
@@ -29,10 +22,20 @@ const lato = Lato({
   variable: "--font-lato",
 });
 
-const poppins = Poppins({
-  weight: ["300", "400", "700", "800", "900"],
+const quicksand = Quicksand({
+  weight: ["300", "400", "700"],
   subsets: ["latin-ext"],
-  variable: "--font-poppins",
+  variable: "--font-quicksand",
+});
+const playfair = Playfair_Display({
+  weight: ["400", "500", "600", "700", "800", "900"],
+  subsets: ["latin-ext"],
+  variable: "--font-playfair",
+});
+const cormorant = Cormorant_Garamond({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin-ext"],
+  variable: "--font-cormorant",
 });
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -40,7 +43,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <main className={`${roboto.variable} ${lato.variable} ${openSans.variable}  ${poppins.variable}`}>
+    <main className={`${quicksand.variable} ${lato.variable} ${cormorant.variable} ${playfair.variable}`}>
       <SessionProvider session={session}>
         <AppProviders>
           <ThemeProvider attribute="data-theme" defaultTheme="dark">

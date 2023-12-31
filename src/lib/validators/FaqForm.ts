@@ -13,6 +13,7 @@ export const formSchema = z.object({
       )
       .min(1),
     theme: z.string().optional().or(z.literal("")),  
-    socials: z.array(z.object({ name: z.string(), url: z.string() }))
+    socials: z.array(z.object({ name: z.string(), url: z.string() })),
+    font: z.string().optional().or(z.literal("")),
   });
   
