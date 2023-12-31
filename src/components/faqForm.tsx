@@ -674,7 +674,7 @@ export function FaqForm(props: {
                   style={{
                     fontFamily: `var(${variable})`,
                   }}
-                  onClick={() => form.setValue("font", fontName)}
+                  onClick={() => form.setValue("font", fontName as FONT)}
                 >
                   <h1 className="text-lg font-bold">
                     {fontName.replace("_", " ")}

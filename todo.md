@@ -18,7 +18,7 @@
  - Setup CDN when user removes the img
  - add email login and signup
  -̶ A̶d̶d̶ f̶o̶n̶t̶s̶
- - change hsl values to normal value and add hsl while applying
+ -̶ c̶h̶a̶n̶g̶e̶ h̶s̶l̶ v̶a̶l̶u̶e̶s̶ t̶o̶ n̶o̶r̶m̶a̶l̶ v̶a̶l̶u̶e̶ a̶n̶d̶ a̶d̶d̶ h̶s̶l̶ w̶h̶i̶l̶e̶ a̶p̶p̶l̶y̶i̶n̶g̶
  -̶ f̶i̶x̶ c̶h̶a̶t̶b̶o̶t̶ u̶i̶ s̶t̶y̶l̶i̶n̶g̶
  - create enums for themes 
 
@@ -27,7 +27,6 @@
  -̶ A̶d̶d̶ S̶o̶c̶i̶a̶l̶s̶ (̶w̶h̶i̶c̶h̶ w̶i̶l̶l̶ i̶n̶c̶l̶u̶d̶e̶ ,̶ a̶r̶r̶a̶y̶ o̶f̶ (̶n̶a̶m̶e̶ a̶n̶d̶ l̶i̶n̶k̶)̶)̶ 
  -̶ C̶r̶e̶a̶t̶e̶ t̶h̶e̶ F̶A̶Q̶ s̶e̶c̶t̶i̶o̶n̶ o̶f̶ t̶h̶e̶ p̶a̶g̶e̶
  - Configure theme colors for the page (give different sections for dark and light themes)
- - Add a footer
  -̶ A̶d̶d̶ m̶u̶l̶t̶i̶p̶l̶e̶ f̶o̶n̶t̶ o̶p̶t̶i̶o̶n̶s̶ a̶n̶d̶ f̶a̶q̶ s̶t̶y̶l̶e̶
  - add a alert while updating the page that it will remove the ai bot and you have to train ai bot again 
   
