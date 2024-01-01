@@ -215,9 +215,23 @@ function FaqList(props: {
                                   id: faqs.length + ind + 1,
                                 }),
                               );
-                              newFaqData && setFaqs(newFaqData);
+                              if (newFaqData.length > 0) {
+                                setFaqs(newFaqData);
+                                setJsonData("");
+                                toast({
+                                  title: "Success!",
+                                  description: "JSON parsed successfully!",
+                                  type: "background",
+                                  duration: 2000,
+                                });
+                              }
                             } catch (e) {
                               console.log(e);
+                              toast({
+                                title: "Invalid JSON",
+                                type: "background",
+                                duration: 2000,
+                              });
                             }
                           }}
                           className="bg-primary hover:bg-primary/90"
