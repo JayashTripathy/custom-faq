@@ -33,6 +33,7 @@ import { Label } from "@radix-ui/react-label";
 import { Textarea } from "./ui/textarea";
 import { UseFieldArrayReplace, set } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
+import Image from "next/image";
 
 type FaqMode = "add" | "edit";
 type FaqDetails = Omit<Faq, "faqId" | "id">;
@@ -183,11 +184,20 @@ function FaqList(props: {
                     )}
                     <AlertDialogContent>
                       <AlertDialogHeader>
+                        <h3>Example Schema</h3>
+                        <Image
+                          src="/importjsonschema.png"
+                          width={300}
+                          height={300}
+                          className="w-full"
+                          alt=""
+                        />
                         <AlertDialogTitle>Enter JSON</AlertDialogTitle>
                       </AlertDialogHeader>
                       <Textarea
                         value={jsonData}
                         onChange={(e) => setJsonData(e.target.value)}
+                        placeholder="place your JSON here"
                       />
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
