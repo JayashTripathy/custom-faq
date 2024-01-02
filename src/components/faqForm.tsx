@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
-import { CheckCircle, Pencil, PlusCircle, Trash, X } from "lucide-react";
+import { CheckCircle, Key, Pencil, PlusCircle, Trash, X } from "lucide-react";
 import {
   CSSProperties,
   SyntheticEvent,
@@ -76,7 +76,7 @@ export function FaqForm(props: {
     },
   });
 
-  const [socials, setSocials] = useState(form.getValues("socials"));
+  // const [socials, setSocials] = useState(form.getValues("socials"));
   const [loading, setLoading] = useState(false);
   const [socialInput, setSocialInput] = useState({
     name: "",
@@ -169,57 +169,107 @@ export function FaqForm(props: {
     }
   };
   const onUpdate = async (values: z.infer<typeof formSchema>) => {
-    try {
-      setLoading(true);
-      let logo = values.logo;
-      let backdrop = values.backdrop;
+    let canUpdate = false;
 
-      if (values.logo) {
-        logo = await uploadToCdn(values.logo);
+    Object.entries(values).forEach(([key, val]) => {
+      if (key == "faqs" || key == "socials") return;
+      if (existingFaqData && existingFaqData[key as keyof Faq] != val) {
+        console.log(
+          existingFaqData && existingFaqData[key as keyof Faq],
+          val,
+          key,
+        );
+        canUpdate = true;
       }
+    });
 
-      if (values.backdrop) {
-        backdrop = await uploadToCdn(values.backdrop);
+    if (existingFaqData?.faqs) {
+      if (existingFaqData.faqs.length != values.faqs.length) {
+        canUpdate = true;
+      } else {
+        existingFaqData.faqs.forEach((faq, index) => {
+          if (faq.question != values.faqs[index]?.question) {
+            canUpdate = true;
+          }
+          if (faq.answer != values.faqs[index]?.answer) {
+            canUpdate = true;
+          }
+        });
       }
+    }
 
-      const finalValues = {
-        ...values,
-        title: values.title.trim(),
-        logo,
-        backdrop,
-      };
+    if (existingFaqData?.socials) {
+      if (existingFaqData.socials.length != values.socials.length) {
+        console.log("socials length not equal");
+        canUpdate = true;
+      } else {
+        existingFaqData.socials.forEach((socials, index) => {
+          if (socials.name != values.socials[index]?.name) {
+            console.log("socials name not equal");
+            canUpdate = true;
+          }
+        });
+      }
+    }
 
-      {
-        existingFaqData?.id &&
-          updateFaqMutation.mutate(
-            {
-              faqId: existingFaqData.id,
-              ...finalValues,
-            },
-            {
-              onSuccess: (data) => {
-                toast({
-                  title: "Updated!",
-                  description: "Your FAQ page has been updated successfully.",
-                  duration: 3000,
-                });
-                setLoading(false);
-                void router.push("/dashboard");
+    if (canUpdate) {
+      try {
+        setLoading(true);
+        let logo = values.logo;
+        let backdrop = values.backdrop;
+
+        if (values.logo) {
+          logo = await uploadToCdn(values.logo);
+        }
+
+        if (values.backdrop) {
+          backdrop = await uploadToCdn(values.backdrop);
+        }
+
+        const finalValues = {
+          ...values,
+          title: values.title.trim(),
+          logo,
+          backdrop,
+        };
+
+        {
+          existingFaqData?.id &&
+            updateFaqMutation.mutate(
+              {
+                faqId: existingFaqData.id,
+                ...finalValues,
               },
-              onError: (err) => {
-                toast({
-                  title: "Error!",
-                  description:
-                    "Internaval server error. Please try again later.",
-                });
-                setLoading(false);
+              {
+                onSuccess: (data) => {
+                  toast({
+                    title: "Updated!",
+                    description: "Your FAQ page has been updated successfully.",
+                    duration: 3000,
+                  });
+                  setLoading(false);
+                  void router.push("/dashboard");
+                },
+                onError: (err) => {
+                  toast({
+                    title: "Error!",
+                    description:
+                      "Internaval server error. Please try again later.",
+                  });
+                  setLoading(false);
+                },
               },
-            },
-          );
+            );
+        }
+      } catch (error) {
+        console.error("Error converting Blob URL to File:", error);
+        return null;
       }
-    } catch (error) {
-      console.error("Error converting Blob URL to File:", error);
-      return null;
+    } else {
+      toast({
+        title: "Error!",
+        description: "Nothing to update.",
+      });
     }
   };
 
@@ -286,7 +336,7 @@ export function FaqForm(props: {
     },
   ];
 
-  const addSocial = () => {
+  const onAddSocial = () => {
     if (!socialInput.name || !socialInput.url) {
       toast({
         variant: "default",
@@ -295,7 +345,12 @@ export function FaqForm(props: {
       });
       return;
     }
-    setSocials((p) => [...p, socialInput]);
+    const currVal = form.getValues("socials");
+    form.setValue("socials", currVal.concat(socialInput));
+    setSocialInput({
+      name: "",
+      url: "",
+    })
   };
 
   const selectedCropper = cropperConfig.find((c) => c.type === cropperType);
@@ -324,9 +379,9 @@ export function FaqForm(props: {
     }
   }, [pageLogo, backdrop]);
 
-  useEffect(() => {
-    form.setValue("socials", socials);
-  }, [socials]);
+  // useEffect(() => {
+  //   form.setValue("socials", socials);
+  // }, [socials]);
 
   // this updates all the values if we are in edit mode
   useEffect(() => {
@@ -343,13 +398,14 @@ export function FaqForm(props: {
       existingFaqData.address &&
         form.setValue("address", existingFaqData.address);
       existingFaqData.theme && handlePageThemeChange(existingFaqData.theme);
+      existingFaqData.font && form.setValue("font", existingFaqData.font);
       setPageLogo(existingFaqData.logo);
       setBackdrop(existingFaqData.backdrop);
-      setSocials(existingFaqData.socials);
+      // setSocials(existingFaqData.socials);
+      existingFaqData.socials &&
+        form.setValue("socials", existingFaqData.socials);
     }
   }, [mode]);
-
-  const existingFaqKeys = existingFaqData && Object.keys(existingFaqData);
 
   const debouncedTitleCheck = useDebounce(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -585,7 +641,7 @@ export function FaqForm(props: {
         <div>
           <h1 className="text-xl font-bold ">Socials</h1>
           <div className="flex gap-3">
-            {socials.map((social, index) => (
+            {form.watch("socials").map((social, index) => (
               <div
                 className="flex items-center justify-center gap-5 rounded-xl bg-secondary p-3"
                 key={index}
@@ -599,9 +655,12 @@ export function FaqForm(props: {
                   type="button"
                   variant={"destructive"}
                   className="m-0 h-5 w-5 rounded-full p-0"
-                  onClick={() =>
-                    setSocials((p) => p.filter((_, i) => i !== index))
-                  }
+                  onClick={() => {
+                    const curVal = form.getValues("socials");
+                    const updatedSocials = curVal.filter((_, i) => i !== index);
+                    console.log(updatedSocials);
+                    form.setValue("socials", updatedSocials);
+                  }}
                 >
                   <X className=" text-background" size={15} />
                 </Button>
@@ -645,7 +704,7 @@ export function FaqForm(props: {
           <Button
             type="button"
             className="mt-3 w-full font-bold "
-            onClick={addSocial}
+            onClick={onAddSocial}
           >
             Add
           </Button>
