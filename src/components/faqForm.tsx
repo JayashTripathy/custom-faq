@@ -379,11 +379,7 @@ export function FaqForm(props: {
     }
   }, [pageLogo, backdrop]);
 
-  // useEffect(() => {
-  //   form.setValue("socials", socials);
-  // }, [socials]);
 
-  // this updates all the values if we are in edit mode
   useEffect(() => {
     if (mode == "edit" && existingFaqData) {
       form.setValue("title", existingFaqData.title, { shouldDirty: false });
@@ -401,7 +397,6 @@ export function FaqForm(props: {
       existingFaqData.font && form.setValue("font", existingFaqData.font);
       setPageLogo(existingFaqData.logo);
       setBackdrop(existingFaqData.backdrop);
-      // setSocials(existingFaqData.socials);
       existingFaqData.socials &&
         form.setValue("socials", existingFaqData.socials);
     }

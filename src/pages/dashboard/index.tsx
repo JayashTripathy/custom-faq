@@ -114,9 +114,8 @@ function Dashboard() {
                         className="h-12 w-12"
                         type="button"
                         onClick={(e) => {
-                          void router.push(
-                            `/dashboard/editFaqPage/${faq.title}`,
-                          );
+                          const url = `/dashboard/editFaqPage/${faq.title}`;
+                          window.location.href = url;
                         }}
                       >
                         <Edit2 />
