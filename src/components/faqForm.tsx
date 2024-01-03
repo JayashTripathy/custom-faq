@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useFieldArray, useForm } from "react-hook-form";
+import {useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "./ui/button";
 import {
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
-import { CheckCircle, Key, Pencil, PlusCircle, Trash, X } from "lucide-react";
+import { CheckCircle,Pencil, PlusCircle, Trash, X } from "lucide-react";
 import {
   CSSProperties,
   SyntheticEvent,
@@ -76,15 +76,12 @@ export function FaqForm(props: {
     },
   });
 
-  // const [socials, setSocials] = useState(form.getValues("socials"));
   const [loading, setLoading] = useState(false);
   const [socialInput, setSocialInput] = useState({
     name: "",
     url: "",
   });
-  const [selectedTheme, setSelectedTheme] = useState(
-    existingFaqData?.theme ?? form.getValues("theme"),
-  );
+
 
   const { replace } = useFieldArray({ name: "faqs", control: form.control });
 
@@ -121,7 +118,6 @@ export function FaqForm(props: {
 
   const handlePageThemeChange = (themeName: string) => {
     form.setValue("theme", themeName);
-    setSelectedTheme(themeName); // Update the local state immediately
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -753,7 +749,7 @@ export function FaqForm(props: {
                   ? els.darkColor
                   : els.color;
 
-              const selected: boolean = selectedTheme === els.name;
+              const selected: boolean = form.watch("theme") === els.name;
               return (
                 <button
                   type="button"
