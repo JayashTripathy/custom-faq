@@ -152,8 +152,8 @@ function ChatBox(props: {
         <div
           className=" relative mx-5 my-10 mb-32 flex   w-full flex-col rounded-3xl shadow-lg lg:mx-auto lg:w-2/5 "
           style={{
-            backgroundColor: styles?.secondary,
-            color: styles?.popoverForeground,
+            backgroundColor: `hsl(${styles?.secondary})`,
+            color: `hsl(${styles?.popoverForeground})`,
           
           }}
         >
@@ -163,8 +163,8 @@ function ChatBox(props: {
                 <span
                   className="aspect-square rounded-full p-1 md:p-2"
                   style={{
-                    backgroundColor: styles?.primary,
-                    color: styles?.primaryForeground,
+                    backgroundColor: `hsl(${styles?.primary})`,
+                    color: `hsl(${styles?.primaryForeground})`,
                   }}
                 >
                   <Bot />{" "}
@@ -174,11 +174,11 @@ function ChatBox(props: {
               {noMessages && (
                 <AlertDialogTrigger>
                   <button
-                    className="mr-3 flex  items-center justify-center gap-2 rounded-full  px-2  py-1 text-xs font-semibold transition-all duration-100 hover:opacity-80 md:mx-10"
+                    className="mr-3 flex font-  items-center justify-center gap-2 rounded-full  px-2  py-1 text-xs font-bold transition-all duration-100  md:mx-10"
                     style={{
-                      backgroundColor: styles?.background,
-                      color: styles?.destructive,
-                      borderColor: styles?.destructive,
+                      backgroundColor: `hsl(${styles?.background})`,
+                      color: `hsl(${styles?.destructive})`,
+                      borderColor: `hsl(${styles?.destructive})`,
                       borderWidth: "1px",
                       borderStyle: "solid",
                     }}
@@ -189,11 +189,11 @@ function ChatBox(props: {
               )}
               <AlertDialogContent
                 style={{
-                  backgroundColor: styles?.popover,
-                  borderColor: styles?.border,
+                  backgroundColor: `hsl(${styles?.popover})`,
+                  borderColor: `hsl(${styles?.border})`,
                   borderStyle: "solid",
                   borderWidth: "1px",
-                  color: styles?.popoverForeground,
+                  color: `hsl(${styles?.popoverForeground})`,
                   zIndex: 100,
                 }}
               >
@@ -207,15 +207,16 @@ function ChatBox(props: {
                 <AlertDialogFooter>
                   <AlertDialogCancel
                     style={{
-                      background: styles?.popover,
-                      color: styles?.popoverForeground,
+                      background: `hsl(${styles?.popover})`,
+                      color: `hsl(${styles?.popoverForeground})`,
                     }}
                   >
                     Cancel
                   </AlertDialogCancel>
                   <AlertDialogAction
                     style={{
-                      backgroundColor: styles?.primary,
+                      backgroundColor: `hsl(${styles?.primary})`,
+                      color: `hsl(${styles?.primaryForeground})`,
                     }}
                     onClick={() => {
                       const newMessages = storage?.messages.filter(
@@ -239,7 +240,7 @@ function ChatBox(props: {
               style={{
                 borderWidth: "1px",
                 opacity: 0.2,
-                borderColor: styles?.popoverForeground,
+                borderColor: `hsl(${styles?.popoverForeground})`,
                 width: "100%",
               }}
             ></div>
@@ -253,7 +254,7 @@ function ChatBox(props: {
               <div
                 className="flex h-full w-full flex-col items-center justify-center "
                 style={{
-                  color: styles?.mutedForeground,
+                  color: `hsl(${styles?.mutedForeground})`,
                 }}
               >
                 <img src="/bot.gif" className="w-20 "></img>
@@ -268,7 +269,7 @@ function ChatBox(props: {
                     className="px-4 py-2 "
                     style={{
                       backgroundColor: item.isSent ? " " : "rgba(0,0,0,0.3)",
-                      color: item.isSent ? " " : styles?.primary,
+                      color: item.isSent ? " " : `hsl(${styles?.primary})`,
                     }}
                   >
                     <div className="flex gap-5">
@@ -284,27 +285,27 @@ function ChatBox(props: {
               <div
                 className="px-4 py-2 flex space-x-2  "
                 style={{
-                  backgroundColor: styles?.muted,
-                  color: styles?.primary,
+                  backgroundColor: `hsl(${styles?.muted})`,
+                  color: `hsl(${styles?.primary})`,
                 }}
               >
                 <span className="sr-only">Loading...</span>
                 <div
                   className="h-2 w-2 animate-bounce rounded-full  [animation-delay:-0.3s]"
                   style={{
-                    backgroundColor: styles?.mutedForeground,
+                    backgroundColor: `hsl(${styles?.mutedForeground})`,
                   }}
                 ></div>
                 <div
                   className="h-2 w-2 animate-bounce rounded-full [animation-delay:-0.15s]"
                   style={{
-                    backgroundColor: styles?.primary,
+                    backgroundColor: `hsl(${styles?.primary})`,
                   }}
                 ></div>
                 <div
                   className="h-2 w-2 animate-bounce rounded-full"
                   style={{
-                    backgroundColor: styles?.mutedForeground,
+                    backgroundColor: `hsl(${styles?.mutedForeground})`,
                   }}
                 ></div>
               </div>
@@ -314,7 +315,7 @@ function ChatBox(props: {
                 className="px-4 py-2 "
                 style={{
                   backgroundColor: "rgba(0,0,0,0.3)",
-                  color: styles?.primary,
+                  color: `hsl(${styles?.primary})`,
                 }}
               >
                 <div className="flex gap-5">
@@ -331,8 +332,8 @@ function ChatBox(props: {
             <textarea
               className=" h-[50px]  max-h-[400px] flex-1 resize-none overflow-auto rounded-2xl p-3  outline-none"
               style={{
-                background: styles?.background,
-                color: styles?.mutedForeground,
+                background: `hsl(${styles?.background})`,
+                color: `hsl(${styles?.mutedForeground})`,
               }}
               ref={inputRef}
               value={input}
@@ -353,7 +354,7 @@ function ChatBox(props: {
             <button
               className="absolute right-2  flex cursor-pointer items-center justify-center rounded-2xl p-3"
               style={{
-                color: styles?.primary,
+                color: `hsl(${styles?.primary})`,
               }}
               onClick={onSend}
             >

@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "./ui/button";
 import {
@@ -14,7 +14,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
-import { CheckCircle,Pencil, PlusCircle, Trash, X } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle,
+  FileWarningIcon,
+  Pencil,
+  PlusCircle,
+  Trash,
+  X,
+} from "lucide-react";
 import {
   CSSProperties,
   SyntheticEvent,
@@ -81,7 +89,6 @@ export function FaqForm(props: {
     name: "",
     url: "",
   });
-
 
   const { replace } = useFieldArray({ name: "faqs", control: form.control });
 
@@ -346,7 +353,7 @@ export function FaqForm(props: {
     setSocialInput({
       name: "",
       url: "",
-    })
+    });
   };
 
   const selectedCropper = cropperConfig.find((c) => c.type === cropperType);
@@ -374,7 +381,6 @@ export function FaqForm(props: {
       form.setValue("backdrop", "");
     }
   }, [pageLogo, backdrop]);
-
 
   useEffect(() => {
     if (mode == "edit" && existingFaqData) {
@@ -798,6 +804,14 @@ export function FaqForm(props: {
             })}
           </div>
         </div>
+        {existingFaqData?.aiMode && (
+          <div className=" rounded-md py-1 text-sm text-secondary-foreground/80 flex gap-1 justify-center items-center bg-secondary/60 ">
+            <span className="font-bold pl-1 flex items-center gap-2 "><AlertCircle />  Warning: </span>AI
+            Agent is active, and updating a page will cause an AI agent to be
+            deleted. However, you can use the revised page to regenerate the AI
+            agent once more.
+          </div>
+        )}
         {mode == "create" ? (
           <Button
             type="submit"
@@ -812,7 +826,7 @@ export function FaqForm(props: {
             disabled={loading || titleAvailable == false}
             className="w-full py-6 text-2xl font-bold"
           >
-            {!loading ? "save" : <Loader className="w-6 " />}
+            {!loading ? "update" : <Loader className="w-6 " />}
           </Button>
         )}
       </form>

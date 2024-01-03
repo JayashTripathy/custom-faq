@@ -227,9 +227,10 @@ function Client(props: { title: string }) {
                                   faqId: faq.id,
                                 })
                               }
-                              className="w-full"
+                              className="w-full font-bold"
                               style={{
                                 background: `hsl(${styles?.primary})`,
+                                color: `hsl(${styles?.background})`,
                               }}
                             >
                               Start
