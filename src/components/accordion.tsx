@@ -1,10 +1,11 @@
 import { formSchema } from "@/lib/validators/FaqForm";
 import { Faq } from "@/types/faq";
 import { getTheme } from "@/utils/getPageTheme";
+import { THEME } from "@prisma/client";
 import React, { useState } from "react";
 import { z } from "zod";
 
-const Accordion = (props: { faqs: Faq[] | undefined; theme?: string }) => {
+const Accordion = (props: { faqs: Faq[] | undefined; theme?: THEME }) => {
   const { faqs, theme } = props;
 
   const styles = getTheme(theme);
@@ -52,7 +53,7 @@ export default Accordion;
 const AccordionItem = (props: {
   header: string;
   text: string;
-  theme?: string;
+  theme?: THEME;
 }) => {
   const { header, text, theme } = props;
   const [active, setActive] = useState(false);
