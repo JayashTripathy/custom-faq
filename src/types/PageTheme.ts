@@ -1,7 +1,7 @@
 
-
+import { FONT, THEME } from "@prisma/client";
 export type PageTheme = {
-  name: string;
+  name: THEME;
   color: string;
   darkColor: string;
   styles: {

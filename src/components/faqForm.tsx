@@ -742,51 +742,41 @@ export function FaqForm(props: {
           </div>
         </div>
         <div>
-          <h1 className="text-xl font-bold ">Choose theme</h1>
+          <h1 className="text-xl font-bold ">Choose Theme</h1>
 
-          <div className="grid  grid-cols-[repeat(auto-fit,_minmax(100px,1fr))] gap-2 px-2">
-            {pagethemes.map((els, index) => {
-              const color =
-                theme === "system"
-                  ? systemTheme == "dark"
-                    ? els.darkColor
-                    : els.color
-                  : theme == "dark"
-                  ? els.darkColor
-                  : els.color;
-
-              const selected: boolean = form.watch("theme") === els.name;
+          <div className="grid  grid-cols-[repeat(auto-fit,_minmax(200px,1fr))] gap-2 px-2">
+            {pagethemes.map((themeConfig, index) => {
+              const selected: boolean = form.watch("theme") === themeConfig.name;
+              const styles = themeConfig.styles;
               return (
                 <button
                   type="button"
                   key={index}
-                  onClick={() => handlePageThemeChange(els.name)}
-                  className="mt-5 box-border  flex h-32 w-full flex-col justify-center rounded-lg  border p-5 text-left duration-200 ease-in-out hover:bg-accent    "
+                  onClick={() => handlePageThemeChange(themeConfig.name)}
+                  className={`mt-5 ${selected? "opacity-100" : "opacity-60"}  hover:opacity-100 box-border  flex h-32 w-full flex-col justify-center rounded-lg  border p-5 text-left duration-200 ease-in-out hover:bg-accent    `}
                   style={{
                     border: selected
-                      ? `2px solid ${color}`
+                      ? `7px solid  hsl(${styles?.primary})`
                       : "2px solid 		rgb(72, 86, 106, .2)",
+                
+                    backgroundColor: `hsl(${styles?.secondary})`,
                   }}
                 >
                   <div
-                    className=" text-2xl   "
+                    className=" text-2xl font-bold lowercase   "
                     style={{
-                      color: color,
+                      color: `hsl(${styles?.primary})`,
                     }}
                   >
-                    {els.name}
-                    <span className="text-sm ">
-                      {" "}
-                      {els.name === "purple" && "(default)"}
-                    </span>
+                    {themeConfig.name.replace("_", " ")}
                   </div>
                   {Array(2)
                     .fill(0)
                     .map((_, index) => (
-                      <div className="w-full" key={els.name + index}>
+                      <div className="w-full" key={themeConfig.name + index}>
                         <span
                           style={{
-                            color: color,
+                            color: `hsl(${styles?.primary})`,
                           }}
                         >
                           ▸
@@ -794,7 +784,7 @@ export function FaqForm(props: {
                         <div
                           className=" w-full flex-grow border-b-[1px] "
                           style={{
-                            borderColor: color,
+                            borderColor: `hsl(${styles?.primary})`,
                           }}
                         ></div>
                       </div>
@@ -805,9 +795,11 @@ export function FaqForm(props: {
           </div>
         </div>
         {existingFaqData?.aiMode && (
-          <div className=" rounded-md py-1 text-sm text-secondary-foreground/80 flex gap-1 justify-center items-center bg-secondary/60 ">
-            <span className="font-bold pl-1 flex items-center gap-2 "><AlertCircle />  Warning: </span>AI
-            Agent is active, and updating a page will cause an AI agent to be
+          <div className=" flex items-center justify-center gap-1 rounded-md bg-secondary/60 py-1 text-sm text-secondary-foreground/80 ">
+            <span className="flex items-center gap-2 pl-1 font-bold ">
+              <AlertCircle /> Warning:{" "}
+            </span>
+            AI Agent is active, and updating a page will cause an AI agent to be
             deleted. However, you can use the revised page to regenerate the AI
             agent once more.
           </div>

@@ -1,9 +1,9 @@
 import { PageTheme } from "@/types/PageTheme";
-import { FONT } from "@prisma/client";
+import { FONT, THEME } from "@prisma/client";
 
 export const pagethemes: PageTheme[] = [
   {
-    name: "purple",
+    name: "VIOLET",
     color: "#7c3aed",
     darkColor: "#6d28d9",
     styles: {
@@ -31,7 +31,7 @@ export const pagethemes: PageTheme[] = [
   },
 
   {
-    name: "yellow",
+    name: "YELLOW",
     color: "#fcc538",
     darkColor: "#fcc538",
     styles: {
@@ -57,8 +57,9 @@ export const pagethemes: PageTheme[] = [
       radius: "1rem",
     },
   },
+
   {
-    name: "zinc",
+    name: "ZINC",
     color: "#191919",
     darkColor: "#FAFAFA",
     styles: {
@@ -86,7 +87,7 @@ export const pagethemes: PageTheme[] = [
   },
 
   {
-    name: "orange",
+    name: "ORANGE",
     color: "#E78B22",
     darkColor: "#E57949",
     styles: {
@@ -112,8 +113,115 @@ export const pagethemes: PageTheme[] = [
       radius: "1rem",
     },
   },
+  {
+    name: "VIOLET_LIGHT",
+    color: "#7c3aed",
+    darkColor: "#6d28d9",
+    styles: {
+      background: "0 0% 100%",
+      foreground: "224 71.4% 4.1%",
+      card: "0 0% 100%",
+      cardForeground: "224 71.4% 4.1%",
+      popover: "0 0% 100%",
+      popoverForeground: "224 71.4% 4.1%",
+      primary: "262.1 83.3% 57.8%",
+      primaryForeground: "210 20% 98%",
+      secondary: "220 14.3% 95.9%",
+      secondaryForeground: "220.9 39.3% 11%",
+      muted: "220 14.3% 95.9%",
+      mutedForeground: "220 8.9% 46.1%",
+      accent: "220 14.3% 95.9%",
+      accentForeground: "220.9 39.3% 11%",
+      destructive: "0 84.2% 60.2%",
+      destructiveForeground: "210 20% 98%",
+      border: "220 13% 91%",
+      input: "220 13% 91%",
+      ring: "262.1 83.3% 57.8%",
+      radius: "1rem",
+    },
+  },
+  {
+    name: "YELLOW_LIGHT",
+    color: "#fcc538",
+    darkColor: "#fcc538",
+    styles: {
+      background: "0 0% 100%",
+      foreground: "20 14.3% 4.1%",
+      card: "0 0% 100%",
+      cardForeground: "20 14.3% 4.1%",
+      popover: "0 0% 100%",
+      popoverForeground: "20 14.3% 4.1%",
+      primary: "47.9 95.8% 53.1%",
+      primaryForeground: "26 83.3% 14.1%",
+      secondary: "60 4.8% 95.9%",
+      secondaryForeground: "24 9.8% 10%",
+      muted: "60 4.8% 95.9%",
+      mutedForeground: "25 5.3% 44.7%",
+      accent: "60 4.8% 95.9%",
+      accentForeground: "24 9.8% 10%",
+      destructive: "0 84.2% 60.2%",
+      destructiveForeground: "60 9.1% 97.8%",
+      border: "20 5.9% 90%",
+      input: "20 5.9% 90%",
+      ring: "20 14.3% 4.1%",
+      radius: "1rem",
+    },
+  },
+  {
+    name: "ZINC_LIGHT",
+    color: "#191919",
+    darkColor: "#FAFAFA",
+    styles: {
+      background: "0 0% 100%",
+      foreground: "240 10% 3.9%",
+      card: "0 0% 100%",
+      cardForeground: "240 10% 3.9%",
+      popover: "0 0% 100%",
+      popoverForeground: "240 10% 3.9%",
+      primary: "240 5.9% 10%",
+      primaryForeground: "0 0% 98%",
+      secondary: "240 4.8% 95.9%",
+      secondaryForeground: "240 5.9% 10%",
+      muted: "240 4.8% 95.9%",
+      mutedForeground: "240 3.8% 46.1%",
+      accent: "240 4.8% 95.9%",
+      accentForeground: "240 5.9% 10%",
+      destructive: "0 84.2% 60.2%",
+      destructiveForeground: "0 0% 98%",
+      border: "240 5.9% 90%",
+      input: "240 5.9% 90%",
+      ring: "240 5.9% 10%",
+      radius: "1rem",
+    },
+  },
+  {
+    name: "ORANGE_LIGHT",
+    color: "#E78B22",
+    darkColor: "#E57949",
+    styles: {
+      background: "0 0% 100%",
+      foreground: "20 14.3% 4.1%",
+      card: "0 0% 100%",
+      cardForeground: "20 14.3% 4.1%",
+      popover: "0 0% 100%",
+      popoverForeground: "20 14.3% 4.1%",
+      primary: "24.6 95% 53.1%",
+      primaryForeground: "60 9.1% 97.8%",
+      secondary: "60 4.8% 95.9%",
+      secondaryForeground: "24 9.8% 10%",
+      muted: "60 4.8% 95.9%",
+      mutedForeground: "25 5.3% 44.7%",
+      accent: "60 4.8% 95.9%",
+      accentForeground: "24 9.8% 10%",
+      destructive: "0 84.2% 60.2%",
+      destructiveForeground: "60 9.1% 97.8%",
+      border: "20 5.9% 90%",
+      input: "20 5.9% 90%",
+      ring: "24.6 95% 53.1%",
+      radius: "1rem",
+    },
+  },
 ];
-
 
 type FontVariables = {
   [key in FONT]: string;

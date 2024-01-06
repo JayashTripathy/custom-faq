@@ -26,10 +26,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { RadioGroup } from "@radix-ui/react-dropdown-menu";
+import { THEME } from "@prisma/client";
 
 function ChatBox(props: {
-  theme?: string;
+  theme?: THEME;
   onClose?: () => void;
   open?: boolean | null;
   faqId: string;

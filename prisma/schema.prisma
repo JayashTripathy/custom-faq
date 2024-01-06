@@ -66,7 +66,7 @@ model Faq {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   userId       String?
-  theme        String?
+  theme        THEME     @default(VIOLET)
   User         User?     @relation(fields: [userId], references: [id])
   faqs         FaqItem[]
   socials      Social[]
@@ -80,6 +80,17 @@ enum FONT {
   QUICKSAND
   PLAYFAIR
   CORMORANT
+}
+
+enum THEME {
+  VIOLET
+  YELLOW
+  ZINC
+  ORANGE
+  VIOLET_LIGHT
+  YELLOW_LIGHT
+  ZINC_LIGHT
+  ORANGE_LIGHT
 }
 
 model FaqItem {

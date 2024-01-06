@@ -43,7 +43,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <main className={`${quicksand.variable} ${lato.variable} ${cormorant.variable} ${playfair.variable}`}>
+    <main className={`${quicksand.variable} ${lato.variable} ${cormorant.variable} ${playfair.variable} h-full `}>
       <SessionProvider session={session}>
         <AppProviders>
           <ThemeProvider attribute="data-theme" defaultTheme="dark">

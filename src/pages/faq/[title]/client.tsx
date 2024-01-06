@@ -332,9 +332,10 @@ function Client(props: { title: string }) {
                         <Link
                           key={index}
                           href={social.url}
-                          className=" flex items-center justify-center gap-2 rounded-full  px-2 py-1 text-sm"
+                          target="_blank"
+                          className=" flex items-center justify-center gap-2 rounded-full  px-2 py-1 text-sm font-bold"
                           style={{
-                            color: `hsl(${styles?.foreground})`,
+                            color: `hsl(${styles?.background})`,
                             background: `hsl(${styles?.primary})`,
                           }}
                         >
