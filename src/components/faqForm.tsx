@@ -40,7 +40,7 @@ import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import { pageFonts, pagethemes } from "@/utils/pageThemes";
 import { useTheme } from "next-themes";
-import type { Faq, Social, FaqItem } from "@prisma/client";
+import type { Faq, Social, FaqItem, THEME } from "@prisma/client";
 import Loader from "./loader";
 import { FONT } from "@prisma/client";
 import useDebounce from "@/hooks/useDebounce";
@@ -78,7 +78,7 @@ export function FaqForm(props: {
       description: "",
       address: "",
       faqs: [],
-      theme: "purple",
+      theme: "VIOLET",
       socials: [],
       font: FONT.LATO,
     },
@@ -123,7 +123,7 @@ export function FaqForm(props: {
     return data.secure_url;
   };
 
-  const handlePageThemeChange = (themeName: string) => {
+  const handlePageThemeChange = (themeName: THEME) => {
     form.setValue("theme", themeName);
   };
 
