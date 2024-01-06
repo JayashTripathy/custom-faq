@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { FONT } from "@prisma/client";
+import { FONT, THEME } from "@prisma/client";
 
 export const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -13,7 +13,7 @@ export const formSchema = z.object({
       z.object({ id: z.number(), question: z.string(), answer: z.string() }),
     )
     .min(1),
-  theme: z.string().optional().or(z.literal("")),
+  theme: z.nativeEnum(THEME).optional(),
   socials: z.array(z.object({ name: z.string(), url: z.string() })),
   font: z.nativeEnum(FONT).optional(),
 });

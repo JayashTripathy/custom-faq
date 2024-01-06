@@ -75,6 +75,7 @@ export const faqRouter = createTRPCRouter({
               },
             },
             userId: id,
+          
           },
 
           include: {
