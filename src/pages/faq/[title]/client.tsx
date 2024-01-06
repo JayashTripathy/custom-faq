@@ -127,7 +127,6 @@ function Client(props: { title: string }) {
                         className="max-w-[80px] overflow-hidden  rounded-full   "
                         style={{
                           background: `hsl(${styles?.background})`,
-                       
                         }}
                         aria-disabled={true}
                       >
@@ -320,10 +319,12 @@ function Client(props: { title: string }) {
                 </div>
               )}
               <div className="my-4 mt-10 flex w-full flex-col gap-10 md:flex-row">
-                <div className={`${faq?.address && "md:w-[70%]"}`}>
-                  <Subheading>Description</Subheading>
-                  <p className="py-1 text-sm  ">{faq?.description}</p>
-                </div>
+                {faq?.description && (
+                  <div className={`${faq?.address && "md:w-[70%]"}`}>
+                    <Subheading>Description</Subheading>
+                    <p className="py-1 text-sm  ">{faq?.description}</p>
+                  </div>
+                )}
                 {faq && faq.socials?.length > 0 && (
                   <div className="">
                     <Subheading>Socials</Subheading>
