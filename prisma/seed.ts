@@ -14,7 +14,7 @@ async function main() {
       organization: "wisefaq.vercel.app",
       address: "CG, India",
       aiMode: false,
-      theme: "purple",
+      theme: "VIOLET",
       faqs: {
         create: [
           {
