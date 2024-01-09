@@ -44,6 +44,7 @@ import type { Faq, Social, FaqItem, THEME } from "@prisma/client";
 import Loader from "./loader";
 import { FONT } from "@prisma/client";
 import useDebounce from "@/hooks/useDebounce";
+import { url } from "inspector";
 
 type cropperType = "logo" | "backdrop";
 
@@ -338,8 +339,33 @@ export function FaqForm(props: {
       aspect: 5 / 1,
     },
   ];
+  const checkValidUrl = (url: string) => {
+    try {
+      const checkUrl = new URL(url);
+      if (
+        checkUrl.protocol === "https:" &&
+        checkUrl.host !== "" &&
+        checkUrl.pathname !== ""
+      ) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      
+      return false;
+    }
+  };
 
   const onAddSocial = () => {
+    if (!checkValidUrl(socialInput.url)) {
+      toast({
+        variant: "default",
+        title: "Error!",
+        description: `Please enter a valid url`,
+      });
+      return;
+    }
+
     if (!socialInput.name || !socialInput.url) {
       toast({
         variant: "default",
@@ -746,19 +772,22 @@ export function FaqForm(props: {
 
           <div className="grid  grid-cols-[repeat(auto-fit,_minmax(200px,1fr))] gap-2 px-2">
             {pagethemes.map((themeConfig, index) => {
-              const selected: boolean = form.watch("theme") === themeConfig.name;
+              const selected: boolean =
+                form.watch("theme") === themeConfig.name;
               const styles = themeConfig.styles;
               return (
                 <button
                   type="button"
                   key={index}
                   onClick={() => handlePageThemeChange(themeConfig.name)}
-                  className={`mt-5 ${selected? "opacity-100" : "opacity-60"}  hover:opacity-100 box-border  flex h-32 w-full flex-col justify-center rounded-lg  border p-5 text-left duration-200 ease-in-out hover:bg-accent    `}
+                  className={`mt-5 ${
+                    selected ? "opacity-100" : "opacity-60"
+                  }  box-border flex  h-32 w-full flex-col justify-center rounded-lg border  p-5 text-left duration-200 ease-in-out hover:bg-accent hover:opacity-100    `}
                   style={{
                     border: selected
                       ? `7px solid  hsl(${styles?.primary})`
                       : "2px solid 		rgb(72, 86, 106, .2)",
-                
+
                     backgroundColor: `hsl(${styles?.secondary})`,
                   }}
                 >
