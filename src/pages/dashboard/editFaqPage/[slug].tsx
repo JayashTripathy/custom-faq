@@ -7,6 +7,7 @@ import { FaqForm } from "@/components/faqForm";
 import { ArrowLeft } from "lucide-react";
 
 function Page() {
+  
   const router = useRouter();
   const title = router.query.slug as string;
   const { data: faq, isLoading: faqLoading } = api.faq.getFaqPage.useQuery(
