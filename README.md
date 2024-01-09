@@ -1,5 +1,11 @@
-# wise-faq
 
-Building 🔨 a no code-tool that can create beautiful FAQ pages within minutes and share with others
+<p align="center">
+    <img src="public/logo-dark.svg" alt="Logo" width="50%">
+<p/>
 
-![logo](public/logo-dark.svg)
+<br/>
+<hr/>
+<br/>
+
+<h2>Wise FAQ</h2>
+WiseFAQ is a no-code tool enabling quick creation of customizable FAQ pages for diverse purposes. It incorporates AI, allowing users to build specialized agents for swift and personalized information retrieval, enhancing the user experience. With a few clicks and details input, users can effortlessly launch their FAQ pages.
