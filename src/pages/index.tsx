@@ -106,15 +106,12 @@ function index() {
             <Link href={"/faq/WiseFAQ"} target="_blank">
               <img src="temp.png" alt="" className="mx-auto md:w-4/5 " />
 
-         
-            <Button
-              variant={"outline"}
-              className="bg-border mx-auto mt-4 flex  items-center justify-center gap-3 rounded-full pr-2 outline-4 md:text-2xl absolute bottom-14 shadow-2xl left-1/2 -translate-x-1/2 text-sm  "
-            >
-              See the demo <ArrowRight/>
-             
-            </Button>
-     
+              <Button
+                variant={"outline"}
+                className="absolute left-1/2 mx-auto  mt-4 flex -translate-x-1/2 items-center justify-center gap-3 pr-4 rounded-full  text-xs shadow-2xl outline-4 md:text-sm bottom-4 md:bottom-14 "
+              >
+                See the demo <ArrowRight />
+              </Button>
             </Link>
             {/* {faq && (
               <div className="w-4/5 h-[600px] mx-auto overflow-auto bg-black">
