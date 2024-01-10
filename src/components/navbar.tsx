@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/sheet";
 
 import { useRouter } from "next/router";
-
+import { Badge } from "./ui/badge";
 
 function Navbar() {
   const router = useRouter();
@@ -49,8 +49,8 @@ function Navbar() {
     {
       title: "Github",
       href: "https://github.com/JayashTripathy/wise-faq",
-      icon: <Github size={18}/>, 
-    }
+      icon: <Github size={18} />,
+    },
   ];
 
   useEffect(() => {
@@ -61,9 +61,20 @@ function Navbar() {
     <div className="sticky top-0 z-10 w-screen p-4 backdrop-blur-3xl ">
       <MainHeader
         heading={
-          <Link href="/">
-            <img src={logoTheme} className="max-w-[150px] md:max-w-[200px] " />
-          </Link>
+          <div className="flex">
+            <Link href="/">
+              <img
+                src={logoTheme}
+                className="max-w-[150px] md:max-w-[200px] "
+              />
+            </Link>
+            <Badge
+              className="h-5 p-0 px-2 text-[10px] font-normal "
+              variant={"secondary"}
+            >
+              Beta
+            </Badge>
+          </div>
         }
       >
         <div className="ml-10 hidden w-full  md:flex">
@@ -71,7 +82,7 @@ function Navbar() {
             {components.map((component, ind) => (
               <li
                 key={ind}
-                className="flex cursor-pointer items-center gap-2 transition-all duration-100 ease-in-out hover:text-foreground text-foreground/75"
+                className="flex cursor-pointer items-center gap-2 text-foreground/75 transition-all duration-100 ease-in-out hover:text-foreground"
               >
                 {component.icon}
                 <Link href={component.href}>{component.title}</Link>
@@ -117,9 +128,9 @@ function Navbar() {
                   <button
                     type="submit"
                     onClick={() => void router.push(component.href)}
-                    className="transition-all duration-100 ease-in-out hover:text-foreground/75 flex gap-2 items-center"
+                    className="flex items-center gap-2 transition-all duration-100 ease-in-out hover:text-foreground/75"
                   >
-                   {component.icon} {component.title}
+                    {component.icon} {component.title}
                   </button>
                 </SheetClose>
               ))}
