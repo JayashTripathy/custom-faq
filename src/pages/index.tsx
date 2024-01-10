@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import MainFaqSection from "@/components/mainFaqSection";
 
 const steps = [
   {
@@ -36,6 +37,12 @@ const steps = [
 ];
 
 function index() {
+  // const {
+  //   data: faq,
+  //   refetch: refetchFaq,
+  //   isLoading: pageLoading,
+  // } = api.faq.getFaqPage.useQuery({ faqTitle: "WiseFAQ" });
+
   return (
     <>
       <div className="absolute left-0 top-0 -z-10 h-screen w-screen bg-[url(/smudge.png)] opacity-40"></div>
@@ -96,7 +103,24 @@ function index() {
                 <path d="M183.94 93.2042L183.937 55.738L221.388 55.7409L221.381 17.9643L238.524 17.9657L238.523 0.592822L204.007 0.590113L204.01 38.3629L166.559 38.3599L166.562 75.8262L129.134 75.8232L129.137 113.075L91.7932 113.072L91.7962 150.308L54.4525 150.305L54.4555 187.871L16.9969 187.868L16.9999 225.212L0.0407958 225.211L0.042163 242.583L34.3741 242.586L34.3712 205.243L71.8298 205.245L71.8268 167.68L109.17 167.683L109.168 130.446L146.511 130.449L146.508 93.1975L183.936 93.2004L183.94 93.2042ZM179.603 51.404L179.606 88.8702L142.178 88.8673L142.181 126.119L104.837 126.116L104.84 163.352L67.4966 163.349L67.4996 200.915L30.041 200.912L30.044 238.256L4.37165 238.254L4.37096 229.548L21.33 229.55L21.3271 192.206L58.7857 192.209L58.7827 154.643L96.1263 154.646L96.1234 117.41L133.467 117.413L133.464 80.161L170.892 80.164L170.889 42.6977L208.34 42.7007L208.337 4.92794L234.186 4.92994L234.186 13.6356L217.043 13.6342L217.05 51.4108L179.599 51.4078L179.603 51.404Z" />
               </svg>
             </div>
-            <img src="temp.png" alt="" className="mx-auto md:w-4/5 " />
+            <Link href={"/faq/WiseFAQ"} target="_blank">
+              <img src="temp.png" alt="" className="mx-auto md:w-4/5 " />
+
+         
+            <Button
+              variant={"outline"}
+              className="bg-border mx-auto mt-4 flex  items-center justify-center gap-3 rounded-full pr-2 outline-4 md:text-2xl absolute bottom-14 shadow-2xl left-1/2 -translate-x-1/2 text-sm  "
+            >
+              See the demo <ArrowRight/>
+             
+            </Button>
+     
+            </Link>
+            {/* {faq && (
+              <div className="w-4/5 h-[600px] mx-auto overflow-auto bg-black">
+                <MainFaqSection faq={faq} />
+              </div>
+            )} */}
           </div>
         </div>
         <div className="">

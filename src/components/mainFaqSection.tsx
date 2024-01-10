@@ -22,7 +22,7 @@ function MainFaqSection({ faq }: Props) {
     const { children, ...rest } = props;
     return (
       <div
-        className={`text-lg font-semibold ${faq?.theme}  `}
+        className={`text-lg text-left font-semibold ${faq?.theme}  `}
         style={{
           color: `hsl(${styles?.primary})` ?? " ",
         }}
@@ -72,9 +72,9 @@ function MainFaqSection({ faq }: Props) {
         )}
         <div className="my-4 mt-10 flex w-full flex-col gap-10 md:flex-row">
           {faq?.description && (
-            <div className={`${faq?.address && "md:w-[70%]"}`}>
+            <div className={`${faq?.address && "md:w-[70%]"} `}>
               <Subheading>Description</Subheading>
-              <p className="py-1 text-sm  ">{faq?.description}</p>
+              <p className="py-1 text-xs md:text-sm text-wrap text-left ">{faq?.description}</p>
             </div>
           )}
           {faq && faq.socials?.length > 0 && (
